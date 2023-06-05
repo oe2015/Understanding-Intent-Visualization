@@ -2,35 +2,32 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-# Simple Text
-st.header('Simple Text')
-st.write('Here is some simple text')
+countries = ['Albania', 'Andorra', 'Austria', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 'Bulgaria', 'Croatia',
+             'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
+             'Iceland', 'Ireland', 'Italy', 'Kosovo', 'Latvia', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Malta',
+             'Moldova', 'Monaco', 'Montenegro', 'Netherlands', 'North Macedonia', 'Norway', 'Poland', 'Portugal',
+             'Romania', 'Russia', 'San Marino', 'Serbia', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland',
+             'Ukraine', 'United Kingdom', 'Vatican City']
 
-# Latex
-st.header('LaTeX Equations')
-st.write("""Here is a simple equation using LaTeX
-$$
-ax^2 + bx + c
-$$
-""")
+propaganda_techniques = ['Loaded_Language', 'Appeal_to_fear_prejudice', 'Name_Calling', 'Flag_waiving', 'doubt',
+                         'exaggeration/minimization', 'Slogans', 'Casual_oversimplification', 'repetition',
+                         'thought_terminating_cliches', 'appeal_to_authority', 'black_and_white_fallacy',
+                         'reductio_ad_hitlerum', 'whataboutism', 'straw_men', 'red_herring',
+                         'obfuscation/intentional_vagueness/confusion']
 
-# Markdown
-st.write('## Markdown')
-st.write('Here is some more **markdown** text. *And here is some more in italics*')
+articles_per_country = 10
 
-# Emojis
-st.header('Emojis')
-st.write('And an emoji or two :smile: :thumbsup:')
+data = []
+for country in countries:
+    for _ in range(articles_per_country):
+        article = f"Article from {country}"
+        row = [article, country]
+        row.extend(np.random.choice(6, size=len(propaganda_techniques), p=[0.45, 0.1, 0.1, 0.1, 0.1, 0.15]))
+        data.append(row)
 
-# Calculations
-st.header('Calculations')
-a = 3
-b = 3
-st.write('And calculations:', a + b )
+df = pd.DataFrame(data, columns=['Article', 'Country'] + propaganda_techniques)
+
 
 # Dataframes
 st.header('Dataframes')
-arr_data = np.random.default_rng().uniform(0, 100, size=(5,5))
-df = pd.DataFrame(arr_data, columns=list('ABCDE'))
-
 st.write(df)
