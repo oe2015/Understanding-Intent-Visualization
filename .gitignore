@@ -1,0 +1,4 @@
+# .gitignore
+
+newfile.parquet
+newfile.jsonl
