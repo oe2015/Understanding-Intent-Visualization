@@ -119,7 +119,7 @@ def load_model_task3():
     return tokenizer, model
 
 tokenizer2, model2 = load_model_task2()
-tokenizer3, model3 = load_model_task3()
+# tokenizer3, model3 = load_model_task3()
 tokenizer, custom_xlm_roberta = load_model()
 labels_list = [
     "Economic",
@@ -335,83 +335,83 @@ if doc:
         st.altair_chart(chart, use_container_width=True)
 
 
-    # SUBTASK 3 Model Loading
-    output_map = {}
-    sentences = extract_title_and_sentences(text)
+    # # SUBTASK 3 Model Loading
+    # output_map = {}
+    # sentences = extract_title_and_sentences(text)
    
-    for sentence in sentences:
-        # Tokenize the sentence
-        inputs = tokenizer3.encode_plus(
-            sentence,
-            add_special_tokens=True,
-            max_length=512,
-            padding="longest",
-            truncation=True,
-            return_attention_mask=True,
-            return_tensors="pt",
-        )
+    # for sentence in sentences:
+    #     # Tokenize the sentence
+    #     inputs = tokenizer3.encode_plus(
+    #         sentence,
+    #         add_special_tokens=True,
+    #         max_length=512,
+    #         padding="longest",
+    #         truncation=True,
+    #         return_attention_mask=True,
+    #         return_tensors="pt",
+    #     )
 
-        inputs_3 = {
-        'content_input_ids' : inputs['input_ids'],
-        'content_attention_mask' :  inputs['attention_mask']
-        }
+    #     inputs_3 = {
+    #     'content_input_ids' : inputs['input_ids'],
+    #     'content_attention_mask' :  inputs['attention_mask']
+    #     }
         
-        # Pass the tokenized sentence to the model
-        outputs_3 = model3(**inputs_3)
-        probabilities_3 = torch.sigmoid(outputs_3)
+    #     # Pass the tokenized sentence to the model
+    #     outputs_3 = model3(**inputs_3)
+    #     probabilities_3 = torch.sigmoid(outputs_3)
         
-        filtered_labels = []
-        filtered_outputs = []
-        for index, output in enumerate(probabilities_3[0]):
-            if labels_list3[index] == "None":
-                continue
-            if output >= 0.09:
-                filtered_labels.append(labels_list3[index])
-                filtered_outputs.append(output)
-        # Store the filtered labels and outputs in the map with the corresponding sentence
-        output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
+    #     filtered_labels = []
+    #     filtered_outputs = []
+    #     for index, output in enumerate(probabilities_3[0]):
+    #         if labels_list3[index] == "None":
+    #             continue
+    #         if output >= 0.09:
+    #             filtered_labels.append(labels_list3[index])
+    #             filtered_outputs.append(output)
+    #     # Store the filtered labels and outputs in the map with the corresponding sentence
+    #     output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
     
-    print(output_map)
+    # print(output_map)
 
     
-    annotated_text(
-        ("Team Name:", "", "#000", "#fff"),
-        (
-            "The Syllogist",
-            "The Best One",
-            "#8ef",
-        ),
-    )
+    # annotated_text(
+    #     ("Team Name:", "", "#000", "#fff"),
+    #     (
+    #         "The Syllogist",
+    #         "The Best One",
+    #         "#8ef",
+    #     ),
+    # )
     
-    #SUBTASK 3 Visualization
-    label_colors = {}  # Dictionary to store assigned colors for each label
+    # #SUBTASK 3 Visualization
+    # label_colors = {}  # Dictionary to store assigned colors for each label
 
-    with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
-        for sentence, entry in output_map.items():
-                labels = entry['labels']
-                outputs = entry['outputs']
+    # with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
+    #     for sentence, entry in output_map.items():
+    #             labels = entry['labels']
+    #             outputs = entry['outputs']
 
-                # Create the annotated text
-                annotations = [(sentence, "", "#fff", "#000")]
-                sorted_outputs = sorted(outputs, reverse=True)
+    #             # Create the annotated text
+    #             annotations = [(sentence, "", "#fff", "#000")]
+    #             sorted_outputs = sorted(outputs, reverse=True)
 
-                for label, output in zip(labels, sorted_outputs):
-                    output =  output.item()
+    #             for label, output in zip(labels, sorted_outputs):
+    #                 output =  output.item()
 
-                    if label == "None":
-                        continue
+    #                 if label == "None":
+    #                     continue
 
-                    if label not in label_colors:
-                # Generate a random color for a new label
-                        label_colors[label] = get_random_color()
+    #                 if label not in label_colors:
+    #             # Generate a random color for a new label
+    #                     label_colors[label] = get_random_color()
 
-                    color1 = label_colors[label]
-                    annotation_text = f"{label.replace('_', ' ')}  {round(output * 100, 2)}%"
-                    annotations.append((annotation_text, "", color1))
+    #                 color1 = label_colors[label]
+    #                 annotation_text = f"{label.replace('_', ' ')}  {round(output * 100, 2)}%"
+    #                 annotations.append((annotation_text, "", color1))
 
-                # Display the annotated text using annotated_text
-                annotated_text(*annotations)
-                st.write("\n\n")
+    #             # Display the annotated text using annotated_text
+    #             annotated_text(*annotations)
+    #             st.write("\n\n")
 
                 
 
