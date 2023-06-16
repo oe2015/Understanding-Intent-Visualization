@@ -827,6 +827,8 @@ elif st.session_state.page  == "Framings":
 
                 # Combine country and total articles
     melted_df['source'] = melted_df['source'] + " (" + melted_df['total_articles'].astype(str) + ")"
+
+    melted_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
     frames_colors = {
         'Economic': '#6941BF',
         'External_regulation_and_reputation': '#0468BF',
