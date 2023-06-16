@@ -472,9 +472,27 @@ if st.session_state.page == "Countries":
 
     # Sort the data by total articles (in descending order)
     # melted_df = melted_df.sort_values(by=['total_articles'], ascending=True)
+    frames_colors = {
+        'Economic': '#6941BF',
+        'External_regulation_and_reputation': '#0468BF',
+        'Capacity_and_resources': '#8FCEFF',
+        'Political': '#FFD16A',
+        'Security_and_defense': '#F22E2E',
+        'Quality_of_life': '#80F29D',
+        'Policy_prescription_and_evaluation': '#FFABAB',
+        'Legality_Constitutionality_and_jurisprudence': '#9f7fe3',
+        'Cultural_identity': '#b1cce3',
+        'Fairness_and_equality': '#b39696',
+        'Crime_and_punishment': '#2f8dd6',
+        'Health_and_safety': '#bd7373',
+        'Public_opinion': '#d4cdcd',
+        'Morality': '#5c9c6c'
 
+        
+    }
     # Plotting the graph using Plotly Express
     fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
+                color_discrete_map = frames_colors,
                 title="Distribution of Framings by Country",
                 hover_data={
                     'number_of_articles': True,
@@ -533,8 +551,35 @@ if st.session_state.page == "Countries":
     # Sort the data by total articles (in descending order)
     melted_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
 
+    color_mapping = {
+        'Loaded_Language': '#FFD16A', #6941BF
+        'Obfuscation-Vagueness-Confusion': '#0468BF',
+        'Conversation_Killer': '#8FCEFF',
+        'Appeal_to_Time':'#6941BF',
+        'Whataboutism': '#a9becf',
+        'Red_Herring':'#80F29D' ,
+        'Straw_Man': '#FFABAB',
+        'Causal_Oversimplification':'#9f7fe3' ,
+        'Appeal_to_Values':'#b1cce3' ,
+        'Appeal_to_Popularity': '#b39696',
+        'Appeal_to_Hypocrisy': '#2f8dd5',
+        'Appeal_to_Authority': '#bd7373',
+        'Consequential_Oversimplification': '#d4cdcd',
+        'False_Dilemma-No_Choice': '#5c9c6c',
+        'Repetition': '#945454',
+        'Slogans': '#af9cd6',
+        'Doubt': '#edaa13',
+        'Exaggeration-Minimisation': '#958ca8',
+        'Name_Calling-Labeling': '#77abd9',
+        'Flag_Waving': '#F22E2E', # 
+        'Appeal_to_Fear-Prejudice': '#9ad6ac',
+        'Guilt_by_Association': '#6b0c0c',
+        'Questioning_the_Reputation': '#ffdd91',
+    }
+
     # Plotting the graph using Plotly Express
     fig = px.bar(melted_df, x='Percentage', y='country', color='Persuasion Techniques', orientation='h', 
+                    color_discrete_map = color_mapping,
                     title="Distribution of Persuasion Techniques by Country",
                     hover_data={
                         'Frequency': True,
@@ -782,27 +827,28 @@ elif st.session_state.page  == "Framings":
 
                 # Combine country and total articles
     melted_df['source'] = melted_df['source'] + " (" + melted_df['total_articles'].astype(str) + ")"
+    frames_colors = {
+        'Economic': '#6941BF',
+        'External_regulation_and_reputation': '#0468BF',
+        'Capacity_and_resources': '#8FCEFF',
+        'Political': '#FFD16A',
+        'Security_and_defense': '#F22E2E',
+        'Quality_of_life': '#80F29D',
+        'Policy_prescription_and_evaluation': '#FFABAB',
+        'Legality_Constitutionality_and_jurisprudence': '#9f7fe3',
+        'Cultural_identity': '#b1cce3',
+        'Fairness_and_equality': '#b39696',
+        'Crime_and_punishment': '#2f8dd6',
+        'Health_and_safety': '#bd7373',
+        'Public_opinion': '#d4cdcd',
+        'Morality': '#5c9c6c'
 
-    color_mapping = {
-        'Economic': 'blue',
-        'External_regulation_and_reputation': 'red',
-        'Capacity_and_resources': 'green',
-        'Political': 'purple',
-        'Security_and_defense': 'orange',
-        'Quality_of_life': 'yellow',
-        'Policy_prescription_and_evaluation': 'pink',
-        'Legality_Constitutionality_and_jurisprudence': 'brown',
-        'Cultural_identity': 'cyan',
-        'Fairness_and_equality': 'magenta',
-        'Crime_and_punishment': 'lime',
-        'Health_and_safety': 'darkblue',
-        'Public_opinion': 'darkred',
-        'Morality': 'darkgreen'
+        
     }
 
     # Plotting the graph using Plotly Express
     fig = px.bar(melted_df, x='Percentage', y='source', color='Framing', orientation='h', 
-                color_discrete_map=color_mapping,  # use the color mapping
+                color_discrete_map=frames_colors,  # use the color mapping
                 title="Distribution of Framings by Source",
                 hover_data={
                     'number_of_articles': True,
@@ -862,26 +908,27 @@ elif st.session_state.page  == "Framings":
                 # Combine country and total articles
     melted_df['country'] = melted_df['country'] + " (" + melted_df['total_articles'].astype(str) + ")"
 
-    color_mapping = {
-        'Economic': 'blue',
-        'External_regulation_and_reputation': 'red',
-        'Capacity_and_resources': 'green',
-        'Political': 'purple',
-        'Security_and_defense': 'orange',
-        'Quality_of_life': 'yellow',
-        'Policy_prescription_and_evaluation': 'pink',
-        'Legality_Constitutionality_and_jurisprudence': 'brown',
-        'Cultural_identity': 'cyan',
-        'Fairness_and_equality': 'magenta',
-        'Crime_and_punishment': 'lime',
-        'Health_and_safety': 'darkblue',
-        'Public_opinion': 'darkred',
-        'Morality': 'darkgreen'
+    frames_colors = {
+        'Economic': '#6941BF',
+        'External_regulation_and_reputation': '#0468BF',
+        'Capacity_and_resources': '#8FCEFF',
+        'Political': '#FFD16A',
+        'Security_and_defense': '#F22E2E',
+        'Quality_of_life': '#80F29D',
+        'Policy_prescription_and_evaluation': '#FFABAB',
+        'Legality_Constitutionality_and_jurisprudence': '#9f7fe3',
+        'Cultural_identity': '#b1cce3',
+        'Fairness_and_equality': '#b39696',
+        'Crime_and_punishment': '#2f8dd6',
+        'Health_and_safety': '#bd7373',
+        'Public_opinion': '#d4cdcd',
+        'Morality': '#5c9c6c'
+
     }
 
     # Plotting the graph using Plotly Express
     fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
-                color_discrete_map=color_mapping,  # use the color mapping
+                color_discrete_map=frames_colors,  # use the color mapping
                 title="Distribution of Framings by Country",
                 hover_data={
                     'number_of_articles': True,
@@ -1211,29 +1258,29 @@ elif st.session_state.page  == "Persuasion Techniques":
     melted_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
 
     color_mapping = {
-        'Loaded_Language': 'blue',
-        'Obfuscation-Vagueness-Confusion': 'olive',
-        'Conversation_Killer': 'green',
-        'Appeal_to_Time': 'purple',
-        'Whataboutism': 'orange',
-        'Red_Herring': 'yellow',
-        'Straw_Man': 'pink',
-        'Causal_Oversimplification': 'brown',
-        'Appeal_to_Values': 'cyan',
-        'Appeal_to_Popularity': 'magenta',
-        'Appeal_to_Hypocrisy': 'lime',
-        'Appeal_to_Authority': 'darkblue',
-        'Consequential_Oversimplification': 'darkred',
-        'False_Dilemma-No_Choice': 'darkgreen',
-        'Repetition': 'gold',
-        'Slogans': 'lightgreen',
-        'Doubt': 'lightblue',
-        'Exaggeration-Minimisation': 'lightgray',
-        'Name_Calling-Labeling': 'teal',
-        'Flag_Waving': 'navy',
-        'Appeal_to_Fear-Prejudice': 'red',
-        'Guilt_by_Association': 'maroon',
-        'Questioning_the_Reputation': 'darkorange',
+        'Loaded_Language': '#FFD16A', #6941BF
+        'Obfuscation-Vagueness-Confusion': '#0468BF',
+        'Conversation_Killer': '#8FCEFF',
+        'Appeal_to_Time':'#6941BF',
+        'Whataboutism': '#a9becf',
+        'Red_Herring':'#80F29D' ,
+        'Straw_Man': '#FFABAB',
+        'Causal_Oversimplification':'#9f7fe3' ,
+        'Appeal_to_Values':'#b1cce3' ,
+        'Appeal_to_Popularity': '#b39696',
+        'Appeal_to_Hypocrisy': '#2f8dd5',
+        'Appeal_to_Authority': '#bd7373',
+        'Consequential_Oversimplification': '#d4cdcd',
+        'False_Dilemma-No_Choice': '#5c9c6c',
+        'Repetition': '#945454',
+        'Slogans': '#af9cd6',
+        'Doubt': '#edaa13',
+        'Exaggeration-Minimisation': '#958ca8',
+        'Name_Calling-Labeling': '#77abd9',
+        'Flag_Waving': '#F22E2E', # 
+        'Appeal_to_Fear-Prejudice': '#9ad6ac',
+        'Guilt_by_Association': '#6b0c0c',
+        'Questioning_the_Reputation': '#ffdd91',
     }
 
     # Plotting the graph using Plotly Express
@@ -1304,31 +1351,30 @@ elif st.session_state.page  == "Persuasion Techniques":
     # Sort the data by total articles (in descending order)
 
     melted_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
-
     color_mapping = {
-        'Loaded_Language': 'blue',
-        'Obfuscation-Vagueness-Confusion': 'olive',
-        'Conversation_Killer': 'green',
-        'Appeal_to_Time': 'purple',
-        'Whataboutism': 'orange',
-        'Red_Herring': 'yellow',
-        'Straw_Man': 'pink',
-        'Causal_Oversimplification': 'brown',
-        'Appeal_to_Values': 'cyan',
-        'Appeal_to_Popularity': 'magenta',
-        'Appeal_to_Hypocrisy': 'lime',
-        'Appeal_to_Authority': 'darkblue',
-        'Consequential_Oversimplification': 'darkred',
-        'False_Dilemma-No_Choice': 'darkgreen',
-        'Repetition': 'gold',
-        'Slogans': 'lightgreen',
-        'Doubt': 'lightblue',
-        'Exaggeration-Minimisation': 'lightgray',
-        'Name_Calling-Labeling': 'teal',
-        'Flag_Waving': 'navy',
-        'Appeal_to_Fear-Prejudice': 'red',
-        'Guilt_by_Association': 'maroon',
-        'Questioning_the_Reputation': 'darkorange',
+        'Loaded_Language': '#FFD16A', #6941BF
+        'Obfuscation-Vagueness-Confusion': '#0468BF',
+        'Conversation_Killer': '#8FCEFF',
+        'Appeal_to_Time':'#6941BF',
+        'Whataboutism': '#a9becf',
+        'Red_Herring':'#80F29D' ,
+        'Straw_Man': '#FFABAB',
+        'Causal_Oversimplification':'#9f7fe3' ,
+        'Appeal_to_Values':'#b1cce3' ,
+        'Appeal_to_Popularity': '#b39696',
+        'Appeal_to_Hypocrisy': '#2f8dd5',
+        'Appeal_to_Authority': '#bd7373',
+        'Consequential_Oversimplification': '#d4cdcd',
+        'False_Dilemma-No_Choice': '#5c9c6c',
+        'Repetition': '#945454',
+        'Slogans': '#af9cd6',
+        'Doubt': '#edaa13',
+        'Exaggeration-Minimisation': '#958ca8',
+        'Name_Calling-Labeling': '#77abd9',
+        'Flag_Waving': '#F22E2E', # 
+        'Appeal_to_Fear-Prejudice': '#9ad6ac',
+        'Guilt_by_Association': '#6b0c0c',
+        'Questioning_the_Reputation': '#ffdd91',
     }
 
     # Plotting the graph using Plotly Express
