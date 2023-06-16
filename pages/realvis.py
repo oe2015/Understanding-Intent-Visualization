@@ -352,7 +352,7 @@ if st.session_state.page == "Countries":
         st.markdown(f"""
             <div style="background-color: #f5f3f6; border: 1px solid #6c757d; border-radius: 5px; padding: 10px">
                 <h4 style="color: #000000; text-align: center">Number of countries</h4>
-                <p style="text-align: center; font-size: 20px">{num_countries}</p>
+                <p style="text-align: center; font-size: 20px color: black">{num_countries}</p>
             </div>
         """, unsafe_allow_html=True)
 
@@ -360,7 +360,7 @@ if st.session_state.page == "Countries":
         st.markdown(f"""
             <div style="background-color: #f5f3f6; border: 1px solid #6c757d; border-radius: 5px; padding: 10px">
                 <h4 style="color: #000000; text-align: center">Number of articles</h4>
-                <p style="text-align: center; font-size: 20px">{num_articles}</p>
+                <p style="text-align: center; font-size: 20px; color: black">{num_articles}</p>
             </div>
         """, unsafe_allow_html=True)
 
@@ -368,7 +368,7 @@ if st.session_state.page == "Countries":
         st.markdown(f"""
             <div style="background-color: #f5f3f6; border: 1px solid #6c757d; border-radius: 5px; padding: 10px">
                 <h4 style="color: #000000; text-align: center">Number of media sources</h4>
-                <p style="text-align: center; font-size: 20px">{num_media_sources}</p>
+                <p style="text-align: center; font-size: 20px color: black">{num_media_sources}</p>
             </div>
         """, unsafe_allow_html=True)
 
