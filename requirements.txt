@@ -116,7 +116,7 @@ zipp
 ################
 transformers
 torch
-newspaper
+newspaper3k
 sentencepiece
 huggingface_hub
 nltk
