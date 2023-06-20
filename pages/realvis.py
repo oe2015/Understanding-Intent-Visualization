@@ -319,17 +319,10 @@ import json
 import streamlit as st
 from streamlit_server_state import server_state, server_state_lock
 
-# # Define navigation function
-def navigation():
-    pages = ["Countries", "Framings", "Persuasion Techniques", "Course-grained propaganda", "Ethos, Logos, Pathos"]
-    if 'page' not in st.session_state:
-        st.session_state['page'] = pages[0]  # Set default page to Home
-    st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(st.session_state.page))
-# Call the navigation function
-navigation()
-
-# pages = ["Countries", "Framings", "Persuasion Techniques"]
-# st.sidebar.radio(pages)
+pages = ["Countries", "Framings", "Persuasion Techniques fine-Grained Propaganda", "Persuasion Techniques Course-Grained Propaganda", "Persuasion Techniques Ethos, Logos, Pathos"]
+# if 'page' not in st.session_state:
+st.session_state['page'] = pages[0]  # Set default page to Home
+st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(st.session_state.page))
 
 
 if st.session_state.page == "Countries":
@@ -382,29 +375,28 @@ if st.session_state.page == "Countries":
     available_countries = country_to_media['country'].unique().tolist()
 
     # Remove already selected countries from the list
-    available_countries = [country for country in available_countries if country not in st.session_state.selected_countries]
+    # available_countries = [country for country in available_countries if country not in st.session_state.selected_countries]
 
     ##################
-    # # Calculate total number of articles for each country
-    # total_articles = country_article_counts_df.groupby('country').sum().reset_index()
-    # total_articles.columns = ['country', 'total_articles']
+    # Calculate total number of articles for each country
+    total_articles = country_article_counts_df.groupby('country').sum().reset_index()
+    total_articles.columns = ['country', 'total_articles']
+    print(total_articles)
+    # Reset the index to make 'country' a column
+    filtered_df = aggregated_df.reset_index()
 
-    # # Reset the index to make 'country' a column
-    # filtered_df = aggregated_df.reset_index()
-
-    # # Merge this with your DataFrame
-    # filtered_df = pd.merge(filtered_df, total_articles, on='country', how='left')
-    # filtered_df = filtered_df.drop_duplicates()
-    # print(filtered_df)
-    # #add the total number of articles per country
-    # countries=filtered_df['country'].tolist()
-    # for country in countries:
-    #     if country in available_countries:
-    #         row_num=countries.index(country)
-    #         for i in range(len(available_countries)):
-    #             if available_countries[i]==country:
-    #                 number=filtered_df['total_articles'][row_num].astype(str)
-    #                 available_countries[i]=country+" ("+number+")"
+    # Merge this with your DataFrame
+    filtered_df = pd.merge(filtered_df, total_articles, on='country', how='left')
+    filtered_df = filtered_df.drop_duplicates()
+    #add the total number of articles per country
+    countries=filtered_df['country'].tolist()
+    for country in countries:
+        if country in available_countries:
+            row_num=countries.index(country)
+            for i in range(len(available_countries)):
+                if available_countries[i]==country:
+                    number=filtered_df['total_articles'][row_num].astype(str)
+                    available_countries[i]=country+" ("+number+")"
     
     ######################
 
@@ -412,11 +404,12 @@ if st.session_state.page == "Countries":
     # If there are countries left to select
     if available_countries:
         country = st.selectbox('Select country', available_countries, key='country')
-        # index=available_countries.index(country)
-        # original_case_source = available_countries[index]
+        index=available_countries.index(country)
+        original_case_source = available_countries[index]
         if st.button('Add selection'):
-            st.session_state.selected_countries.append(country)
-
+            country=country[:country.index("(")-1]
+            if (country not in st.session_state.selected_countries):
+                st.session_state.selected_countries.append(country)
             # Update the available countries list after a country has been added
             available_countries = [country for country in available_countries if country not in st.session_state.selected_countries]
 
@@ -464,11 +457,13 @@ if st.session_state.page == "Countries":
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
-
     # Filter data based on selected countries
+    # if len(selected_countries) >0:
+    #     for country in selected_countries:
+    #         index = country.index(" ")
+    #         selected_countries[selected_countries.index(country)]=country[:index]
     filtered_df = aggregated_df.loc[selected_countries]
-   
-    # Reset the index to make 'country' a column
+        # Reset the index to make 'country' a column
     filtered_df = filtered_df.reset_index()
 
     # Merge this with your DataFrame
@@ -520,7 +515,7 @@ if st.session_state.page == "Countries":
     # Plotting the graph using Plotly Express
     fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
                 color_discrete_map=frames_colors,
-                title="Distribution of Framings by Country",
+                title="Distribution of Framings by Source",
                 hover_data={'number_of_articles': True},
                 labels={'number_of_articles': 'Number of articles in framing'})
 
@@ -729,7 +724,6 @@ elif st.session_state.page  == "Framings":
         
     # Number of countries
     num_countries = len(country_to_media)
-
     # Number of articles
     num_articles = article_counts_df['number_of_articles'].sum()
 
@@ -768,7 +762,20 @@ elif st.session_state.page  == "Framings":
         st.session_state.selected_pairs = []
 
     available_countries = country_to_media['country'].unique().tolist()
+    #add the number of articles per country
+    total_articles = country_article_counts_df.groupby('country').sum().reset_index()
+    total_articles.columns = ['country', 'total_articles']
+    countries=country_to_media['country'].unique().tolist()
+    total_articles=  total_articles['total_articles'].tolist()
+    for country in countries:
+        if country in available_countries:
+            row_num=countries.index(country)
+            for i in range(len(available_countries)):
+                if available_countries[i]==country:
+                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
+    ##############
     country = st.selectbox('Select country', available_countries, key='country')
+    country=country[:country.index("(")-1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
@@ -776,10 +783,11 @@ elif st.session_state.page  == "Framings":
     selected_sources_dict = {k: v for k, v in selected_sources_dict.items() if v > 0}
 
     selected_sources = [pair[1] for pair in st.session_state.selected_pairs if pair[0] == country]
-    available_sources = [source for source in selected_sources_dict.keys() if source not in selected_sources]
+    available_sources = selected_sources_dict.keys()
 
     # Convert to lower case and create a mapping from lowercase to original
     available_sources_lower_to_original = {source.lower(): source for source in available_sources}
+
     source_articles_data = []
     # Loop through each row in the country_to_media dataframe
     for index, row in country_to_media.iterrows():
@@ -802,12 +810,17 @@ elif st.session_state.page  == "Framings":
                     number=source_articles_df['total_articles'][row_num].astype(str)
                     available_sources_lower[i]=source.lower()+" ("+number+")"
     available_sources_lower.sort()
+
     source = st.selectbox('Select source', available_sources_lower, key='source')
+
+    ###############################################################################
+
     if st.button('Add selection'):
         # Retrieve the original casing version of the source
         index=source.index(' ')
         original_case_source = available_sources_lower_to_original[source[:index]]
-        st.session_state.selected_pairs.append((country, original_case_source))
+        if ((country, original_case_source) not in st.session_state.selected_pairs):
+            st.session_state.selected_pairs.append((country, original_case_source))
 
     if st.button('Remove last selection') and st.session_state.selected_pairs:
         st.session_state.selected_pairs.pop()
@@ -1185,15 +1198,14 @@ elif st.session_state.page  == "Framings":
 #######################################################################################################################
 
 
-elif st.session_state.page  == "Persuasion Techniques":
-        # Number of countries
-    num_countries = len(country_to_media_subtask3)
-
+elif st.session_state.page  == "Persuasion Techniques fine-Grained Propaganda":
+     # Number of countries
+    num_countries = len(country_to_media)
     # Number of articles
-    num_articles = article_counts_df_subtask3['number_of_articles'].sum()
+    num_articles = article_counts_df['number_of_articles'].sum()
 
     # Number of media sources
-    num_media_sources = len(media_agg_subtask3)
+    num_media_sources = len(media_agg)
 
     # Create columns
     col1, col2, col3 = st.columns(3)
@@ -1227,7 +1239,20 @@ elif st.session_state.page  == "Persuasion Techniques":
         st.session_state.selected_pairs = []
 
     available_countries = country_to_media['country'].unique().tolist()
+    #add the number of articles per country
+    total_articles = country_article_counts_df.groupby('country').sum().reset_index()
+    total_articles.columns = ['country', 'total_articles']
+    countries=country_to_media['country'].unique().tolist()
+    total_articles=  total_articles['total_articles'].tolist()
+    for country in countries:
+        if country in available_countries:
+            row_num=countries.index(country)
+            for i in range(len(available_countries)):
+                if available_countries[i]==country:
+                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
+    ##############
     country = st.selectbox('Select country', available_countries, key='country')
+    country=country[:country.index("(")-1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
@@ -1235,7 +1260,7 @@ elif st.session_state.page  == "Persuasion Techniques":
     selected_sources_dict = {k: v for k, v in selected_sources_dict.items() if v > 0}
 
     selected_sources = [pair[1] for pair in st.session_state.selected_pairs if pair[0] == country]
-    available_sources = [source for source in selected_sources_dict.keys() if source not in selected_sources]
+    available_sources = selected_sources_dict.keys()
 
     # Convert to lower case and create a mapping from lowercase to original
     available_sources_lower_to_original = {source.lower(): source for source in available_sources}
@@ -1262,12 +1287,17 @@ elif st.session_state.page  == "Persuasion Techniques":
                     number=source_articles_df['total_articles'][row_num].astype(str)
                     available_sources_lower[i]=source.lower()+" ("+number+")"
     available_sources_lower.sort()
+
     source = st.selectbox('Select source', available_sources_lower, key='source')
+
+    ###############################################################################
+
     if st.button('Add selection'):
         # Retrieve the original casing version of the source
         index=source.index(' ')
         original_case_source = available_sources_lower_to_original[source[:index]]
-        st.session_state.selected_pairs.append((country, original_case_source))
+        if ((country, original_case_source) not in st.session_state.selected_pairs):
+            st.session_state.selected_pairs.append((country, original_case_source))
 
     if st.button('Remove last selection') and st.session_state.selected_pairs:
         st.session_state.selected_pairs.pop()
@@ -1647,15 +1677,14 @@ elif st.session_state.page  == "Persuasion Techniques":
 
     st.plotly_chart(fig)
 
-elif st.session_state.page  == "Course-grained propaganda":
-        # Number of countries
-    num_countries = len(country_to_media_subtask3)
-
+elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda":
+       # Number of countries
+    num_countries = len(country_to_media)
     # Number of articles
-    num_articles = article_counts_df_subtask3['number_of_articles'].sum()
+    num_articles = article_counts_df['number_of_articles'].sum()
 
     # Number of media sources
-    num_media_sources = len(media_agg_subtask3)
+    num_media_sources = len(media_agg)
 
     # Create columns
     col1, col2, col3 = st.columns(3)
@@ -1689,7 +1718,20 @@ elif st.session_state.page  == "Course-grained propaganda":
         st.session_state.selected_pairs = []
 
     available_countries = country_to_media['country'].unique().tolist()
+    #add the number of articles per country
+    total_articles = country_article_counts_df.groupby('country').sum().reset_index()
+    total_articles.columns = ['country', 'total_articles']
+    countries=country_to_media['country'].unique().tolist()
+    total_articles=  total_articles['total_articles'].tolist()
+    for country in countries:
+        if country in available_countries:
+            row_num=countries.index(country)
+            for i in range(len(available_countries)):
+                if available_countries[i]==country:
+                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
+    ##############
     country = st.selectbox('Select country', available_countries, key='country')
+    country=country[:country.index("(")-1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
@@ -1697,7 +1739,7 @@ elif st.session_state.page  == "Course-grained propaganda":
     selected_sources_dict = {k: v for k, v in selected_sources_dict.items() if v > 0}
 
     selected_sources = [pair[1] for pair in st.session_state.selected_pairs if pair[0] == country]
-    available_sources = [source for source in selected_sources_dict.keys() if source not in selected_sources]
+    available_sources = selected_sources_dict.keys()
 
     # Convert to lower case and create a mapping from lowercase to original
     available_sources_lower_to_original = {source.lower(): source for source in available_sources}
@@ -1724,12 +1766,17 @@ elif st.session_state.page  == "Course-grained propaganda":
                     number=source_articles_df['total_articles'][row_num].astype(str)
                     available_sources_lower[i]=source.lower()+" ("+number+")"
     available_sources_lower.sort()
+
     source = st.selectbox('Select source', available_sources_lower, key='source')
+
+    ###############################################################################
+
     if st.button('Add selection'):
         # Retrieve the original casing version of the source
         index=source.index(' ')
         original_case_source = available_sources_lower_to_original[source[:index]]
-        st.session_state.selected_pairs.append((country, original_case_source))
+        if ((country, original_case_source) not in st.session_state.selected_pairs):
+            st.session_state.selected_pairs.append((country, original_case_source))
 
     if st.button('Remove last selection') and st.session_state.selected_pairs:
         st.session_state.selected_pairs.pop()
@@ -1849,7 +1896,6 @@ elif st.session_state.page  == "Course-grained propaganda":
 
     grouped_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
 
-   # print(grouped_df)
     # Plot the graph using Plotly Express
     fig = px.bar(grouped_df, x='Percentage', y='source', color='Category', orientation='h', 
                     title="Distribution of Course Grained Propaganda by Source",
@@ -2122,8 +2168,6 @@ elif st.session_state.page  == "Course-grained propaganda":
     # Convert wide data to long data
     long_format_df = pd.melt(aggregated_df_subtask3, id_vars=['country'], var_name='framings', value_name='percentage')
 
-    #print(long_format_df)
-
     # Create new 'Category' column
     long_format_df['Category'] = long_format_df['framings'].map(technique_to_category)
 
@@ -2155,15 +2199,14 @@ elif st.session_state.page  == "Course-grained propaganda":
 
 
  #######################################   
-elif st.session_state.page  == "Ethos, Logos, Pathos":
-            # Number of countries
-    num_countries = len(country_to_media_subtask3)
-
+elif st.session_state.page  == "Persuasion Techniques Ethos, Logos, Pathos":
+      # Number of countries
+    num_countries = len(country_to_media)
     # Number of articles
-    num_articles = article_counts_df_subtask3['number_of_articles'].sum()
+    num_articles = article_counts_df['number_of_articles'].sum()
 
     # Number of media sources
-    num_media_sources = len(media_agg_subtask3)
+    num_media_sources = len(media_agg)
 
     # Create columns
     col1, col2, col3 = st.columns(3)
@@ -2197,7 +2240,20 @@ elif st.session_state.page  == "Ethos, Logos, Pathos":
         st.session_state.selected_pairs = []
 
     available_countries = country_to_media['country'].unique().tolist()
+    #add the number of articles per country
+    total_articles = country_article_counts_df.groupby('country').sum().reset_index()
+    total_articles.columns = ['country', 'total_articles']
+    countries=country_to_media['country'].unique().tolist()
+    total_articles=  total_articles['total_articles'].tolist()
+    for country in countries:
+        if country in available_countries:
+            row_num=countries.index(country)
+            for i in range(len(available_countries)):
+                if available_countries[i]==country:
+                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
+    ##############
     country = st.selectbox('Select country', available_countries, key='country')
+    country=country[:country.index("(")-1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
@@ -2205,7 +2261,7 @@ elif st.session_state.page  == "Ethos, Logos, Pathos":
     selected_sources_dict = {k: v for k, v in selected_sources_dict.items() if v > 0}
 
     selected_sources = [pair[1] for pair in st.session_state.selected_pairs if pair[0] == country]
-    available_sources = [source for source in selected_sources_dict.keys() if source not in selected_sources]
+    available_sources = selected_sources_dict.keys()
 
     # Convert to lower case and create a mapping from lowercase to original
     available_sources_lower_to_original = {source.lower(): source for source in available_sources}
@@ -2232,23 +2288,23 @@ elif st.session_state.page  == "Ethos, Logos, Pathos":
                     number=source_articles_df['total_articles'][row_num].astype(str)
                     available_sources_lower[i]=source.lower()+" ("+number+")"
     available_sources_lower.sort()
+
     source = st.selectbox('Select source', available_sources_lower, key='source')
+
+    ###############################################################################
+
     if st.button('Add selection'):
         # Retrieve the original casing version of the source
         index=source.index(' ')
         original_case_source = available_sources_lower_to_original[source[:index]]
-        st.session_state.selected_pairs.append((country, original_case_source))
+        if ((country, original_case_source) not in st.session_state.selected_pairs):
+            st.session_state.selected_pairs.append((country, original_case_source))
 
     if st.button('Remove last selection') and st.session_state.selected_pairs:
         st.session_state.selected_pairs.pop()
 
     selected_countries = [pair[0] for pair in st.session_state.selected_pairs]
     selected_sources = [pair[1] for pair in st.session_state.selected_pairs]
-
-    # rest of your code
-
-
-    # Now you can use selected_countries and selected_sources for your plots.
 
 
     ###########################################################################
@@ -2357,7 +2413,6 @@ elif st.session_state.page  == "Ethos, Logos, Pathos":
 
     grouped_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
 
-    #print(grouped_df)
     # Plot the graph using Plotly Express
     fig = px.bar(grouped_df, x='Percentage', y='source', color='Category', orientation='h', 
                     title="Distribution of Rhetorical dimension by Source",
@@ -2653,7 +2708,6 @@ elif st.session_state.page  == "Ethos, Logos, Pathos":
     # # Merge this with your DataFrame
     # filtered_df = pd.merge(filtered_df, total_frequencies, on='country', how='left')
 
-    #print(grouped_df)
 
     # Calculate relative frequency (percentage) for each persuasion technique
     grouped_df['percentage'] = (grouped_df['percentage'] / grouped_df['percentage_accumulated'].max()) * 100
@@ -2661,7 +2715,6 @@ elif st.session_state.page  == "Ethos, Logos, Pathos":
     # Remove rows with zero percentage
     grouped_df = grouped_df[grouped_df['percentage'] > 0]
 
-    #print(grouped_df)
     fig = px.sunburst(grouped_df, path=['region', 'country',  'Category'], values='percentage', color='percentage')
 
     fig.update_layout(width=1200, height=1000)
