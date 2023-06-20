@@ -4,7 +4,7 @@ import numpy as np
 import altair as alt
 import json
 import torch
-from architecture import FramingModel, CustomModel, update_and_load_model,PersuasionModel
+from architecture import FramingModel, CustomModel, update_and_load_model, PersuasionModel
 from config import CFG
 from torch.utils.data import  DataLoader
 from newspaper import Article
@@ -16,17 +16,30 @@ import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
 from annotated_text import annotated_text
-
+import time
+import requests
 import random
-
-# def get_random_color():
-#     letters = "CDEF"
-#     color = "#"
-#     for i in range(6):
-#         color += letters[random.randint(0, len(letters) - 1)]
-#     return color
+from bs4 import BeautifulSoup 
 
 
+################################################################################
+# import os
+# from transformers import AutoConfig
+
+# def upload_model(model_path, repo_name):
+#     xlmrobertaconfig = AutoConfig.from_pretrained("xlm-roberta-base")
+#     framing_model = FramingModel(xlmrobertaconfig, 14)
+#     ckpt = update_and_load_model(model_path)
+#     framing_model.load_state_dict(ckpt, strict=False)
+#     torch.save(framing_model.state_dict(), os.path.join(repo_name, 'pytorch_model.bin'))
+#     # Create the correct configuration for your model
+#     cfg = AutoConfig.from_pretrained("xlm-roberta-base", num_labels = 14)
+#     cfg.save_pretrained(repo_name)
+
+# # Call the function with model_path, the desired model_name, and the repo name
+# upload_model("subtask2.pt", "XLMRobertaFraming")
+
+################################################################################
 
 def get_random_color():
     letters = "ABCDEF"
@@ -38,29 +51,7 @@ def get_random_color():
 
     return color
 
-# from download_button import download_button
 
-#################################################################################
-
-# import os
-# from transformers import AutoConfig
-# def upload_model(model_path, repo_name):
-    
-#     xlmrobertaconfig = AutoConfig.from_pretrained("xlm-roberta-large")
-#     persuasion_model = PersuasionModel(xlmrobertaconfig, 24)
-#     ckpt = update_and_load_model("./subtask3.pth")
-#     persuasion_model.load_state_dict(ckpt, strict=False)
-#     torch.save(persuasion_model.state_dict(), os.path.join(repo_name, 'pytorch_model.bin'))
-
-    
-#     # Create the correct configuration for your model
-#     cfg = AutoConfig.from_pretrained("xlm-roberta-large", num_labels = 24)
-#     cfg.save_pretrained(repo_name)
-
-
-# # Call the function with model_path, the desired model_name, and the repo name
-# upload_model("subtask3.pth", "XLMRobertaPersuasion")
-# ################################################################################
 
 def extract_title_and_sentences(text):
     # Split the text into sentences
@@ -79,48 +70,9 @@ flag = 0
 st.set_page_config(
     page_title="News Framing Demo",
     page_icon=":газета:",
+    layout="wide"
 )
-@st.cache_resource
-def load_model():
-    # Specify your Hugging Face model hub repository
-    model_name = "oe2015/XLMRobertaNews"
-    # Load the tokenizer
-    tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
-    # Download the model weights
-    model_file = hf_hub_download(repo_id=model_name, filename="pytorch_model.bin")
-    model = CustomModel(CFG) # Initialize your model with its configuration
-    model.load_state_dict(torch.load(model_file, map_location="cpu"))
-    # Set the model in evaluation mode
-    model.eval()
-    return tokenizer, model
 
-@st.cache_resource
-def load_model_task2():
-    model_name = "LaraHassan/XLMRobertaFrames"
-    tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
-    model_file = hf_hub_download(repo_id=model_name, filename="pytorch_model.bin")
-    xlmrobertaconfig = AutoConfig.from_pretrained("xlm-roberta-base")
-    model = FramingModel(xlmrobertaconfig, 14)
-    model.load_state_dict(torch.load(model_file, map_location="cpu"))
-    # Set the model in evaluation mode
-    model.eval()
-    return tokenizer, model
-
-@st.cache_resource
-def load_model_task3():
-    model_name = "DianaTurmakhan/XLMRobertaPersuasion"
-    tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-large")
-    model_file = hf_hub_download(repo_id=model_name, filename="pytorch_model.bin")
-    xlmrobertaconfig = AutoConfig.from_pretrained("xlm-roberta-large")
-    model = PersuasionModel(xlmrobertaconfig, 24)
-    model.load_state_dict(torch.load(model_file, map_location="cpu"))
-    # Set the model in evaluation mode
-    model.eval()
-    return tokenizer, model
-
-tokenizer2, model2 = load_model_task2()
-# tokenizer3, model3 = load_model_task3()
-tokenizer, custom_xlm_roberta = load_model()
 labels_list = [
     "Economic",
     "Capacity_and_resources",
@@ -166,7 +118,7 @@ labels_list3 = [
 ]
 
 def _max_width_():
-    max_width_str = f"max-width: 1400px;"
+    max_width_str = f"max-width: 5000px;"
     st.markdown(
         f"""
     <style>
@@ -211,24 +163,33 @@ cx, cy, cz = st.columns([5, 2, 5])
 doc = ""
 option = st.radio("Choose an option to get framings", ("Pass URL", "Enter Text"))
 if option == "Pass URL":
-    with st.form(key="url_form"):
-        url = st.text_input("Enter the article URL to get framings")
-        submit_button = st.form_submit_button(label="Get news framing!")
-        if submit_button:
-            if len(url) > 0:
-                article = Article(url)
-                try:
-                    article.download()
-                    article.parse()
-                    # print(article.text)
-                    doc = article.text
-                    st.warning("Article successfully processed.")
-                    flag = 1
-                    with st.expander("Read the article", expanded=False):
-                        st.write(doc)
-                except:
-                    st.warning("Access denied.")
-                    exit()
+        with st.form(key="url_form"):
+            url = st.text_input("Enter the article URL to get framings")
+            print(url)
+            submit_button = st.form_submit_button(label="Get news framing!")
+            if submit_button:
+                if len(url) > 0:
+                    try:
+                        response = requests.get(url)
+                        response.raise_for_status()  # Raise an exception for any HTTP error status
+                        soup = BeautifulSoup(response.text, 'html.parser')
+                        title = soup.title.text
+                        paragraphs = soup.find_all('p')
+                        par = ''
+                        for p in paragraphs:
+                            par += "\n" + p.text
+                        doc = title + "\n" + par
+                        st.warning("Article successfully processed.")
+                        flag = 1
+                        with st.expander("Read the article", expanded=False):
+                            st.write(doc)
+                    except requests.exceptions.RequestException as e:
+                        st.warning("Access denied.")
+                        exit()
+                    except Exception as e:
+                        print("An error occurred during text extraction:", e)
+                else:
+                    print("URL is empty.")
 elif option == "Enter Text":
     with st.form(key="text_form"):
         text = st.text_area("Enter the text to get framings")
@@ -237,181 +198,213 @@ elif option == "Enter Text":
             doc = text
             with st.expander("Read the article", expanded=False):
                 st.write(doc)
-def split_title_content(text):
-    # Split the text by the first new line character
-    parts = text.split('\n', 1)
-    # Check if there is a new line character in the text
-    if len(parts) > 1:
-        title = parts[0]  # First part is the title
-        content = parts[1]  # Second part is the content
-    else:
-        title = parts[0]  # Entire text is considered as the title
-        content = ''
-    # Split the title by the first period (.) to get the first sentence
-    title_parts = title.split('.', 1)
-    # Check if there is a period in the title
-    if len(title_parts) > 1:
-        first_sentence = title_parts[0] + '.'  # Add the period back to the first sentence
-        title = title_parts[1]  # Remaining part becomes the new title
-    return title.strip(), content.strip()
-# Tokenize input text
+
 text = " ".join(doc.split())
-inputs = tokenizer.encode_plus(
-    text,
-    add_special_tokens=True,
-    max_length=512,
-    padding="longest",
-    truncation=True,
-    return_attention_mask=True,
-    return_tensors="pt",
-)
-title, content = split_title_content(text)
-title_tok = tokenizer2.encode_plus(
-    title,
-    add_special_tokens=True,
-    max_length=512,
-    padding="longest",
-    truncation=True,
-    return_attention_mask=True,
-    return_tensors="pt",
-)
-content_tok = tokenizer2.encode_plus(
-    content,
-    add_special_tokens=True,
-    max_length=512,
-    padding="longest",
-    truncation=True,
-    return_attention_mask=True,
-    return_tensors="pt",
-)
+
+
+import numpy as np
+import re
+import math
+max_tokens = 512
+tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
+tokens = tokenizer.encode(text, return_tensors='pt')
+truncated_tensor = tokens[:,:510]
+decoded_string = tokenizer.decode(truncated_tensor[0], skip_special_tokens=True)
+print(len(decoded_string))
+
+# text = text[:2200]
+# print(text)
 
 if doc:
-    outputs = custom_xlm_roberta(inputs)
-    inputs = {
-        'title_input_ids' : title_tok['input_ids'],
-        'title_attention_mask' :  title_tok['attention_mask'],
-        'content_input_ids' : content_tok['input_ids'],
-        'content_attention_mask' :  content_tok['attention_mask']
-    }
-    outputs_2 = model2(**inputs)
-    probabilities = torch.sigmoid(outputs_2)
-    data = {
-        'Label': labels_list,
-        'Probability': probabilities.flatten().tolist()
-    }
-    df = pd.DataFrame(data)
-    sorted_df = df.sort_values(by='Probability', ascending=False)
-    sorted_df = sorted_df.reset_index(drop=True)
+    ############# for subtask1 #####################
+    API_TOKEN = "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"
 
-    predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
-    class_names = CFG.CLASSES
-    max_probability_index = np.argmax(predicted_probabilities)
-    max_probability_class = class_names[max_probability_index]
-    max_probability = predicted_probabilities[max_probability_index]
-    for class_name, probability in zip(class_names, predicted_probabilities):
-        print(f"{class_name}: {probability:.4f}")
+    def make_request(input_text):
+        API_URL = "https://api-inference.huggingface.co/models/DianaTurmakhan/XLMRobertaNews"
+        headers = {"Authorization": f"Bearer {API_TOKEN}"}
+  
+        data = {
+        "inputs": input_text
+    }
+        response = requests.post(API_URL, headers=headers, json=data)
+        if 'error' in response.json() and 'estimated_time' in response.json():
+            wait_time = response.json()['estimated_time']
+            print(f"Model loading, waiting for {wait_time} seconds.")
+            time.sleep(wait_time)
+            response = requests.post(API_URL, headers=headers, json=data)
+
+        return response.json()
+    
+    response = make_request(decoded_string)
+    print(response)
+###########################################################
+
+
+############### for subtask 2 #############################
+    API_TOKEN = "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"
+
+    def make_request2(input_text):
+        API_URL = "https://api-inference.huggingface.co/models/oe2015/XLMsubtask2"
+        headers = {"Authorization": f"Bearer {API_TOKEN}"}
+  
+        data = {
+        "inputs": input_text
+    }
+        response = requests.post(API_URL, headers=headers, json=data)
+        if 'error' in response.json() and 'estimated_time' in response.json():
+            wait_time = response.json()['estimated_time']
+            print(f"Model loading, waiting for {wait_time} seconds.")
+            time.sleep(wait_time)
+            response = requests.post(API_URL, headers=headers, json=data)
+
+        return response.json()
+    
+    response2 = make_request2(decoded_string)
+    print(response2)
+    
+##########################################################################
+
+############### subtask 3 ##########################################
+    API_TOKEN = "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"
+
+    def make_request3(input_text):
+        API_URL = "https://api-inference.huggingface.co/models/DianaTurmakhan/XLMRobertaPersuasion"
+        headers = {"Authorization": f"Bearer {API_TOKEN}"}
+  
+        data = {
+        "inputs": input_text
+    }
+        response = requests.post(API_URL, headers=headers, json=data)
+        if 'error' in response.json() and 'estimated_time' in response.json():
+            wait_time = response.json()['estimated_time']
+            print(f"Model loading, waiting for {wait_time} seconds.")
+            time.sleep(wait_time)
+            response = requests.post(API_URL, headers=headers, json=data)
+
+        return response.json()
+
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import altair as alt
+    import streamlit as st
+
+    # Convert responses to pandas dataframes
+    df1 = pd.DataFrame(response[0])
+    df2 = pd.DataFrame(response2[0])
+
+    # Define the actual label names
+    label_names1 = {
+        'LABEL_0': 'reporting',
+        'LABEL_1': 'opinion',
+        'LABEL_2': 'satire'
+    }
+
+    label_names2 = {
+        'LABEL_0': 'Economic',
+        'LABEL_1': 'Capacity and resources',
+        'LABEL_2': 'Morality',
+        'LABEL_3': 'Fairness and equality',
+        'LABEL_4': 'Legality Constitutionality and jurisprudence',
+        'LABEL_5': 'Policy prescription and evaluation',
+        'LABEL_6': 'Crime and punishment',
+        'LABEL_7': 'Security and defense',
+        'LABEL_8': 'Health and safety',
+        'LABEL_9': 'Quality of life',
+        'LABEL_10': 'Cultural identity',
+        'LABEL_11': 'Public opinion',
+        'LABEL_12': 'Political',
+        'LABEL_13': 'External regulation and reputation',
+    }
+
+    # Map labels to actual names
+    df1['label'] = df1['label'].map(label_names1)
+    df2['label'] = df2['label'].map(label_names2)
+
+    # Sort dataframes by 'score'
+    df1.sort_values(by='score', ascending=False, inplace=True)
+    df2.sort_values(by='score', ascending=False, inplace=True)
+
     # SUBTASK 1 VISUALIZATION
     with st.expander(f"### Get Genre for This Article", expanded=False):
-        # st.markdown(f"### This article is classified as: {max_probability_class}")
         st.markdown("#### Output Probabilities Pie Chart")
         fig, ax = plt.subplots()
-        ax.pie(predicted_probabilities, labels=class_names, autopct="%1.1f%%")
+        wedges, texts, autotexts = ax.pie(df1['score'], labels=df1['label'], autopct="%1.1f%%", pctdistance=0.85)
         ax.axis("equal")
+        ax.legend(wedges, df1['label'],
+            title="Labels",
+            loc="center left",
+            bbox_to_anchor=(1, 0, 0.5, 1))
         st.pyplot(fig)
-    # SUBTASK 2 VISUALIZATION
+
+    frames_colors = {
+        'Economic': '#6941BF',
+        'External regulation and reputation': '#0468BF',
+        'Capacity and resources': '#8FCEFF',
+        'Political': '#FFD16A',
+        'Security and defense': '#F22E2E',
+        'Quality of life': '#80F29D',
+        'Policy prescription and evaluation': '#FFABAB',
+        'Legality Constitutionality and jurisprudence': '#9f7fe3',
+        'Cultural identity': '#b1cce3',
+        'Fairness and equality': '#b39696',
+        'Crime and punishment': '#2f8dd6',
+        'Health and safety': '#bd7373',
+        'Public opinion': '#d4cdcd',
+        'Morality': '#5c9c6c'
+    }
+
     with st.expander(f"### Get Framings for this Article", expanded=False):
-        x = sorted_df["Probability"]
-        y = sorted_df["Label"]
-        chart = alt.Chart(sorted_df).mark_bar().encode(
-            x = 'Probability',
-            y = 'Label',
-            color=alt.Color('Label', scale=alt.Scale(scheme='category10')),
-            tooltip=['Probability', 'Label']
+        chart = alt.Chart(df2).mark_bar().encode(
+            x = 'score',
+            y = 'label',
+            color=alt.Color('label', scale=alt.Scale(domain=list(frames_colors.keys()), range=list(frames_colors.values()))),
+            tooltip=['score', 'label']
         ).properties(
             width=1000,
             height=600
         )
         # Display the chart using Streamlit
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart, use_container_width=True)  
 
 
-    # # SUBTASK 3 Model Loading
-    # output_map = {}
-    # sentences = extract_title_and_sentences(text)
-   
-    # for sentence in sentences:
-    #     # Tokenize the sentence
-    #     inputs = tokenizer3.encode_plus(
-    #         sentence,
-    #         add_special_tokens=True,
-    #         max_length=512,
-    #         padding="longest",
-    #         truncation=True,
-    #         return_attention_mask=True,
-    #         return_tensors="pt",
-    #     )
-
-    #     inputs_3 = {
-    #     'content_input_ids' : inputs['input_ids'],
-    #     'content_attention_mask' :  inputs['attention_mask']
-    #     }
-        
-    #     # Pass the tokenized sentence to the model
-    #     outputs_3 = model3(**inputs_3)
-    #     probabilities_3 = torch.sigmoid(outputs_3)
-        
-    #     filtered_labels = []
-    #     filtered_outputs = []
-    #     for index, output in enumerate(probabilities_3[0]):
-    #         if labels_list3[index] == "None":
-    #             continue
-    #         if output >= 0.09:
-    #             filtered_labels.append(labels_list3[index])
-    #             filtered_outputs.append(output)
-    #     # Store the filtered labels and outputs in the map with the corresponding sentence
-    #     output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
-    
-    # print(output_map)
-
-    
-    # annotated_text(
-    #     ("Team Name:", "", "#000", "#fff"),
-    #     (
-    #         "The Syllogist",
-    #         "The Best One",
-    #         "#8ef",
-    #     ),
-    # )
-    
-    # #SUBTASK 3 Visualization
-    # label_colors = {}  # Dictionary to store assigned colors for each label
-
-    # with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
-    #     for sentence, entry in output_map.items():
-    #             labels = entry['labels']
-    #             outputs = entry['outputs']
-
-    #             # Create the annotated text
-    #             annotations = [(sentence, "", "#fff", "#000")]
-    #             sorted_outputs = sorted(outputs, reverse=True)
-
-    #             for label, output in zip(labels, sorted_outputs):
-    #                 output =  output.item()
-
-    #                 if label == "None":
-    #                     continue
-
-    #                 if label not in label_colors:
-    #             # Generate a random color for a new label
-    #                     label_colors[label] = get_random_color()
-
-    #                 color1 = label_colors[label]
-    #                 annotation_text = f"{label.replace('_', ' ')}  {round(output * 100, 2)}%"
-    #                 annotations.append((annotation_text, "", color1))
-
-    #             # Display the annotated text using annotated_text
-    #             annotated_text(*annotations)
-    #             st.write("\n\n")
+    output_map = {}
+    sentences = extract_title_and_sentences(text)
+    for sentence in sentences:
+        response = make_request3(sentence)
+        filtered_labels = []
+        filtered_outputs = []
+        for item in response[0]:
+            lab = item['label']
+            index = int(lab.split('_')[1])
+            score = item['score']
+            if labels_list3[index] == "None":
+                continue
+            if score >= 0.05:
+                filtered_labels.append(labels_list3[index])
+                filtered_outputs.append(score)
+        output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
+    print(output_map)
+    # SUBTASK 3 Visualization
+    label_colors = {}  # Dictionary to store assigned colors for each label
+    with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
+        for sentence, entry in output_map.items():
+            labels = entry['labels']
+            outputs = entry['outputs']
+            # Create the annotated text
+            annotations = [(sentence, "", "#fff", "#000")]
+            sorted_outputs = sorted(outputs, reverse=True)
+            for label, output in zip(labels, sorted_outputs):
+                if label == "None":
+                    continue
+                if label not in label_colors:
+                    # Generate a random color for a new label
+                    label_colors[label] = get_random_color()
+                color1 = label_colors[label]
+                annotation_text = f"{label.replace('_', ' ')}  {round(output * 100, 2)}%"
+                annotations.append((annotation_text, "", color1))
+            # Display the annotated text using annotated_text
+            annotated_text(*annotations)
+            st.write("\n\n")
 
                 
 
