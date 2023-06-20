@@ -4,29 +4,26 @@
     /* font-size: 40px; */
 
 
-.stButton>button{
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stButton>button {
     color: #11A27B;
-    box-sizing: 5%;
-    height: 2em;
-    width: 3em;
-    font-size:50px;
+    box-sizing: border-box;
+    font-size:30px;
     border: 5px solid;
     border-radius: 25px;
     padding: 30px;
     text-align: center;
+    width: 90%;  
+    height: auto;  
+    white-space: normal;
 }
 
 .stTextInput>div>div>input {
     color: #000000;
 }
-
-.fullScreenFrame > div {
-    display: flex;
-    justify-content: center;
-}
-
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
