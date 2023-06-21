@@ -40,31 +40,44 @@ class MeanPooling(nn.Module):
         return mean_embeddings
 
 
-class CustomModel(nn.Module):
-    def __init__(self, cfg):
-        super().__init__()
+# class CustomModel(nn.Module):
+#     def __init__(self, cfg):
+#         super().__init__()
 
-        self.model = AutoModel.from_pretrained(cfg.MODEL_NAME)
+#         self.model = AutoModel.from_pretrained("xlm_roberta_base")
 
-        # self.pool = nn.Identity()
+#         # self.pool = nn.Identity()
 
+#         self.dropout = nn.Dropout(0.1)
+
+#         self.fc = nn.Linear(768, 3)
+
+#     def forward(self, inputs):
+
+#         outputs = self.model(**inputs)
+#         # last_hidden_states, pooler_output
+
+#         # output for Binary Classification
+#         embeddings = outputs[1]
+#         embeddings = self.dropout(embeddings)
+
+#         output = self.fc(embeddings)
+
+#         return output
+    
+
+class CustomModel(XLMRobertaModel):
+    def __init__(self, config):
+        super().__init__(config)
         self.dropout = nn.Dropout(0.1)
+        self.fc = nn.Linear(config.hidden_size, 3)  # you might want to adjust the output size
 
-        self.fc = nn.Linear(768, cfg.NUM_CLASSES)
-
-    def forward(self, inputs):
-
-        outputs = self.model(**inputs)
-        # last_hidden_states, pooler_output
-
-        # output for Binary Classification
-        embeddings = outputs[1]
-        embeddings = self.dropout(embeddings)
-
+    def forward(self, input_ids, attention_mask):
+        outputs = super().forward(input_ids=input_ids, attention_mask=attention_mask)
+        pooled_output = outputs[1]  # taking the pooler output (equivalent to `outputs.last_hidden_state[:, 0]`)
+        embeddings = self.dropout(pooled_output)
         output = self.fc(embeddings)
-
         return output
-
 
 
 def update_and_load_model(ckpt_path, device="cpu"):
@@ -83,21 +96,65 @@ def update_and_load_model(ckpt_path, device="cpu"):
     return ckpt
 
 
+def split_title_content(text):
+    # Split the text by the first new line character
+    parts = text.split('\n', 1)
+    # Check if there is a new line character in the text
+    if len(parts) > 1:
+        title = parts[0]  # First part is the title
+        content = parts[1]  # Second part is the content
+    else:
+        title = parts[0]  # Entire text is considered as the title
+        content = ''
+    # Split the title by the first period (.) to get the first sentence
+    title_parts = title.split('.', 1)
+    # Check if there is a period in the title
+    if len(title_parts) > 1:
+        first_sentence = title_parts[0] + '.'  # Add the period back to the first sentence
+        title = title_parts[1]  # Remaining part becomes the new title
+    return title.strip(), content.strip()
+
+
 class FramingModel(XLMRobertaModel):
-    def __init__(self, config, num_classes):
+    def __init__(self, config):
         super().__init__(config)
 
         self.classifier = nn.Sequential(
-            nn.Dropout(p=0.1), nn.Linear(768 * 2, num_classes)
+            nn.Dropout(p=0.1), nn.Linear(768 * 2, 14)
         )
 
-    def forward(
-        self,
-        title_input_ids,
-        title_attention_mask,
-        content_input_ids,
-        content_attention_mask,
-    ):
+        self.tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
+
+    def forward(self, input_text):
+        ###################################################################
+
+        title, content = split_title_content(input_text)
+
+        title_tok = self.tokenizer.encode_plus(
+            title,
+            add_special_tokens=True,
+            max_length=512,
+            padding="longest",
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors="pt",
+        )
+        content_tok = self.tokenizer.encode_plus(
+            content,
+            add_special_tokens=True,
+            max_length=512,
+            padding="longest",
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors="pt",
+        )
+
+        title_input_ids = title_tok['input_ids']
+        title_attention_mask = title_tok['attention_mask']
+        content_input_ids = content_tok['input_ids']
+        content_attention_mask = content_tok['attention_mask']
+
+        ###################################################################
         output_title = super().forward(
             input_ids=title_input_ids, attention_mask=title_attention_mask
         )[0][:, 0, :]
@@ -113,10 +170,10 @@ class FramingModel(XLMRobertaModel):
 
 
 class PersuasionModel(XLMRobertaModel):
-    def __init__(self, config, num_classes):
+    def __init__(self, config):
         super().__init__(config)
         self.classifier = nn.Sequential(
-            nn.Dropout(p=0.1), nn.Linear(config.hidden_size, num_classes)
+            nn.Dropout(p=0.1), nn.Linear(config.hidden_size, 24)
         )
 
     def forward(
