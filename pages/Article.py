@@ -210,14 +210,14 @@ tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
 tokens = tokenizer.encode(text, return_tensors='pt')
 truncated_tensor = tokens[:,:510]
 decoded_string = tokenizer.decode(truncated_tensor[0], skip_special_tokens=True)
-print(len(decoded_string))
+# print(len(decoded_string))
 
 # text = text[:2200]
 # print(text)
 
 if doc:
     ############# for subtask1 #####################
-    API_TOKEN = "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"
+    API_TOKEN = "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"
 
     def make_request(input_text):
         API_URL = "https://api-inference.huggingface.co/models/DianaTurmakhan/XLMRobertaNews"
@@ -265,23 +265,23 @@ if doc:
 ##########################################################################
 
 ############### subtask 3 ##########################################
-    API_TOKEN = "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"
+    # API_TOKEN = "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"
 
-    def make_request3(input_text):
-        API_URL = "https://api-inference.huggingface.co/models/DianaTurmakhan/XLMRobertaPersuasion"
-        headers = {"Authorization": f"Bearer {API_TOKEN}"}
+    # def make_request3(input_text):
+    #     API_URL = "https://api-inference.huggingface.co/models/DianaTurmakhan/XLMRobertaPersuasion"
+    #     headers = {"Authorization": f"Bearer {API_TOKEN}"}
   
-        data = {
-        "inputs": input_text
-    }
-        response = requests.post(API_URL, headers=headers, json=data)
-        if 'error' in response.json() and 'estimated_time' in response.json():
-            wait_time = response.json()['estimated_time']
-            print(f"Model loading, waiting for {wait_time} seconds.")
-            time.sleep(wait_time)
-            response = requests.post(API_URL, headers=headers, json=data)
+    #     data = {
+    #     "inputs": input_text
+    # }
+    #     response = requests.post(API_URL, headers=headers, json=data)
+    #     if 'error' in response.json() and 'estimated_time' in response.json():
+    #         wait_time = response.json()['estimated_time']
+    #         print(f"Model loading, waiting for {wait_time} seconds.")
+    #         time.sleep(wait_time)
+    #         response = requests.post(API_URL, headers=headers, json=data)
 
-        return response.json()
+    #     return response.json()
 
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -364,8 +364,9 @@ if doc:
             height=600
         )
         # Display the chart using Streamlit
-        st.altair_chart(chart, use_container_width=True) 
-        
+        st.altair_chart(chart, use_container_width=True)  
+
+
     # output_map = {}
     # sentences = extract_title_and_sentences(decoded_string)
     # for sentence in sentences:
@@ -387,10 +388,10 @@ if doc:
 
 
 ##############################################################################################################
-
+    API_TOKEN = "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"
 
     def make_request3(sentences):  # Modify the function to take a list of sentences
-        API_URL = "https://api-inference.huggingface.co/models/CardiffNLP/twitter-roberta-base-sentiment"
+        API_URL = "https://api-inference.huggingface.co/models/DianaTurmakhan/XLMRobertaPersuasion"
         headers = {"Authorization": f"Bearer {API_TOKEN}"}
         payload = {"inputs": sentences}  # Inputs is now a list of sentences
         response = requests.request("POST", API_URL, headers=headers, data=json.dumps(payload))
@@ -440,3 +441,6 @@ if doc:
             # Display the annotated text using annotated_text
             annotated_text(*annotations)
             st.write("\n\n")
+
+                
+
