@@ -364,16 +364,49 @@ if doc:
             height=600
         )
         # Display the chart using Streamlit
-        st.altair_chart(chart, use_container_width=True)  
+        st.altair_chart(chart, use_container_width=True) 
+        
+    # output_map = {}
+    # sentences = extract_title_and_sentences(decoded_string)
+    # for sentence in sentences:
+    #     response = make_request3(sentence)
+    #     print(response)
+    #     filtered_labels = []
+    #     filtered_outputs = []
+    #     for item in response[0]:
+    #         lab = item['label']
+    #         index = int(lab.split('_')[1])
+    #         score = item['score']
+    #         if labels_list3[index] == "None":
+    #             continue
+    #         if score >= 0.05:
+    #             filtered_labels.append(labels_list3[index])
+    #             filtered_outputs.append(score)
+    #     output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
+    # print(output_map)
 
+
+##############################################################################################################
+
+
+    def make_request3(sentences):  # Modify the function to take a list of sentences
+        API_URL = "https://api-inference.huggingface.co/models/CardiffNLP/twitter-roberta-base-sentiment"
+        headers = {"Authorization": f"Bearer {API_TOKEN}"}
+        payload = {"inputs": sentences}  # Inputs is now a list of sentences
+        response = requests.request("POST", API_URL, headers=headers, data=json.dumps(payload))
+        return json.loads(response.content.decode("utf-8"))
 
     output_map = {}
     sentences = extract_title_and_sentences(text)
-    for sentence in sentences:
-        response = make_request3(sentence)
+    print(sentences)
+    response = make_request3(sentences)  # Call the API once with all the sentences
+    print(response)
+    for i in range(len(sentences)):  # Loop over each sentence
+        sentence = sentences[i]
+        response_for_sentence = response[i]  # Get the corresponding response for the sentence
         filtered_labels = []
         filtered_outputs = []
-        for item in response[0]:
+        for item in response_for_sentence:
             lab = item['label']
             index = int(lab.split('_')[1])
             score = item['score']
@@ -383,7 +416,9 @@ if doc:
                 filtered_labels.append(labels_list3[index])
                 filtered_outputs.append(score)
         output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
-    print(output_map)
+
+            ###################################################################################
+
     # SUBTASK 3 Visualization
     label_colors = {}  # Dictionary to store assigned colors for each label
     with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
@@ -405,6 +440,3 @@ if doc:
             # Display the annotated text using annotated_text
             annotated_text(*annotations)
             st.write("\n\n")
-
-                
-
