@@ -200,9 +200,9 @@ elif option == "Enter Text":
                 st.write(doc)
 
 text = " ".join(doc.split())
-if text:
+if doc:
     # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
-    response = requests.post("https://84b1-5-195-0-145.ngrok-free.app/task1", json={"text": text})
+    response = requests.post("http://10.127.30.49:5000/task1", json={"text": text})
     # Get the prediction from the response
     predicted_probabilities = response.json()
     print(predicted_probabilities)
@@ -222,7 +222,7 @@ if text:
         st.pyplot(fig)
 
     # SUBTASK 2 VISUALIZATION
-    response = requests.post("https://84b1-5-195-0-145.ngrok-free.app/task2", json={"text": text})
+    response = requests.post("http://10.127.30.49:5000/task2", json={"text": text})
     # Get the prediction from the response
     probabilities = response.json()
     data = {
@@ -248,53 +248,53 @@ if text:
         # Display the chart using Streamlit
         st.altair_chart(chart, use_container_width=True)
 
-    
-    import streamlit as st
-    import requests
-    import json
-    
-    # Send the text to the API
-    response = requests.post("https://84b1-5-195-0-145.ngrok-free.app/task3", json={"text": text})
-    # Get the prediction from the response
-    prediction = response.json()
-    # Display the prediction
-    # st.write(prediction)
-    
-    annotated_text(
-        ("Team Name:", "", "#000", "#fff"),
-        (
-            "NLP2",
-            "The Best Team",
-            "#8ef",
-        ),
-    )
-    
-    #SUBTASK 3 Visualization
-    label_colors = {}  # Dictionary to store assigned colors for each label
-    
-    with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
-        for sentence, entry in prediction.items():
-                labels = entry['labels']
-                outputs = entry['outputs']
-    
-                # Create the annotated text
-                annotations = [(sentence, "", "#fff", "#000")]
-                sorted_outputs = sorted(outputs, reverse=True)
-    
-                for label, output in zip(labels, sorted_outputs):
-                    # output =  output.item()
-                    if label == "None":
-                        continue
-    
-                    if label not in label_colors:
-                # Generate a random color for a new label
-                        label_colors[label] = get_random_color()
-    
-                    color1 = label_colors[label]
-                    annotation_text = f"{label.replace('_', ' ')}  {round(output * 100, 2)}%"
-                    annotations.append((annotation_text, "", color1))
-    
-                # Display the annotated text using annotated_text
-                annotated_text(*annotations)
-                st.write("\n\n")
+
+import streamlit as st
+import requests
+import json
+
+# Send the text to the API
+response = requests.post("http://10.127.30.49:5000/task3", json={"text": text})
+# Get the prediction from the response
+prediction = response.json()
+# Display the prediction
+# st.write(prediction)
+
+annotated_text(
+    ("Team Name:", "", "#000", "#fff"),
+    (
+        "The Syllogist",
+        "The Best One",
+        "#8ef",
+    ),
+)
+
+#SUBTASK 3 Visualization
+label_colors = {}  # Dictionary to store assigned colors for each label
+
+with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
+    for sentence, entry in prediction.items():
+            labels = entry['labels']
+            outputs = entry['outputs']
+
+            # Create the annotated text
+            annotations = [(sentence, "", "#fff", "#000")]
+            sorted_outputs = sorted(outputs, reverse=True)
+
+            for label, output in zip(labels, sorted_outputs):
+                # output =  output.item()
+                if label == "None":
+                    continue
+
+                if label not in label_colors:
+            # Generate a random color for a new label
+                    label_colors[label] = get_random_color()
+
+                color1 = label_colors[label]
+                annotation_text = f"{label.replace('_', ' ')}  {round(output * 100, 2)}%"
+                annotations.append((annotation_text, "", color1))
+
+            # Display the annotated text using annotated_text
+            annotated_text(*annotations)
+            st.write("\n\n")
 
