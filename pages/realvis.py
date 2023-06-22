@@ -515,7 +515,7 @@ if st.session_state.page == "Countries":
     # Plotting the graph using Plotly Express
     fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
                 color_discrete_map=frames_colors,
-                title="Distribution of Framings by Source",
+                title="Distribution of Framings by Country",
                 hover_data={'number_of_articles': True},
                 labels={'number_of_articles': 'Number of articles in framing'})
 
