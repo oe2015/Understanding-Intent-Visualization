@@ -7,7 +7,7 @@ import torch
 from architecture import FramingModel, CustomModel, update_and_load_model, PersuasionModel
 from config import CFG
 from torch.utils.data import  DataLoader
-from newspaper import Article
+# from newspaper import Article
 import matplotlib.pyplot as plt
 from transformers import XLMRobertaTokenizer, AutoModel
 from huggingface_hub import hf_hub_download
@@ -200,244 +200,101 @@ elif option == "Enter Text":
                 st.write(doc)
 
 text = " ".join(doc.split())
-
-
-import numpy as np
-import re
-import math
-max_tokens = 512
-tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
-tokens = tokenizer.encode(text, return_tensors='pt')
-truncated_tensor = tokens[:,:510]
-decoded_string = tokenizer.decode(truncated_tensor[0], skip_special_tokens=True)
-# print(len(decoded_string))
-
-# text = text[:2200]
-# print(text)
-
 if doc:
-    ############# for subtask1 #####################
-    API_TOKEN = "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"
-
-    def make_request(input_text):
-        API_URL = "https://api-inference.huggingface.co/models/oe2015/XLMRobertaNews"
-        headers = {"Authorization": f"Bearer {API_TOKEN}"}
-  
-        data = {
-        "inputs": input_text
-    }
-        response = requests.post(API_URL, headers=headers, json=data)
-        if 'error' in response.json() and 'estimated_time' in response.json():
-            wait_time = response.json()['estimated_time']
-            print(f"Model loading, waiting for {wait_time} seconds.")
-            time.sleep(wait_time)
-            response = requests.post(API_URL, headers=headers, json=data)
-
-        return response.json()
-    
-    response = make_request(decoded_string)
-    print(response)
-###########################################################
-
-
-############### for subtask 2 #############################
-    API_TOKEN = "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"
-
-    def make_request2(input_text):
-        API_URL = "https://api-inference.huggingface.co/models/oe2015/XLMsubtask2"
-        headers = {"Authorization": f"Bearer {API_TOKEN}"}
-  
-        data = {
-        "inputs": input_text
-    }
-        response = requests.post(API_URL, headers=headers, json=data)
-        if 'error' in response.json() and 'estimated_time' in response.json():
-            wait_time = response.json()['estimated_time']
-            print(f"Model loading, waiting for {wait_time} seconds.")
-            time.sleep(wait_time)
-            response = requests.post(API_URL, headers=headers, json=data)
-
-        return response.json()
-    
-    response2 = make_request2(decoded_string)
-    print(response2)
-    
-##########################################################################
-
-############### subtask 3 ##########################################
-    # API_TOKEN = "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"
-
-    # def make_request3(input_text):
-    #     API_URL = "https://api-inference.huggingface.co/models/DianaTurmakhan/XLMRobertaPersuasion"
-    #     headers = {"Authorization": f"Bearer {API_TOKEN}"}
-  
-    #     data = {
-    #     "inputs": input_text
-    # }
-    #     response = requests.post(API_URL, headers=headers, json=data)
-    #     if 'error' in response.json() and 'estimated_time' in response.json():
-    #         wait_time = response.json()['estimated_time']
-    #         print(f"Model loading, waiting for {wait_time} seconds.")
-    #         time.sleep(wait_time)
-    #         response = requests.post(API_URL, headers=headers, json=data)
-
-    #     return response.json()
-
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import altair as alt
-    import streamlit as st
-
-    # Convert responses to pandas dataframes
-    df1 = pd.DataFrame(response[0])
-    df2 = pd.DataFrame(response2[0])
-
-    # Define the actual label names
-    label_names1 = {
-        'LABEL_0': 'reporting',
-        'LABEL_1': 'opinion',
-        'LABEL_2': 'satire'
-    }
-
-    label_names2 = {
-        'LABEL_0': 'Economic',
-        'LABEL_1': 'Capacity and resources',
-        'LABEL_2': 'Morality',
-        'LABEL_3': 'Fairness and equality',
-        'LABEL_4': 'Legality Constitutionality and jurisprudence',
-        'LABEL_5': 'Policy prescription and evaluation',
-        'LABEL_6': 'Crime and punishment',
-        'LABEL_7': 'Security and defense',
-        'LABEL_8': 'Health and safety',
-        'LABEL_9': 'Quality of life',
-        'LABEL_10': 'Cultural identity',
-        'LABEL_11': 'Public opinion',
-        'LABEL_12': 'Political',
-        'LABEL_13': 'External regulation and reputation',
-    }
-
-    # Map labels to actual names
-    df1['label'] = df1['label'].map(label_names1)
-    df2['label'] = df2['label'].map(label_names2)
-
-    # Sort dataframes by 'score'
-    df1.sort_values(by='score', ascending=False, inplace=True)
-    df2.sort_values(by='score', ascending=False, inplace=True)
-
+    # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
+    response = requests.post("https://84b1-5-195-0-145.ngrok-free.app/task1", json={"text": text})
+    # Get the prediction from the response
+    predicted_probabilities = response.json()
+    print(predicted_probabilities)
+    class_names = CFG.CLASSES
+    max_probability_index = np.argmax(predicted_probabilities)
+    max_probability_class = class_names[max_probability_index]
+    max_probability = predicted_probabilities[max_probability_index]
+    for class_name, probability in zip(class_names, predicted_probabilities):
+        print(f"{class_name}: {probability:.4f}")
     # SUBTASK 1 VISUALIZATION
     with st.expander(f"### Get Genre for This Article", expanded=False):
+        # st.markdown(f"### This article is classified as: {max_probability_class}")
         st.markdown("#### Output Probabilities Pie Chart")
         fig, ax = plt.subplots()
-        wedges, texts, autotexts = ax.pie(df1['score'], labels=df1['label'], autopct="%1.1f%%", pctdistance=0.85)
+        ax.pie(predicted_probabilities, labels=class_names, autopct="%1.1f%%")
         ax.axis("equal")
-        ax.legend(wedges, df1['label'],
-            title="Labels",
-            loc="center left",
-            bbox_to_anchor=(1, 0, 0.5, 1))
         st.pyplot(fig)
 
-    frames_colors = {
-        'Economic': '#6941BF',
-        'External regulation and reputation': '#0468BF',
-        'Capacity and resources': '#8FCEFF',
-        'Political': '#FFD16A',
-        'Security and defense': '#F22E2E',
-        'Quality of life': '#80F29D',
-        'Policy prescription and evaluation': '#FFABAB',
-        'Legality Constitutionality and jurisprudence': '#9f7fe3',
-        'Cultural identity': '#b1cce3',
-        'Fairness and equality': '#b39696',
-        'Crime and punishment': '#2f8dd6',
-        'Health and safety': '#bd7373',
-        'Public opinion': '#d4cdcd',
-        'Morality': '#5c9c6c'
+    # SUBTASK 2 VISUALIZATION
+    response = requests.post("https://84b1-5-195-0-145.ngrok-free.app/task2", json={"text": text})
+    # Get the prediction from the response
+    probabilities = response.json()
+    data = {
+        'Label': labels_list,
+        'Probability': probabilities
     }
+    df = pd.DataFrame(data)
+    sorted_df = df.sort_values(by='Probability', ascending=False)
+    sorted_df = sorted_df.reset_index(drop=True)
 
     with st.expander(f"### Get Framings for this Article", expanded=False):
-        chart = alt.Chart(df2).mark_bar().encode(
-            x = 'score',
-            y = 'label',
-            color=alt.Color('label', scale=alt.Scale(domain=list(frames_colors.keys()), range=list(frames_colors.values()))),
-            tooltip=['score', 'label']
+        x = sorted_df["Probability"]
+        y = sorted_df["Label"]
+        chart = alt.Chart(sorted_df).mark_bar().encode(
+            x = 'Probability',
+            y = 'Label',
+            color=alt.Color('Label', scale=alt.Scale(scheme='category10')),
+            tooltip=['Probability', 'Label']
         ).properties(
             width=1000,
             height=600
         )
         # Display the chart using Streamlit
-        st.altair_chart(chart, use_container_width=True)  
+        st.altair_chart(chart, use_container_width=True)
 
 
-    # output_map = {}
-    # sentences = extract_title_and_sentences(decoded_string)
-    # for sentence in sentences:
-    #     response = make_request3(sentence)
-    #     print(response)
-    #     filtered_labels = []
-    #     filtered_outputs = []
-    #     for item in response[0]:
-    #         lab = item['label']
-    #         index = int(lab.split('_')[1])
-    #         score = item['score']
-    #         if labels_list3[index] == "None":
-    #             continue
-    #         if score >= 0.05:
-    #             filtered_labels.append(labels_list3[index])
-    #             filtered_outputs.append(score)
-    #     output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
-    # print(output_map)
+import streamlit as st
+import requests
+import json
 
+# Send the text to the API
+response = requests.post("https://84b1-5-195-0-145.ngrok-free.app/task3", json={"text": text})
+# Get the prediction from the response
+prediction = response.json()
+# Display the prediction
+# st.write(prediction)
 
-##############################################################################################################
-    API_TOKEN = "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"
+annotated_text(
+    ("Team Name:", "", "#000", "#fff"),
+    (
+        "The Syllogist",
+        "The Best One",
+        "#8ef",
+    ),
+)
 
-    def make_request3(sentences):  # Modify the function to take a list of sentences
-        API_URL = "https://api-inference.huggingface.co/models/oe2015/XLMPersuasion"
-        headers = {"Authorization": f"Bearer {API_TOKEN}"}
-        payload = {"inputs": sentences}  # Inputs is now a list of sentences
-        response = requests.request("POST", API_URL, headers=headers, data=json.dumps(payload))
-        return json.loads(response.content.decode("utf-8"))
+#SUBTASK 3 Visualization
+label_colors = {}  # Dictionary to store assigned colors for each label
 
-    output_map = {}
-    sentences = extract_title_and_sentences(text)
-    print(sentences)
-    response = make_request3(sentences)  # Call the API once with all the sentences
-    print(response)
-    for i in range(len(sentences)):  # Loop over each sentence
-        sentence = sentences[i]
-        response_for_sentence = response[i]  # Get the corresponding response for the sentence
-        filtered_labels = []
-        filtered_outputs = []
-        for item in response_for_sentence:
-            lab = item['label']
-            index = int(lab.split('_')[1])
-            score = item['score']
-            if labels_list3[index] == "None":
-                continue
-            if score >= 0.05:
-                filtered_labels.append(labels_list3[index])
-                filtered_outputs.append(score)
-        output_map[sentence] = {'labels': filtered_labels, 'outputs': filtered_outputs}
-
-            ###################################################################################
-
-    # SUBTASK 3 Visualization
-    label_colors = {}  # Dictionary to store assigned colors for each label
-    with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
-        for sentence, entry in output_map.items():
+with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
+    for sentence, entry in prediction.items():
             labels = entry['labels']
             outputs = entry['outputs']
+
             # Create the annotated text
             annotations = [(sentence, "", "#fff", "#000")]
             sorted_outputs = sorted(outputs, reverse=True)
+
             for label, output in zip(labels, sorted_outputs):
+                # output =  output.item()
                 if label == "None":
                     continue
+
                 if label not in label_colors:
-                    # Generate a random color for a new label
+            # Generate a random color for a new label
                     label_colors[label] = get_random_color()
+
                 color1 = label_colors[label]
                 annotation_text = f"{label.replace('_', ' ')}  {round(output * 100, 2)}%"
                 annotations.append((annotation_text, "", color1))
+
             # Display the annotated text using annotated_text
             annotated_text(*annotations)
             st.write("\n\n")
+
