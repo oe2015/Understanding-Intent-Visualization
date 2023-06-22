@@ -224,11 +224,8 @@ if text:
     # SUBTASK 2 VISUALIZATION
     response = requests.post("https://84b1-5-195-0-145.ngrok-free.app/task2", json={"text": text})
     # Get the prediction from the response
-    probabilities = response.json()
-    data = {
-        'Label': labels_list,
-        'Probability': probabilities
-    }
+    output = response.json()
+    data = output
     df = pd.DataFrame(data)
     sorted_df = df.sort_values(by='Probability', ascending=False)
     sorted_df = sorted_df.reset_index(drop=True)
