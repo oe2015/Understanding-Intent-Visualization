@@ -379,46 +379,49 @@ if st.session_state.page == "Countries":
 
     ##################
     # Calculate total number of articles for each country
+    # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
-    print(total_articles)
+    
+    # Sort total_articles dataframe in descending order
+    total_articles.sort_values(by='total_articles', ascending=False, inplace=True)
+    
     # Reset the index to make 'country' a column
     filtered_df = aggregated_df.reset_index()
-
+    
     # Merge this with your DataFrame
     filtered_df = pd.merge(filtered_df, total_articles, on='country', how='left')
     filtered_df = filtered_df.drop_duplicates()
-    #add the total number of articles per country
-    countries=filtered_df['country'].tolist()
-    for country in countries:
-        if country in available_countries:
-            row_num=countries.index(country)
-            for i in range(len(available_countries)):
-                if available_countries[i]==country:
-                    number=filtered_df['total_articles'][row_num].astype(str)
-                    available_countries[i]=country+" ("+number+")"
     
-    ######################
-
-
+    # Get available countries based on sorted total_articles dataframe
+    available_countries = total_articles['country'].tolist()
+    
+    # Add the total number of articles per country
+    for country in available_countries:
+        if country in available_countries:
+            row_num = available_countries.index(country)
+            number = total_articles.loc[row_num, 'total_articles'].astype(str)
+            available_countries[row_num] = country + " (" + number + ")"
+    
     # If there are countries left to select
     if available_countries:
         country = st.selectbox('Select country', available_countries, key='country')
-        index=available_countries.index(country)
+        index = available_countries.index(country)
         original_case_source = available_countries[index]
         if st.button('Add selection'):
-            country=country[:country.index("(")-1]
+            country = country[:country.index("(") - 1]
             if (country not in st.session_state.selected_countries):
                 st.session_state.selected_countries.append(country)
             # Update the available countries list after a country has been added
             available_countries = [country for country in available_countries if country not in st.session_state.selected_countries]
-
+    
     if st.button('Remove last selection', key='remove_countries') and st.session_state.selected_countries:
         last_removed = st.session_state.selected_countries.pop()
         # Add the removed country back to the available countries list
         available_countries.append(last_removed)
+    
+    selected_countries = st.session_state.selected_countries
 
-    selected_countries = st.session_state.selected_countries 
 
     # rest of your code
 
