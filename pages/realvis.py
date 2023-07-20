@@ -380,6 +380,7 @@ if st.session_state.page == "Countries":
     ##################
     # Calculate total number of articles for each country
     # Calculate total number of articles for each country
+    # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
     
@@ -397,11 +398,9 @@ if st.session_state.page == "Countries":
     available_countries = total_articles['country'].tolist()
     
     # Add the total number of articles per country
-    for country in available_countries:
-        if country in available_countries:
-            row_num = available_countries.index(country)
-            number = total_articles.loc[row_num, 'total_articles'].astype(str)
-            available_countries[row_num] = country + " (" + number + ")"
+    for i, country in enumerate(available_countries):
+        number = total_articles.loc[i, 'total_articles'].astype(str)
+        available_countries[i] = country + " (" + number + ")"
     
     # If there are countries left to select
     if available_countries:
@@ -421,6 +420,7 @@ if st.session_state.page == "Countries":
         available_countries.append(last_removed)
     
     selected_countries = st.session_state.selected_countries
+
 
 
     # rest of your code
