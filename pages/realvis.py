@@ -381,26 +381,27 @@ if st.session_state.page == "Countries":
     # Calculate total number of articles for each country
     # Calculate total number of articles for each country
     # Calculate total number of articles for each country
+    # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
+    print(total_articles)
     
-    # Sort total_articles dataframe in descending order
-    total_articles.sort_values(by='total_articles', ascending=False, inplace=True)
+    # Create a dictionary that maps country names to total number of articles
+    country_to_total_articles = total_articles.set_index('country')['total_articles'].to_dict()
     
-    # Reset the index to make 'country' a column
-    filtered_df = aggregated_df.reset_index()
-    
-    # Merge this with your DataFrame
-    filtered_df = pd.merge(filtered_df, total_articles, on='country', how='left')
-    filtered_df = filtered_df.drop_duplicates()
-    
-    # Get available countries based on sorted total_articles dataframe
-    available_countries = total_articles['country'].tolist()
+    # Get unique countries
+    available_countries = country_to_media['country'].unique().tolist()
     
     # Add the total number of articles per country
-    for i, country in enumerate(available_countries):
-        number = total_articles.loc[i, 'total_articles'].astype(str)
-        available_countries[i] = country + " (" + number + ")"
+    for i in range(len(available_countries)):
+        country = available_countries[i]
+        if country in country_to_total_articles:
+            number = str(country_to_total_articles[country])
+            available_countries[i] = country + " (" + number + ")"
+    
+    # Now sort available_countries based on the total number of articles in descending order
+    available_countries.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
+
     
     # If there are countries left to select
     if available_countries:
