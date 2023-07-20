@@ -1890,7 +1890,7 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     # Add a new column 'Category' to the dataframe
     grouped_df['Category'] = melted_df['Persuasion Techniques'].map(technique_to_category)
     # Group by 'source' and 'Category' and sum the 'Frequency'
-    grouped_df = melted_df.groupby(['source', 'Category']).sum()
+    grouped_df = melted_df.groupby(['source', 'Category']).sum().reset_index()
 
     grouped_df.sort_values(by=['source', 'Percentage'], ascending=[True, False], inplace=True)
 
