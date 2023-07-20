@@ -1846,9 +1846,7 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     melted_df.rename(columns={'Framing': 'Persuasion Techniques'}, inplace=True)
 
     # Create a new column for the percentage
-    # melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
-
-    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_articles']) * 100
+    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
 
     # Sort the DataFrame by 'source' and 'Frequency' in descending order
     melted_df.sort_values(by=['source', 'Percentage'], ascending=[True, False], inplace=True)
@@ -1892,7 +1890,9 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     # Add a new column 'Category' to the dataframe
     grouped_df['Category'] = melted_df['Persuasion Techniques'].map(technique_to_category)
     # Group by 'source' and 'Category' and sum the 'Frequency'
-    grouped_df = melted_df.groupby(['source', 'Category']).sum().reset_index()
+    grouped_df = melted_df.groupby(['source', 'Category']).sum()
+
+    grouped_df.sort_values(by=['source', 'Percentage'], ascending=[True, False], inplace=True)
 
     grouped_df['total_articles'] = grouped_df['source'].str.extract(r'\((.*?)\)', expand=False).astype(int)
 
