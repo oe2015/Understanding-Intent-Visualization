@@ -1889,10 +1889,26 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     grouped_df = melted_df
     # Add a new column 'Category' to the dataframe
     grouped_df['Category'] = melted_df['Persuasion Techniques'].map(technique_to_category)
-    # Group by 'source' and 'Category' and sum the 'Frequency'
-    grouped_df = melted_df.groupby(['source', 'Category']).sum().reset_index()
+    
+    # # Group by 'source' and 'Category' and sum the 'Frequency'
+    # grouped_df = melted_df.groupby(['source', 'Category']).sum().reset_index()
 
-    grouped_df['Percentage'] = (grouped_df['Frequency'] / grouped_df['total_frequency']) * 100
+    # grouped_df['Percentage'] = (grouped_df['Frequency'] / grouped_df['total_frequency']) * 100
+
+        # Group by 'source' and 'Category' and sum the 'Frequency'
+    grouped_freq_df = grouped_df.groupby(['source', 'Category'])['Frequency'].sum().reset_index()
+    
+    # Calculate the total frequency for each source after the techniques are grouped into categories
+    total_category_frequency = grouped_freq_df.groupby('source')['Frequency'].sum().reset_index()
+    total_category_frequency.columns = ['source', 'total_category_frequency']
+    
+    # Merge the total frequency dataframe with the grouped frequency dataframe
+    grouped_freq_df = pd.merge(grouped_freq_df, total_category_frequency, on='source', how='left')
+    
+    # Calculate the percentage
+    grouped_freq_df['Percentage'] = (grouped_freq_df['Frequency'] / grouped_freq_df['total_category_frequency']) * 100
+
+    grouped_df = grouped_freq_df
 
     grouped_df.sort_values(by=['source', 'Percentage'], ascending=[True, False], inplace=True)
 
