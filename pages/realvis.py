@@ -1892,6 +1892,8 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     # Group by 'source' and 'Category' and sum the 'Frequency'
     grouped_df = melted_df.groupby(['source', 'Category']).sum().reset_index()
 
+    grouped_df['Percentage'] = (grouped_df['Frequency'] / grouped_df['total_frequency']) * 100
+
     grouped_df.sort_values(by=['source', 'Percentage'], ascending=[True, False], inplace=True)
 
     grouped_df['total_articles'] = grouped_df['source'].str.extract(r'\((.*?)\)', expand=False).astype(int)
