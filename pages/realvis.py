@@ -813,7 +813,8 @@ elif st.session_state.page  == "Framings":
             available_sources_lower[i] = source + " (" + number + ")"
     
     # Now sort available_sources_lower based on the total number of articles in descending order
-    available_sources_lower.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
+# Now sort available_sources_lower based on the total number of articles in descending order
+    available_sources_lower.sort(key=lambda x: int(x.split(' ')[-1].strip('()')) if '(' in x and ')' in x else 0, reverse=True)
     
     source = st.selectbox('Select source', available_sources_lower, key='source')
 
