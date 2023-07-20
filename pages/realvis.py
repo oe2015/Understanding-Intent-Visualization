@@ -2012,6 +2012,7 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     }
 
     grouped_df = melted_df
+    grouped_df['Category'] = melted_df['Persuasion Techniques'].map(technique_to_category)
     # Add a new column 'Category' to the dataframe    # # Group by 'source' and 'Category' and sum the 'Frequency'
     # grouped_df = melted_df.groupby(['source', 'Category']).sum().reset_index()
 
