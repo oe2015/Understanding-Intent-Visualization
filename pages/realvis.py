@@ -1846,7 +1846,9 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     melted_df.rename(columns={'Framing': 'Persuasion Techniques'}, inplace=True)
 
     # Create a new column for the percentage
-    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+    # melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+
+    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_articles']) * 100
 
     # Sort the DataFrame by 'source' and 'Frequency' in descending order
     melted_df.sort_values(by=['source', 'Percentage'], ascending=[True, False], inplace=True)
@@ -1950,7 +1952,9 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     melted_df.rename(columns={'Framing': 'Persuasion Techniques'}, inplace=True)
 
     # Create a new column for the percentage
-    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+    # melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+
+    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_articles']) * 100
 
     # Sort the data by country and frequency (in descending order)
     melted_df.sort_values(by=['country', 'Percentage'], ascending=[True, False], inplace=True)
@@ -2363,7 +2367,10 @@ elif st.session_state.page  == "Persuasion Techniques Ethos, Logos, Pathos":
     melted_df.rename(columns={'Framing': 'Persuasion Techniques'}, inplace=True)
 
     # Create a new column for the percentage
-    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+    # melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+
+    # Create a new column for the percentage
+    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_articles']) * 100
 
     # Sort the DataFrame by 'source' and 'Frequency' in descending order
     melted_df.sort_values(by=['source', 'Percentage'], ascending=[True, False], inplace=True)
@@ -2466,7 +2473,9 @@ elif st.session_state.page  == "Persuasion Techniques Ethos, Logos, Pathos":
     # Rename 'Framing' to 'Persuasion Techniques'
     melted_df.rename(columns={'Framing': 'Persuasion Techniques'}, inplace=True)
     # Create a new column for the percentage
-    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+    # melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_frequency']) * 100
+
+    melted_df['Percentage'] = (melted_df['Frequency'] / melted_df['total_articles']) * 100
 
     # Sort the data by country and frequency (in descending order)
     melted_df.sort_values(by=['country', 'Percentage'], ascending=[True, False], inplace=True)
