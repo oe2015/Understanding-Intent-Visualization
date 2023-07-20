@@ -2026,7 +2026,7 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     total_category_frequency.columns = ['country', 'total_category_frequency']
     
     # Merge the total frequency dataframe with the grouped frequency dataframe
-    grouped_freq_df = pd.merge(grouped_freq_df, total_category_frequency, on='source', how='left')
+    grouped_freq_df = pd.merge(grouped_freq_df, total_category_frequency, on='country', how='left')
     
     # Calculate the percentage
     grouped_freq_df['Percentage'] = (grouped_freq_df['Frequency'] / grouped_freq_df['total_category_frequency']) * 100
