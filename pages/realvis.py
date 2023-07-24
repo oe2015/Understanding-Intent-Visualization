@@ -296,10 +296,15 @@ def load_data(path):
     return pd.read_parquet(path)
 
 media_agg = load_data('media_agg.parquet')
+print(media_agg)
 country_to_media = load_data('country_media.parquet')
+print(country_to_media)
 aggregated_df = load_data('aggregated_df.parquet')
+print(aggregated_df)
 article_counts_df = load_data('article_counts_df.parquet')
+print(article_counts_df)
 country_article_counts_df = load_data('country_article_counts_df.parquet')
+print(country_article_counts_df)
 
 
 media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
@@ -309,6 +314,7 @@ article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
 country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
 
 source_article_counts = load_data('source_article_counts_df.parquet')
+print(source_article_counts)
 source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
 
 
@@ -384,7 +390,6 @@ if st.session_state.page == "Countries":
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
-    print(total_articles)
     
     # Create a dictionary that maps country names to total number of articles
     country_to_total_articles = total_articles.set_index('country')['total_articles'].to_dict()
