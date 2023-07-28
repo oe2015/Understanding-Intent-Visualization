@@ -831,7 +831,7 @@ elif st.session_state.page  == "Framings":
     
 #     source = st.selectbox('Select source', available_sources_lower, key='source')
 
-        # Create a dictionary mapping sources to their correct countries
+# Create a dictionary mapping sources to their correct countries
     correct_countries = {
         'europesun': 'Hungary',
         'menafn': 'Jordan',
@@ -841,20 +841,30 @@ elif st.session_state.page  == "Framings":
         'dailysabah': 'Turkey'
     }
     
+    # New DataFrame to hold corrected data
+    corrected_data = []
+    
     # Iterate over the rows in the dataframe
-    for index, row in country_to_media.iterrows():
+    for _, row in country_to_media.iterrows():
+        country = row['country']
         # Convert the source_frequencies to a list of tuples
         source_frequencies = eval(row['source_frequencies'])
     
         # Iterate over the source_frequencies
-        for i, source_frequency in enumerate(source_frequencies):
+        for source_frequency in source_frequencies:
             source = source_frequency[0].lower()  # Get the source name
     
             # If the source is in the correct_countries dictionary
             if source in correct_countries:
-                # Update the country in the row
-                country_to_media.at[index, 'country'] = correct_countries[source]
+                # Use the correct country
+                corrected_data.append({'country': correct_countries[source], 'source_frequencies': [source_frequency]})
+            else:
+                # Use the original country
+                corrected_data.append({'country': country, 'source_frequencies': [source_frequency]})
     
+    # Replace the old dataframe with the new one
+    country_to_media = pd.DataFrame(corrected_data)
+        
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
