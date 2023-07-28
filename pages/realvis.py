@@ -891,6 +891,7 @@ elif st.session_state.page  == "Framings":
     country = st.selectbox('Select country', available_countries, key='country')
     country = country[:country.index("(") - 1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
+    print(source_counts_list)
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
     selected_sources_dict = {k: (v if v is not None else 0) for k, v in selected_sources_dict.items()}
