@@ -10,7 +10,7 @@ st.set_page_config(
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-st.markdown("<h1 style='text-align: center; color: black; margin-top: 100px;'>Understanding intent of News Articles, accross continents!</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black; margin-top: 100px;'>FRAPPE: FRAming, Persuasion, and Propaganda Explorer</h1>", unsafe_allow_html=True)
 
 def nav_page(page_name, timeout_secs=3):
     nav_script = """
