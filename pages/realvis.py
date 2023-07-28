@@ -831,41 +831,57 @@ elif st.session_state.page  == "Framings":
     
 #     source = st.selectbox('Select source', available_sources_lower, key='source')
 
-# Create a dictionary mapping sources to their correct countries
+    import pandas as pd
+    from ast import literal_eval
+
+    # Create a dictionary mapping sources to their correct countries
     correct_countries = {
         'europesun': 'Hungary',
         'menafn': 'Jordan',
-        'northerirelandnews': 'Ireland',
+        'northernirelandnews': 'Ireland',
         'urdupoint': 'Pakistan',
         'polandsun': 'Poland',
         'dailysabah': 'Turkey'
     }
-    
-    # New DataFrame to hold corrected data
-    corrected_data = []
-    
+
+    # Copy of the original DataFrame
+    corrected_df = country_to_media.copy()
     # Iterate over the rows in the dataframe
-    for _, row in country_to_media.iterrows():
-        country = row['country']
+    for index, row in corrected_df.iterrows():
         # Convert the source_frequencies to a list of tuples
-        source_frequencies = eval(row['source_frequencies'])
-    
+        source_frequencies = literal_eval(row['source_frequencies'])
+
+        # List to store the new source_frequencies for this row
+        new_source_frequencies = []
+
         # Iterate over the source_frequencies
         for source_frequency in source_frequencies:
             source = source_frequency[0].lower()  # Get the source name
-    
+
             # If the source is in the correct_countries dictionary
             if source in correct_countries:
-                # Use the correct country
-                corrected_data.append({'country': correct_countries[source], 'source_frequencies': [source_frequency]})
+                # Get the index of the correct country row in corrected_df
+                correct_country_index = corrected_df[corrected_df['country'] == correct_countries[source]].index[0]
+
+                # Get the source_frequencies for the correct country
+                correct_country_sources = literal_eval(corrected_df.at[correct_country_index, 'source_frequencies'])
+
+                # Add the source_frequency to correct_country_sources
+                correct_country_sources.append(source_frequency)
+
+                # Update the source_frequencies for the correct country
+                corrected_df.at[correct_country_index, 'source_frequencies'] = str(correct_country_sources)
             else:
-                # Use the original country
-                corrected_data.append({'country': country, 'source_frequencies': [source_frequency]})
-    
-    # Replace the old dataframe with the new one
-    country_to_media = pd.DataFrame(corrected_data)
-        
+                # Add the source_frequency to new_source_frequencies
+                new_source_frequencies.append(source_frequency)
+
+        # Update the source_frequencies for this row
+        corrected_df.at[index, 'source_frequencies'] = str(new_source_frequencies)
+
+    # Append the corrected rows to country_to_media
+    country_to_media = corrected_df
     # Calculate total number of articles for each country
+    print(country_article_counts_df)
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
     
@@ -891,7 +907,7 @@ elif st.session_state.page  == "Framings":
     country = st.selectbox('Select country', available_countries, key='country')
     country = country[:country.index("(") - 1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
-    print(source_counts_list)
+    # print(source_counts_list)
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
     selected_sources_dict = {k: (v if v is not None else 0) for k, v in selected_sources_dict.items()}
@@ -1360,6 +1376,57 @@ elif st.session_state.page  == "Persuasion Techniques fine-Grained Propaganda":
     if 'selected_pairs' not in st.session_state:
         st.session_state.selected_pairs = []
 
+    import pandas as pd
+    from ast import literal_eval
+
+    # Create a dictionary mapping sources to their correct countries
+    correct_countries = {
+        'europesun': 'Hungary',
+        'menafn': 'Jordan',
+        'northernirelandnews': 'Ireland',
+        'urdupoint': 'Pakistan',
+        'polandsun': 'Poland',
+        'dailysabah': 'Turkey'
+    }
+
+    # Copy of the original DataFrame
+    corrected_df = country_to_media.copy()
+    # Iterate over the rows in the dataframe
+    for index, row in corrected_df.iterrows():
+        # Convert the source_frequencies to a list of tuples
+        source_frequencies = literal_eval(row['source_frequencies'])
+
+        # List to store the new source_frequencies for this row
+        new_source_frequencies = []
+
+        # Iterate over the source_frequencies
+        for source_frequency in source_frequencies:
+            source = source_frequency[0].lower()  # Get the source name
+
+            # If the source is in the correct_countries dictionary
+            if source in correct_countries:
+                # Get the index of the correct country row in corrected_df
+                correct_country_index = corrected_df[corrected_df['country'] == correct_countries[source]].index[0]
+
+                # Get the source_frequencies for the correct country
+                correct_country_sources = literal_eval(corrected_df.at[correct_country_index, 'source_frequencies'])
+
+                # Add the source_frequency to correct_country_sources
+                correct_country_sources.append(source_frequency)
+
+                # Update the source_frequencies for the correct country
+                corrected_df.at[correct_country_index, 'source_frequencies'] = str(correct_country_sources)
+            else:
+                # Add the source_frequency to new_source_frequencies
+                new_source_frequencies.append(source_frequency)
+
+        # Update the source_frequencies for this row
+        corrected_df.at[index, 'source_frequencies'] = str(new_source_frequencies)
+
+    # Append the corrected rows to country_to_media
+    country_to_media = corrected_df
+    # Calculate total number of articles for each country
+    print(country_article_counts_df)
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
     
@@ -1367,22 +1434,25 @@ elif st.session_state.page  == "Persuasion Techniques fine-Grained Propaganda":
     country_to_total_articles = total_articles.set_index('country')['total_articles'].to_dict()
     
     available_countries = country_to_media['country'].unique().tolist()
-#add the number of articles per country
+    
+    # Add the number of articles per country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
-    countries=country_to_media['country'].unique().tolist()
-    total_articles=  total_articles['total_articles'].tolist()
+    countries = country_to_media['country'].unique().tolist()
+    total_articles = total_articles['total_articles'].tolist()
+    
     for country in countries:
         if country in available_countries:
-            row_num=countries.index(country)
+            row_num = countries.index(country)
             for i in range(len(available_countries)):
-                if available_countries[i]==country:
-                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
-                    
+                if available_countries[i] == country:
+                    available_countries[i] += " (" + str(total_articles[row_num]) + ")"
+    
     available_countries.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
     country = st.selectbox('Select country', available_countries, key='country')
-    country=country[:country.index("(")-1]
+    country = country[:country.index("(") - 1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
+    # print(source_counts_list)
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
     selected_sources_dict = {k: (v if v is not None else 0) for k, v in selected_sources_dict.items()}
@@ -1401,19 +1471,22 @@ elif st.session_state.page  == "Persuasion Techniques fine-Grained Propaganda":
         for source_frequency in eval(row['source_frequencies']):
             # Append a dictionary with the media source and its number of articles to the list
             source_articles_data.append({'source': source_frequency[0], 'total_articles': source_frequency[1] if source_frequency[1] else 0})
+            
     # Convert the list of dictionaries into a dataframe
     source_articles_df = pd.DataFrame(source_articles_data)
+    
     # Get the list of lowercase sources
     available_sources_lower = [source.lower() for source in available_sources]
-    #add the total number of articles per source
+    
+    # Add the total number of articles per source
     for source in available_sources_lower:
         if source in available_sources_lower_to_original.keys():
             row_num = next((index for (index, d) in enumerate(source_articles_data) if d["source"].lower() == source), None)
             if row_num is not None:
-                number=source_articles_data[row_num]['total_articles']
-                available_sources_lower[available_sources_lower.index(source)]=source+" ("+str(number)+")"
+                number = source_articles_data[row_num]['total_articles']
+                available_sources_lower[available_sources_lower.index(source)] = source + " (" + str(number) + ")"
             else:
-                available_sources_lower[available_sources_lower.index(source)]=source+" (0)"
+                available_sources_lower[available_sources_lower.index(source)] = source + " (0)"
     
     # Now sort available_sources_lower based on the total number of articles in descending order
     available_sources_lower.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
@@ -1846,6 +1919,57 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     if 'selected_pairs' not in st.session_state:
         st.session_state.selected_pairs = []
         
+        import pandas as pd
+    from ast import literal_eval
+
+    # Create a dictionary mapping sources to their correct countries
+    correct_countries = {
+        'europesun': 'Hungary',
+        'menafn': 'Jordan',
+        'northernirelandnews': 'Ireland',
+        'urdupoint': 'Pakistan',
+        'polandsun': 'Poland',
+        'dailysabah': 'Turkey'
+    }
+
+    # Copy of the original DataFrame
+    corrected_df = country_to_media.copy()
+    # Iterate over the rows in the dataframe
+    for index, row in corrected_df.iterrows():
+        # Convert the source_frequencies to a list of tuples
+        source_frequencies = literal_eval(row['source_frequencies'])
+
+        # List to store the new source_frequencies for this row
+        new_source_frequencies = []
+
+        # Iterate over the source_frequencies
+        for source_frequency in source_frequencies:
+            source = source_frequency[0].lower()  # Get the source name
+
+            # If the source is in the correct_countries dictionary
+            if source in correct_countries:
+                # Get the index of the correct country row in corrected_df
+                correct_country_index = corrected_df[corrected_df['country'] == correct_countries[source]].index[0]
+
+                # Get the source_frequencies for the correct country
+                correct_country_sources = literal_eval(corrected_df.at[correct_country_index, 'source_frequencies'])
+
+                # Add the source_frequency to correct_country_sources
+                correct_country_sources.append(source_frequency)
+
+                # Update the source_frequencies for the correct country
+                corrected_df.at[correct_country_index, 'source_frequencies'] = str(correct_country_sources)
+            else:
+                # Add the source_frequency to new_source_frequencies
+                new_source_frequencies.append(source_frequency)
+
+        # Update the source_frequencies for this row
+        corrected_df.at[index, 'source_frequencies'] = str(new_source_frequencies)
+
+    # Append the corrected rows to country_to_media
+    country_to_media = corrected_df
+    # Calculate total number of articles for each country
+    print(country_article_counts_df)
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
     
@@ -1853,22 +1977,25 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
     country_to_total_articles = total_articles.set_index('country')['total_articles'].to_dict()
     
     available_countries = country_to_media['country'].unique().tolist()
-#add the number of articles per country
+    
+    # Add the number of articles per country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
-    countries=country_to_media['country'].unique().tolist()
-    total_articles=  total_articles['total_articles'].tolist()
+    countries = country_to_media['country'].unique().tolist()
+    total_articles = total_articles['total_articles'].tolist()
+    
     for country in countries:
         if country in available_countries:
-            row_num=countries.index(country)
+            row_num = countries.index(country)
             for i in range(len(available_countries)):
-                if available_countries[i]==country:
-                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
-                    
+                if available_countries[i] == country:
+                    available_countries[i] += " (" + str(total_articles[row_num]) + ")"
+    
     available_countries.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
     country = st.selectbox('Select country', available_countries, key='country')
-    country=country[:country.index("(")-1]
+    country = country[:country.index("(") - 1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
+    # print(source_counts_list)
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
     selected_sources_dict = {k: (v if v is not None else 0) for k, v in selected_sources_dict.items()}
@@ -1887,19 +2014,22 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
         for source_frequency in eval(row['source_frequencies']):
             # Append a dictionary with the media source and its number of articles to the list
             source_articles_data.append({'source': source_frequency[0], 'total_articles': source_frequency[1] if source_frequency[1] else 0})
+            
     # Convert the list of dictionaries into a dataframe
     source_articles_df = pd.DataFrame(source_articles_data)
+    
     # Get the list of lowercase sources
     available_sources_lower = [source.lower() for source in available_sources]
-    #add the total number of articles per source
+    
+    # Add the total number of articles per source
     for source in available_sources_lower:
         if source in available_sources_lower_to_original.keys():
             row_num = next((index for (index, d) in enumerate(source_articles_data) if d["source"].lower() == source), None)
             if row_num is not None:
-                number=source_articles_data[row_num]['total_articles']
-                available_sources_lower[available_sources_lower.index(source)]=source+" ("+str(number)+")"
+                number = source_articles_data[row_num]['total_articles']
+                available_sources_lower[available_sources_lower.index(source)] = source + " (" + str(number) + ")"
             else:
-                available_sources_lower[available_sources_lower.index(source)]=source+" (0)"
+                available_sources_lower[available_sources_lower.index(source)] = source + " (0)"
     
     # Now sort available_sources_lower based on the total number of articles in descending order
     available_sources_lower.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
@@ -2414,6 +2544,57 @@ elif st.session_state.page  == "Persuasion Techniques Ethos, Logos, Pathos":
     if 'selected_pairs' not in st.session_state:
         st.session_state.selected_pairs = []
         
+        import pandas as pd
+    from ast import literal_eval
+
+    # Create a dictionary mapping sources to their correct countries
+    correct_countries = {
+        'europesun': 'Hungary',
+        'menafn': 'Jordan',
+        'northernirelandnews': 'Ireland',
+        'urdupoint': 'Pakistan',
+        'polandsun': 'Poland',
+        'dailysabah': 'Turkey'
+    }
+
+    # Copy of the original DataFrame
+    corrected_df = country_to_media.copy()
+    # Iterate over the rows in the dataframe
+    for index, row in corrected_df.iterrows():
+        # Convert the source_frequencies to a list of tuples
+        source_frequencies = literal_eval(row['source_frequencies'])
+
+        # List to store the new source_frequencies for this row
+        new_source_frequencies = []
+
+        # Iterate over the source_frequencies
+        for source_frequency in source_frequencies:
+            source = source_frequency[0].lower()  # Get the source name
+
+            # If the source is in the correct_countries dictionary
+            if source in correct_countries:
+                # Get the index of the correct country row in corrected_df
+                correct_country_index = corrected_df[corrected_df['country'] == correct_countries[source]].index[0]
+
+                # Get the source_frequencies for the correct country
+                correct_country_sources = literal_eval(corrected_df.at[correct_country_index, 'source_frequencies'])
+
+                # Add the source_frequency to correct_country_sources
+                correct_country_sources.append(source_frequency)
+
+                # Update the source_frequencies for the correct country
+                corrected_df.at[correct_country_index, 'source_frequencies'] = str(correct_country_sources)
+            else:
+                # Add the source_frequency to new_source_frequencies
+                new_source_frequencies.append(source_frequency)
+
+        # Update the source_frequencies for this row
+        corrected_df.at[index, 'source_frequencies'] = str(new_source_frequencies)
+
+    # Append the corrected rows to country_to_media
+    country_to_media = corrected_df
+    # Calculate total number of articles for each country
+    print(country_article_counts_df)
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
     
@@ -2421,22 +2602,25 @@ elif st.session_state.page  == "Persuasion Techniques Ethos, Logos, Pathos":
     country_to_total_articles = total_articles.set_index('country')['total_articles'].to_dict()
     
     available_countries = country_to_media['country'].unique().tolist()
-#add the number of articles per country
+    
+    # Add the number of articles per country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
-    countries=country_to_media['country'].unique().tolist()
-    total_articles=  total_articles['total_articles'].tolist()
+    countries = country_to_media['country'].unique().tolist()
+    total_articles = total_articles['total_articles'].tolist()
+    
     for country in countries:
         if country in available_countries:
-            row_num=countries.index(country)
+            row_num = countries.index(country)
             for i in range(len(available_countries)):
-                if available_countries[i]==country:
-                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
-                    
+                if available_countries[i] == country:
+                    available_countries[i] += " (" + str(total_articles[row_num]) + ")"
+    
     available_countries.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
     country = st.selectbox('Select country', available_countries, key='country')
-    country=country[:country.index("(")-1]
+    country = country[:country.index("(") - 1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
+    # print(source_counts_list)
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
     selected_sources_dict = {k: (v if v is not None else 0) for k, v in selected_sources_dict.items()}
@@ -2455,19 +2639,22 @@ elif st.session_state.page  == "Persuasion Techniques Ethos, Logos, Pathos":
         for source_frequency in eval(row['source_frequencies']):
             # Append a dictionary with the media source and its number of articles to the list
             source_articles_data.append({'source': source_frequency[0], 'total_articles': source_frequency[1] if source_frequency[1] else 0})
+            
     # Convert the list of dictionaries into a dataframe
     source_articles_df = pd.DataFrame(source_articles_data)
+    
     # Get the list of lowercase sources
     available_sources_lower = [source.lower() for source in available_sources]
-    #add the total number of articles per source
+    
+    # Add the total number of articles per source
     for source in available_sources_lower:
         if source in available_sources_lower_to_original.keys():
             row_num = next((index for (index, d) in enumerate(source_articles_data) if d["source"].lower() == source), None)
             if row_num is not None:
-                number=source_articles_data[row_num]['total_articles']
-                available_sources_lower[available_sources_lower.index(source)]=source+" ("+str(number)+")"
+                number = source_articles_data[row_num]['total_articles']
+                available_sources_lower[available_sources_lower.index(source)] = source + " (" + str(number) + ")"
             else:
-                available_sources_lower[available_sources_lower.index(source)]=source+" (0)"
+                available_sources_lower[available_sources_lower.index(source)] = source + " (0)"
     
     # Now sort available_sources_lower based on the total number of articles in descending order
     available_sources_lower.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
