@@ -202,7 +202,7 @@ elif option == "Enter Text":
 text = " ".join(doc.split())
 if text:
     # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
-    response = requests.post("https://7fc9-94-202-134-135.ngrok-free.app/task1", json={"text": text})
+    response = requests.post("https://0f5b-94-200-14-123.ngrok-free.app/task1", json={"text": text})
     # Get the prediction from the response
     predicted_probabilities = response.json()
     print(predicted_probabilities)
@@ -222,7 +222,7 @@ if text:
         st.pyplot(fig)
 
     # SUBTASK 2 VISUALIZATION
-    response = requests.post("https://7fc9-94-202-134-135.ngrok-free.app/task2", json={"text": text})
+    response = requests.post("https://0f5b-94-200-14-123.ngrok-free.app/task2", json={"text": text})
     # Get the prediction from the response
     output = response.json()
     data = output
@@ -251,7 +251,7 @@ if text:
     import json
     
     # Send the text to the API
-    response = requests.post("https://7fc9-94-202-134-135.ngrok-free.app/task3", json={"text": text})
+    response = requests.post("https://0f5b-94-200-14-123.ngrok-free.app/task3", json={"text": text})
     # Get the prediction from the response
     prediction = response.json()
     # Display the prediction
