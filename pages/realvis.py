@@ -770,7 +770,92 @@ elif st.session_state.page  == "Framings":
     if 'selected_pairs' not in st.session_state:
         st.session_state.selected_pairs = []
 
-# Calculate total number of articles for each country
+# # Calculate total number of articles for each country
+#     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
+#     total_articles.columns = ['country', 'total_articles']
+    
+#     # Create a dictionary that maps country names to total number of articles
+#     country_to_total_articles = total_articles.set_index('country')['total_articles'].to_dict()
+    
+#     available_countries = country_to_media['country'].unique().tolist()
+# #add the number of articles per country
+#     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
+#     total_articles.columns = ['country', 'total_articles']
+#     countries=country_to_media['country'].unique().tolist()
+#     total_articles=  total_articles['total_articles'].tolist()
+#     for country in countries:
+#         if country in available_countries:
+#             row_num=countries.index(country)
+#             for i in range(len(available_countries)):
+#                 if available_countries[i]==country:
+#                     available_countries[i]+=" ("+str(total_articles[row_num])+")"
+                    
+#     available_countries.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
+#     country = st.selectbox('Select country', available_countries, key='country')
+#     country=country[:country.index("(")-1]
+#     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
+#     source_counts_list = ast.literal_eval(source_counts_list)
+#     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
+#     selected_sources_dict = {k: (v if v is not None else 0) for k, v in selected_sources_dict.items()}
+#     selected_sources_dict = {k: v for k, v in selected_sources_dict.items() if v > 0}
+    
+#     selected_sources = [pair[1] for pair in st.session_state.selected_pairs if pair[0] == country]
+#     available_sources = selected_sources_dict.keys()
+    
+#     # Convert to lower case and create a mapping from lowercase to original
+#     available_sources_lower_to_original = {source.lower(): source for source in available_sources}
+    
+#     source_articles_data = []
+#     # Loop through each row in the country_to_media dataframe
+#     for index, row in country_to_media.iterrows():
+#         # Loop through each source_frequency list in the current row
+#         for source_frequency in eval(row['source_frequencies']):
+#             # Append a dictionary with the media source and its number of articles to the list
+#             source_articles_data.append({'source': source_frequency[0], 'total_articles': source_frequency[1] if source_frequency[1] else 0})
+#     # Convert the list of dictionaries into a dataframe
+#     source_articles_df = pd.DataFrame(source_articles_data)
+#     # Get the list of lowercase sources
+#     available_sources_lower = [source.lower() for source in available_sources]
+#     #add the total number of articles per source
+#     for source in available_sources_lower:
+#         if source in available_sources_lower_to_original.keys():
+#             row_num = next((index for (index, d) in enumerate(source_articles_data) if d["source"].lower() == source), None)
+#             if row_num is not None:
+#                 number=source_articles_data[row_num]['total_articles']
+#                 available_sources_lower[available_sources_lower.index(source)]=source+" ("+str(number)+")"
+#             else:
+#                 available_sources_lower[available_sources_lower.index(source)]=source+" (0)"
+    
+#     # Now sort available_sources_lower based on the total number of articles in descending order
+#     available_sources_lower.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
+    
+#     source = st.selectbox('Select source', available_sources_lower, key='source')
+
+        # Create a dictionary mapping sources to their correct countries
+    correct_countries = {
+        'europesun': 'Hungary',
+        'menafn': 'Jordan',
+        'northerirelandnews': 'Ireland',
+        'urdupoint': 'Pakistan',
+        'polandsun': 'Poland',
+        'dailysabah': 'Turkey'
+    }
+    
+    # Iterate over the rows in the dataframe
+    for index, row in country_to_media.iterrows():
+        # Convert the source_frequencies to a list of tuples
+        source_frequencies = eval(row['source_frequencies'])
+    
+        # Iterate over the source_frequencies
+        for i, source_frequency in enumerate(source_frequencies):
+            source = source_frequency[0].lower()  # Get the source name
+    
+            # If the source is in the correct_countries dictionary
+            if source in correct_countries:
+                # Update the country in the row
+                country_to_media.at[index, 'country'] = correct_countries[source]
+    
+    # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
     
@@ -778,21 +863,23 @@ elif st.session_state.page  == "Framings":
     country_to_total_articles = total_articles.set_index('country')['total_articles'].to_dict()
     
     available_countries = country_to_media['country'].unique().tolist()
-#add the number of articles per country
+    
+    # Add the number of articles per country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
-    countries=country_to_media['country'].unique().tolist()
-    total_articles=  total_articles['total_articles'].tolist()
+    countries = country_to_media['country'].unique().tolist()
+    total_articles = total_articles['total_articles'].tolist()
+    
     for country in countries:
         if country in available_countries:
-            row_num=countries.index(country)
+            row_num = countries.index(country)
             for i in range(len(available_countries)):
-                if available_countries[i]==country:
-                    available_countries[i]+=" ("+str(total_articles[row_num])+")"
-                    
+                if available_countries[i] == country:
+                    available_countries[i] += " (" + str(total_articles[row_num]) + ")"
+    
     available_countries.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
     country = st.selectbox('Select country', available_countries, key='country')
-    country=country[:country.index("(")-1]
+    country = country[:country.index("(") - 1]
     source_counts_list = country_to_media[country_to_media['country'] == country]['source_frequencies'].values[0]
     source_counts_list = ast.literal_eval(source_counts_list)
     selected_sources_dict = {item[0]: item[1] for item in source_counts_list}
@@ -812,24 +899,28 @@ elif st.session_state.page  == "Framings":
         for source_frequency in eval(row['source_frequencies']):
             # Append a dictionary with the media source and its number of articles to the list
             source_articles_data.append({'source': source_frequency[0], 'total_articles': source_frequency[1] if source_frequency[1] else 0})
+            
     # Convert the list of dictionaries into a dataframe
     source_articles_df = pd.DataFrame(source_articles_data)
+    
     # Get the list of lowercase sources
     available_sources_lower = [source.lower() for source in available_sources]
-    #add the total number of articles per source
+    
+    # Add the total number of articles per source
     for source in available_sources_lower:
         if source in available_sources_lower_to_original.keys():
             row_num = next((index for (index, d) in enumerate(source_articles_data) if d["source"].lower() == source), None)
             if row_num is not None:
-                number=source_articles_data[row_num]['total_articles']
-                available_sources_lower[available_sources_lower.index(source)]=source+" ("+str(number)+")"
+                number = source_articles_data[row_num]['total_articles']
+                available_sources_lower[available_sources_lower.index(source)] = source + " (" + str(number) + ")"
             else:
-                available_sources_lower[available_sources_lower.index(source)]=source+" (0)"
+                available_sources_lower[available_sources_lower.index(source)] = source + " (0)"
     
     # Now sort available_sources_lower based on the total number of articles in descending order
     available_sources_lower.sort(key=lambda x: int(x.split(' ')[-1].strip('()')), reverse=True)
     
     source = st.selectbox('Select source', available_sources_lower, key='source')
+
 
 
 
