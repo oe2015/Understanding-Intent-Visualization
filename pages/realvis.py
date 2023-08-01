@@ -325,7 +325,7 @@ import json
 import streamlit as st
 from streamlit_server_state import server_state, server_state_lock
 
-pages = ["Countries", "Framings", "Persuasion Techniques fine-Grained Propaganda", "Persuasion Techniques Course-Grained Propaganda", "Persuasion Techniques Ethos, Logos, Pathos"]
+pages = ["Countries", "Framings", "Persuasion Techniques fine-Grained Propaganda", "Persuasion Techniques Coarse-Grained Propaganda", "Persuasion Techniques Ethos, Logos, Pathos"]
 # if 'page' not in st.session_state:
 st.session_state['page'] = pages[0]  # Set default page to Home
 st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(st.session_state.page))
@@ -1879,7 +1879,7 @@ elif st.session_state.page  == "Persuasion Techniques fine-Grained Propaganda":
 
     st.plotly_chart(fig)
 
-elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda":
+elif st.session_state.page  == "Persuasion Techniques Coarse-Grained Propaganda":
        # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -2185,14 +2185,14 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
 
     # Plot the graph using Plotly Express
     fig = px.bar(grouped_df, x='Percentage', y='source', color='Category', orientation='h', 
-                    title="Distribution of Course Grained Propaganda by Source",
+                    title="Distribution of Coarse Grained Propaganda by Source",
                     hover_data={
                         'Frequency': True,
                         'Percentage': ':.2f'  # Format as float with 2 decimal places
                     },
                     labels={
-                        'Percentage': 'Percentage of Course Grained Propaganda Technique',
-                        'Frequency': 'Frequency of Course Grained Propaganda Technique'
+                        'Percentage': 'Percentage of Coarse Grained Propaganda Technique',
+                        'Frequency': 'Frequency of Coarse Grained Propaganda Technique'
                     })
 
     # Add axes lines
@@ -2306,14 +2306,14 @@ elif st.session_state.page  == "Persuasion Techniques Course-Grained Propaganda"
 
     # Plot the graph using Plotly Express
     fig = px.bar(grouped_df, x='Percentage', y='country', color='Category', orientation='h', 
-                    title="Distribution of Course Grained Propaganda by Country",
+                    title="Distribution of Coarse Grained Propaganda by Country",
                     hover_data={
                         'Frequency': True,
                         'Percentage': ':.2f'  # Format as float with 2 decimal places
                     },
                     labels={
-                        'Percentage': 'Percentage of Course Grained Propaganda Technique',
-                        'Frequency': 'Frequency of Course Grained Propaganda Technique'
+                        'Percentage': 'Percentage of Coarse Grained Propaganda Technique',
+                        'Frequency': 'Frequency of Coarse Grained Propaganda Technique'
                     })
 
     # Add axes lines
