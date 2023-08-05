@@ -68,7 +68,7 @@ def extract_title_and_sentences(text):
 
 flag = 0
 st.set_page_config(
-    page_title="News Framing Demo",
+    page_title="FRAPPE",
     page_icon=":газета:",
     layout="wide"
 )
@@ -257,14 +257,14 @@ if text:
     # Display the prediction
     # st.write(prediction)
     
-    annotated_text(
-        ("Team Name:", "", "#000", "#fff"),
-        (
-            "NLP2",
-            "The Best Team",
-            "#8ef",
-        ),
-    )
+    # annotated_text(
+    #     ("Team Name:", "", "#000", "#fff"),
+    #     (
+    #         "NLP2",
+    #         "The Best Team",
+    #         "#8ef",
+    #     ),
+    # )
     
     #SUBTASK 3 Visualization
     label_colors = {}  # Dictionary to store assigned colors for each label
