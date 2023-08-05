@@ -325,13 +325,13 @@ import json
 import streamlit as st
 from streamlit_server_state import server_state, server_state_lock
 
-pages = ["Countries", "Framings", "Persuasion Techniques fine-Grained Propaganda", "Persuasion Techniques Coarse-Grained Propaganda", "Persuasion Techniques Ethos, Logos, Pathos"]
+pages = ["Framings: Countries", "Framings: Countries and Sources", "Persuasion Techniques fine-Grained Propaganda", "Persuasion Techniques Coarse-Grained Propaganda", "Persuasion Techniques Ethos, Logos, Pathos"]
 # if 'page' not in st.session_state:
 st.session_state['page'] = pages[0]  # Set default page to Home
 st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(st.session_state.page))
 
 
-if st.session_state.page == "Countries":
+if st.session_state.page == "Framings: Countries":
 
     # Number of countries
     num_countries = len(country_to_media)
@@ -729,7 +729,7 @@ if st.session_state.page == "Countries":
     st.plotly_chart(fig)
 
 
-elif st.session_state.page  == "Framings":
+elif st.session_state.page  == "Framings: Countries and Sources":
         
     # Number of countries
     num_countries = len(country_to_media)
