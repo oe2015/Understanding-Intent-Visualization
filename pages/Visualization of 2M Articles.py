@@ -325,13 +325,13 @@ import json
 import streamlit as st
 from streamlit_server_state import server_state, server_state_lock
 
-pages = ["Framings: Countries", "Framings: Countries and Sources", "Persuasion Techniques fine-Grained Propaganda", "Persuasion Techniques Coarse-Grained Propaganda", "Persuasion Techniques Ethos, Logos, Pathos"]
+pages = ["Framings and Persuasion Techniques: Countries", "Framings: Countries and Sources", "Persuasion Techniques: Fine-Grained Propaganda", "Persuasion Techniques: Coarse-Grained Propaganda", "Persuasion Techniques: Ethos, Logos, Pathos"]
 # if 'page' not in st.session_state:
 st.session_state['page'] = pages[0]  # Set default page to Home
 st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(st.session_state.page))
 
 
-if st.session_state.page == "Framings: Countries":
+if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
     # Number of countries
     num_countries = len(country_to_media)
@@ -1336,7 +1336,7 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 #######################################################################################################################
 
 
-elif st.session_state.page  == "Persuasion Techniques fine-Grained Propaganda":
+elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
      # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -1879,7 +1879,7 @@ elif st.session_state.page  == "Persuasion Techniques fine-Grained Propaganda":
 
     st.plotly_chart(fig)
 
-elif st.session_state.page  == "Persuasion Techniques Coarse-Grained Propaganda":
+elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda":
        # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -2504,7 +2504,7 @@ elif st.session_state.page  == "Persuasion Techniques Coarse-Grained Propaganda"
 
 
  #######################################   
-elif st.session_state.page  == "Persuasion Techniques Ethos, Logos, Pathos":
+elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
       # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
