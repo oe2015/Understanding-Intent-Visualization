@@ -11,19 +11,12 @@ st.set_page_config(
     page_title="Frappe",
     layout="wide",
     initial_sidebar_state="expanded",
-    theme={
-        "primaryColor": "#F63366",
-        "backgroundColor": "#FFFFFF",
-        "secondaryBackgroundColor": "#F0F2F6",
-        "textColor": "#262730",
-        "font": "sans serif",
-    },
 )
 
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-st.markdown("<h1 style='text-align: center; color: black; margin-top: 100px;'>FRAPPE: FRAming, Persuasion, and Propaganda Explorer</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: white; margin-top: 100px;'>FRAPPE: FRAming, Persuasion, and Propaganda Explorer</h1>", unsafe_allow_html=True)
 
 def nav_page(page_name, timeout_secs=3):
     page_name_url = page_name.replace(' ', '_')
