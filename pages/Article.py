@@ -226,8 +226,8 @@ if option == "Pass URL":
                     print("URL is empty.")
 elif option == "Enter Text":
     with st.form(key="text_form"):
-        text = st.text_area("Enter the text to get framings")
-        submit_button = st.form_submit_button(label="Get news framing!")
+        text = st.text_area("Enter the text to get article analysis")
+        submit_button = st.form_submit_button(label="Get article analysis!")
         if submit_button:
             doc = text
             with st.expander("Read the article", expanded=False):
