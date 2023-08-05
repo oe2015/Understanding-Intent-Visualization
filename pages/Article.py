@@ -195,12 +195,12 @@ st.markdown("## Demo! ")
 url = ""
 cx, cy, cz = st.columns([5, 2, 5])
 doc = ""
-option = st.radio("Choose an option to get framings", ("Pass URL", "Enter Text"))
+option = st.radio("Choose an option to analyze an article", ("Pass URL", "Enter Text"))
 if option == "Pass URL":
         with st.form(key="url_form"):
-            url = st.text_input("Enter the article URL to get framings")
+            url = st.text_input("Enter the article URL to get analysis")
             print(url)
-            submit_button = st.form_submit_button(label="Get news framing!")
+            submit_button = st.form_submit_button(label="Get article analysis!")
             if submit_button:
                 if len(url) > 0:
                     try:
@@ -247,7 +247,7 @@ if text:
     for class_name, probability in zip(class_names, predicted_probabilities):
         print(f"{class_name}: {probability:.4f}")
     # SUBTASK 1 VISUALIZATION
-    with st.expander(f"### Get Genre for This Article", expanded=False):
+    with st.expander(f"### Get Genre for this Article", expanded=False):
         # st.markdown(f"### This article is classified as: {max_probability_class}")
         st.markdown("#### Output Probabilities Pie Chart")
         fig, ax = plt.subplots()
@@ -303,7 +303,7 @@ if text:
     #SUBTASK 3 Visualization
     label_colors = {}  # Dictionary to store assigned colors for each label
     
-    with st.expander(f"### Get persuasion techniques for this Article", expanded=False):
+    with st.expander(f"### Get Persuasion Techniques for this Article", expanded=False):
         for sentence, entry in prediction.items():
                 labels = entry['labels']
                 outputs = entry['outputs']
