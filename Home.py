@@ -2,9 +2,22 @@ import streamlit as st
 from streamlit.components.v1 import html
 
 
+# st.set_page_config(
+#     page_title="Understanding intent",
+#     page_icon="👋",
+# )
+
 st.set_page_config(
-    page_title="Understanding intent",
-    page_icon="👋",
+    page_title="Frappe",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    theme={
+        "primaryColor": "#F63366",
+        "backgroundColor": "#FFFFFF",
+        "secondaryBackgroundColor": "#F0F2F6",
+        "textColor": "#262730",
+        "font": "sans serif",
+    },
 )
 
 def local_css(file_name):
