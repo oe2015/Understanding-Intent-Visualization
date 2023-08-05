@@ -13,6 +13,7 @@ def local_css(file_name):
 st.markdown("<h1 style='text-align: center; color: black; margin-top: 100px;'>FRAPPE: FRAming, Persuasion, and Propaganda Explorer</h1>", unsafe_allow_html=True)
 
 def nav_page(page_name, timeout_secs=3):
+    page_name_url = page_name.replace(' ', '_')
     nav_script = """
         <script type="text/javascript">
             function attempt_nav_page(page_name, start_time, timeout_secs) {
@@ -34,7 +35,7 @@ def nav_page(page_name, timeout_secs=3):
                 attempt_nav_page("%s", new Date(), %d);
             });
         </script>
-    """ % (page_name, timeout_secs)
+    """ % (page_name_url, timeout_secs)
     html(nav_script)
 
 
