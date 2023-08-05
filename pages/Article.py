@@ -132,7 +132,7 @@ def _max_width_():
 _max_width_()
 c30, c31, c32 = st.columns([20, 1, 3])
 with c30:
-    st.title("News Framing")
+    st.title("FRAPPE")
     st.header("")
 with st.expander("About this app", expanded=False):
     st.write(
