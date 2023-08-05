@@ -137,22 +137,56 @@ with c30:
 with st.expander("About this app", expanded=False):
     st.write(
         """
--   The goal of this app is to detect the framing of a text. The model was trained on English news articles.
--   The model is able to detect the existence of a frame or multiple frames out of 14 possible frames:
-    - Economic
-    - Capacity and Resources
-    - Morality
-    - Fairness and Equality
-    - Legality Constitutionality and Jurisprudence
-    - Policy Prescription and Evaluation
-    - Crime and Punishment
-    - Security and Defense
-    - Health and Safety
-    - Quality of Life
-    - Cultural Identity
-    - Public Opinion
-    - Political
-    - External Regulation and Reputation
+        This app performs three major tasks on English news articles:
+        
+        **1. Article Type Classification:** 
+        The model classifies an article into one of the three types:
+        - Opinion
+        - Reporting
+        - Satire
+        
+        **2. Frame Detection:**
+        The model is capable of detecting the existence of one or multiple frames out of 14 possible frames:
+        - Economic
+        - Capacity and Resources
+        - Morality
+        - Fairness and Equality
+        - Legality, Constitutionality, and Jurisprudence
+        - Policy Prescription and Evaluation
+        - Crime and Punishment
+        - Security and Defense
+        - Health and Safety
+        - Quality of Life
+        - Cultural Identity
+        - Public Opinion
+        - Political
+        - External Regulation and Reputation
+        
+        **3. Persuasion Technique Classification:**
+        The model identifies the usage of various persuasion techniques at the sentence level, including but not limited to:
+        - Loaded Language
+        - Obfuscation, Vagueness, Confusion
+        - Conversation Killer
+        - Appeal to Time
+        - Whataboutism
+        - Red Herring
+        - Straw Man
+        - Causal Oversimplification
+        - Appeal to Values
+        - Appeal to Popularity
+        - Appeal to Hypocrisy
+        - Appeal to Authority
+        - Consequential Oversimplification
+        - False Dilemma/No Choice
+        - Repetition
+        - Slogans
+        - Doubt
+        - Exaggeration/Minimisation
+        - Name Calling/Labeling
+        - Flag Waving
+        - Appeal to Fear/Prejudice
+        - Guilt by Association
+        - Questioning the Reputation
         """
     )
     st.markdown("")
