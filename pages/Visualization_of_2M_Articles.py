@@ -3,6 +3,12 @@ import json
 import plotly.graph_objects as go
 import plotly.express as px
 import streamlit as st
+import numpy as np
+import ast
+from ast import literal_eval
+from streamlit_server_state import server_state, server_state_lock
+from pycountry_convert import country_alpha2_to_continent_code, country_name_to_country_alpha2
+
 
 st.set_page_config(layout="wide")
 
@@ -10,13 +16,7 @@ st.set_page_config(layout="wide")
 # print(df['source'])
 # print(df['labels'])
 
-import pandas as pd
-import numpy as npy
-import ast
 
-import pandas as pd
-import numpy as np
-import ast
 
 # Load the DataFrame
 # df = pd.read_parquet('subtask3.parquet')
@@ -288,42 +288,56 @@ import ast
 
 ###############################################################################
 
-import streamlit as st
-import pandas as pd
-
+#####loading data ######
 @st.cache_data
 def load_data(path):
     return pd.read_parquet(path)
 
-media_agg = load_data('media_agg.parquet')
-print(media_agg)
-country_to_media = load_data('country_media.parquet')
-print(country_to_media)
-aggregated_df = load_data('aggregated_df.parquet')
-print(aggregated_df)
-article_counts_df = load_data('article_counts_df.parquet')
-print(article_counts_df)
-country_article_counts_df = load_data('country_article_counts_df.parquet')
-print(country_article_counts_df)
+    # if option == 'Russo-Ukrainian War':
+RU_media_agg = load_data('media_agg.parquet')
+# print(media_agg)
+RU_country_to_media = load_data('country_media.parquet')
+# print(country_to_media)
+RU_aggregated_df = load_data('aggregated_df.parquet')
+# print(aggregated_df)
+RU_article_counts_df = load_data('article_counts_df.parquet')
+# print(article_counts_df)
+RU_country_article_counts_df = load_data('country_article_counts_df.parquet')
+# print(country_article_counts_df)
 
+RU_media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
+RU_country_to_media_subtask3 = load_data('country_media_subtask3.parquet')
+RU_aggregated_df_subtask3 = load_data('aggregated_df_subtask3.parquet')
+RU_article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
+RU_country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
+RU_source_article_counts = load_data('source_article_counts_df.parquet')
+# print(source_article_counts)
+RU_source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
+        
+    # elif option == 'Climate Change':
+CH_media_agg = load_data('media_agg_df2_new.parquet')
+# print(media_agg)
+CH_country_to_media = load_data('country_media_df2_new.parquet')
+# print(country_to_media)
+CH_aggregated_df = load_data('aggregated_df2_new.parquet')
+# print(aggregated_df)
+CH_article_counts_df = load_data('article_counts_df2_new.parquet')
+# print(article_counts_df)
+CH_country_article_counts_df = load_data('country_article_counts_df2_new.parquet')
+# print(country_article_counts_df)
 
-media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
-country_to_media_subtask3 = load_data('country_media_subtask3.parquet')
-aggregated_df_subtask3 = load_data('aggregated_df_subtask3.parquet')
-article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
-country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
+CH_media_agg_subtask3 = load_data('media_agg_df3_new.parquet')
+CH_country_to_media_subtask3 = load_data('country_media_df3_new.parquet')
+CH_aggregated_df_subtask3 = load_data('aggregated_df3_new.parquet')
+CH_article_counts_df_subtask3 = load_data('article_counts_df3_new.parquet')
+CH_country_article_counts_df_subtask3 = load_data('country_article_counts_df3_new.parquet')
 
-source_article_counts = load_data('source_article_counts_df.parquet')
-print(source_article_counts)
-source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
+CH_source_article_counts = load_data('source_article_counts_df2_new.parquet')
+# print(source_article_counts)
+CH_source_article_counts_subtask3 = load_data('source_article_counts_df3_new.parquet') 
 
+    ###########################
 
-import streamlit as st
-import pandas as pd
-import json
-
-import streamlit as st
-from streamlit_server_state import server_state, server_state_lock
 
 pages = ["Framings and Persuasion Techniques: Countries", "Framings: Countries and Sources", "Persuasion Techniques: Fine-Grained Propaganda", "Persuasion Techniques: Coarse-Grained Propaganda", "Persuasion Techniques: Ethos, Logos, Pathos"]
 # if 'page' not in st.session_state:
@@ -332,6 +346,53 @@ st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(
 
 
 if st.session_state.page == "Framings and Persuasion Techniques: Countries":
+    option = 'Russo-Ukrainian War'
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
 
     # Number of countries
     num_countries = len(country_to_media)
@@ -459,10 +520,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
     ########################################################################################
 
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
-
+  
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
     total_articles.columns = ['country', 'total_articles']
@@ -538,10 +596,6 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     st.plotly_chart(fig, use_container_width=True)
 
     ########################################################################################
-
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df_subtask3.groupby('country').sum().reset_index()
@@ -631,9 +685,6 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     st.plotly_chart(fig, use_container_width=True)
     ###########################################################################################
 
-    import plotly.graph_objects as go
-    import pandas as pd
-
     # Get list of unique countries
     countries = country_article_counts_df.index.get_level_values(0).unique()
 
@@ -676,11 +727,6 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
 
     ########################################################################################
-
-    import pandas as pd
-    import plotly.express as px
-    from pycountry_convert import country_alpha2_to_continent_code, country_name_to_country_alpha2
-    import streamlit as st
 
     CONTINENT_MAP = {
         'AF': 'Africa',
@@ -730,6 +776,54 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
 
 elif st.session_state.page  == "Framings: Countries and Sources":
+    
+    option = 'Russo-Ukrainian War'
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
         
     # Number of countries
     num_countries = len(country_to_media)
@@ -831,8 +925,6 @@ elif st.session_state.page  == "Framings: Countries and Sources":
     
 #     source = st.selectbox('Select source', available_sources_lower, key='source')
 
-    import pandas as pd
-    from ast import literal_eval
 
     # Create a dictionary mapping sources to their correct countries
     correct_countries = {
@@ -875,7 +967,7 @@ elif st.session_state.page  == "Framings: Countries and Sources":
                 # Add the source_frequency to new_source_frequencies
                 new_source_frequencies.append(source_frequency)
 
-        # Update the source_frequencies for this row
+        # Update the source_frequencies for this rowF
         corrected_df.at[index, 'source_frequencies'] = str(new_source_frequencies)
 
     # Append the corrected rows to country_to_media
@@ -1081,9 +1173,6 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
     ########################################################################################
 
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df.groupby('country').sum().reset_index()
@@ -1161,8 +1250,6 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
  ########################################################################################
 
-    import plotly.graph_objects as go
-    import pandas as pd
 
     # Get list of unique countries
     countries = country_article_counts_df_subtask3.index.get_level_values(0).unique()
@@ -1247,10 +1334,6 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
     ########################################################################################
 
-    import pandas as pd
-    import plotly.express as px
-    from pycountry_convert import country_alpha2_to_continent_code, country_name_to_country_alpha2
-    import streamlit as st
 
     CONTINENT_MAP = {
         'AF': 'Africa',
@@ -1337,6 +1420,53 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
 
 elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
+    option = 'Russo-Ukrainian War'
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
      # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -1376,8 +1506,6 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     if 'selected_pairs' not in st.session_state:
         st.session_state.selected_pairs = []
 
-    import pandas as pd
-    from ast import literal_eval
 
     # Create a dictionary mapping sources to their correct countries
     correct_countries = {
@@ -1532,9 +1660,6 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     st.plotly_chart(fig)
 
     ########################################################################################
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # First, create a list to hold all the media source data
     source_articles_data = []
@@ -1636,9 +1761,6 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
 
     ########################################################################################
 
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df_subtask3.groupby('country').sum().reset_index()
@@ -1727,8 +1849,6 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     st.plotly_chart(fig, use_container_width=True)
  ########################################################################################
 
-    import plotly.graph_objects as go
-    import pandas as pd
 
     # Get list of unique countries
     countries = country_article_counts_df_subtask3.index.get_level_values(0).unique()
@@ -1813,10 +1933,6 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
 
     ########################################################################################
 
-    import pandas as pd
-    import plotly.express as px
-    from pycountry_convert import country_alpha2_to_continent_code, country_name_to_country_alpha2
-    import streamlit as st
 
     CONTINENT_MAP = {
         'AF': 'Africa',
@@ -1880,6 +1996,53 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     st.plotly_chart(fig)
 
 elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda":
+    option = 'Russo-Ukrainian War'
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
        # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -2076,9 +2239,6 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
     st.plotly_chart(fig)
 
     ########################################################################################
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # First, create a list to hold all the media source data
     source_articles_data = []
@@ -2206,9 +2366,6 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
 
     ########################################################################################
 
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df_subtask3.groupby('country').sum().reset_index()
@@ -2325,9 +2482,6 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
 
     ########################################################################################
 
-    import plotly.graph_objects as go
-    import pandas as pd
-
     # Get list of unique countries
     countries = country_article_counts_df_subtask3.index.get_level_values(0).unique()
 
@@ -2411,11 +2565,7 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
 
     ########################################################################################
 
-    import pandas as pd
-    import plotly.express as px
-    from pycountry_convert import country_alpha2_to_continent_code, country_name_to_country_alpha2
-    import streamlit as st
-
+ 
     CONTINENT_MAP = {
         'AF': 'Africa',
         'AS': 'Asia',
@@ -2505,6 +2655,54 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
 
  #######################################   
 elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
+    option = 'Russo-Ukrainian War'
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
+    
       # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -2544,9 +2742,7 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
     if 'selected_pairs' not in st.session_state:
         st.session_state.selected_pairs = []
         
-        import pandas as pd
-    from ast import literal_eval
-
+ 
     # Create a dictionary mapping sources to their correct countries
     correct_countries = {
         'europesun': 'Hungary',
@@ -2696,9 +2892,6 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
     st.plotly_chart(fig)
 
     ########################################################################################
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # First, create a list to hold all the media source data
     source_articles_data = []
@@ -2821,9 +3014,6 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
 
     ########################################################################################
 
-    import streamlit as st
-    import pandas as pd
-    import plotly.express as px
 
     # Calculate total number of articles for each country
     total_articles = country_article_counts_df_subtask3.groupby('country').sum().reset_index()
@@ -2935,8 +3125,6 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
 
     ########################################################################################
 
-    import plotly.graph_objects as go
-    import pandas as pd
 
     # Get list of unique countries
     countries = country_article_counts_df_subtask3.index.get_level_values(0).unique()
@@ -3021,10 +3209,6 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
 
     ########################################################################################
 
-    import pandas as pd
-    import plotly.express as px
-    from pycountry_convert import country_alpha2_to_continent_code, country_name_to_country_alpha2
-    import streamlit as st
 
     CONTINENT_MAP = {
         'AF': 'Africa',
