@@ -288,6 +288,55 @@ st.set_page_config(layout="wide")
 
 ###############################################################################
 
+#####loading data ######
+@st.cache_data
+def load_data(path):
+    return pd.read_parquet(path)
+
+    # if option == 'Russo-Ukrainian War':
+RU_media_agg = load_data('media_agg.parquet')
+# print(media_agg)
+RU_country_to_media = load_data('country_media.parquet')
+# print(country_to_media)
+RU_aggregated_df = load_data('aggregated_df.parquet')
+# print(aggregated_df)
+RU_article_counts_df = load_data('article_counts_df.parquet')
+# print(article_counts_df)
+RU_country_article_counts_df = load_data('country_article_counts_df.parquet')
+# print(country_article_counts_df)
+
+RU_media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
+RU_country_to_media_subtask3 = load_data('country_media_subtask3.parquet')
+RU_aggregated_df_subtask3 = load_data('aggregated_df_subtask3.parquet')
+RU_article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
+RU_country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
+RU_source_article_counts = load_data('source_article_counts_df.parquet')
+# print(source_article_counts)
+RU_source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
+        
+    # elif option == 'Climate Change':
+CH_media_agg = load_data('media_agg_df2_new.parquet')
+# print(media_agg)
+CH_country_to_media = load_data('country_media_df2_new.parquet')
+# print(country_to_media)
+CH_aggregated_df = load_data('aggregated_df2_new.parquet')
+# print(aggregated_df)
+CH_article_counts_df = load_data('article_counts_df2_new.parquet')
+# print(article_counts_df)
+CH_country_article_counts_df = load_data('country_article_counts_df2_new.parquet')
+# print(country_article_counts_df)
+
+CH_media_agg_subtask3 = load_data('media_agg_df3_new.parquet')
+CH_country_to_media_subtask3 = load_data('country_media_df3_new.parquet')
+CH_aggregated_df_subtask3 = load_data('aggregated_df3_new.parquet')
+CH_article_counts_df_subtask3 = load_data('article_counts_df3_new.parquet')
+CH_country_article_counts_df_subtask3 = load_data('country_article_counts_df3_new.parquet')
+
+CH_source_article_counts = load_data('source_article_counts_df2_new.parquet')
+# print(source_article_counts)
+CH_source_article_counts_subtask3 = load_data('source_article_counts_df3_new.parquet') 
+
+    ###########################
 
 
 pages = ["Framings and Persuasion Techniques: Countries", "Framings: Countries and Sources", "Persuasion Techniques: Fine-Grained Propaganda", "Persuasion Techniques: Coarse-Grained Propaganda", "Persuasion Techniques: Ethos, Logos, Pathos"]
@@ -300,52 +349,47 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
 
     #####loading data ######
-    @st.cache_data
-    def load_data(path):
-        return pd.read_parquet(path)
-
     if option == 'Russo-Ukrainian War':
-        media_agg = load_data('media_agg.parquet')
+        media_agg = RU_media_agg
         # print(media_agg)
-        country_to_media = load_data('country_media.parquet')
+        country_to_media = RU_country_to_media
         # print(country_to_media)
-        aggregated_df = load_data('aggregated_df.parquet')
+        aggregated_df = RU_aggregated_df
         # print(aggregated_df)
-        article_counts_df = load_data('article_counts_df.parquet')
+        article_counts_df = RU_article_counts_df
         # print(article_counts_df)
-        country_article_counts_df = load_data('country_article_counts_df.parquet')
+        country_article_counts_df = RU_country_article_counts_df
         # print(country_article_counts_df)
 
-        media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
-        country_to_media_subtask3 = load_data('country_media_subtask3.parquet')
-        aggregated_df_subtask3 = load_data('aggregated_df_subtask3.parquet')
-        article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
-        country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
-        source_article_counts = load_data('source_article_counts_df.parquet')
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
         # print(source_article_counts)
-        source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
-        
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
     elif option == 'Climate Change':
-        media_agg = load_data('media_agg_df2_new.parquet')
-        print(media_agg)
-        country_to_media = load_data('country_media_df2_new.parquet')
-        print(country_to_media)
-        aggregated_df = load_data('aggregated_df2_new.parquet')
-        print(aggregated_df)
-        article_counts_df = load_data('article_counts_df2_new.parquet')
-        print(article_counts_df)
-        country_article_counts_df = load_data('country_article_counts_df2_new.parquet')
-        print(country_article_counts_df)
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
 
-        media_agg_subtask3 = load_data('media_agg_df3_new.parquet')
-        country_to_media_subtask3 = load_data('country_media_df3_new.parquet')
-        aggregated_df_subtask3 = load_data('aggregated_df3_new.parquet')
-        article_counts_df_subtask3 = load_data('article_counts_df3_new.parquet')
-        country_article_counts_df_subtask3 = load_data('country_article_counts_df3_new.parquet')
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
 
-        source_article_counts = load_data('source_article_counts_df2_new.parquet')
-        print(source_article_counts)
-        source_article_counts_subtask3 = load_data('source_article_counts_df3_new.parquet') 
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
     
     ###########################
 
@@ -731,6 +775,53 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
 
 elif st.session_state.page  == "Framings: Countries and Sources":
+    
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
         
     # Number of countries
     num_countries = len(country_to_media)
@@ -1327,6 +1418,53 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
 
 elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
+    
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
      # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -1856,6 +1994,52 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     st.plotly_chart(fig)
 
 elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda":
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
        # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
@@ -2468,6 +2652,54 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
 
  #######################################   
 elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
+    
+    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
+
+    #####loading data ######
+    if option == 'Russo-Ukrainian War':
+        media_agg = RU_media_agg
+        # print(media_agg)
+        country_to_media = RU_country_to_media
+        # print(country_to_media)
+        aggregated_df = RU_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = RU_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = RU_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = RU_media_agg_subtask3
+        country_to_media_subtask3 = RU_country_to_media_subtask3
+        aggregated_df_subtask3 = RU_aggregated_df_subtask3
+        article_counts_df_subtask3 = RU_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+        source_article_counts = RU_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    elif option == 'Climate Change':
+        media_agg = CH_media_agg
+        # print(media_agg)
+        country_to_media = CH_country_to_media
+        # print(country_to_media)
+        aggregated_df = CH_aggregated_df
+        # print(aggregated_df)
+        article_counts_df = CH_article_counts_df
+        # print(article_counts_df)
+        country_article_counts_df = CH_country_article_counts_df
+        # print(country_article_counts_df)
+
+        media_agg_subtask3 = CH_media_agg_subtask3
+        country_to_media_subtask3 = CH_country_to_media_subtask3
+        aggregated_df_subtask3 = CH_aggregated_df_subtask3
+        article_counts_df_subtask3 = CH_article_counts_df_subtask3
+        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+
+        source_article_counts = CH_source_article_counts
+        # print(source_article_counts)
+        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    
+    ###########################
+    
       # Number of countries
     num_countries = len(country_to_media)
     # Number of articles
