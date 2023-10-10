@@ -289,6 +289,7 @@ st.set_page_config(layout="wide")
 ###############################################################################
 
 
+
 pages = ["Framings and Persuasion Techniques: Countries", "Framings: Countries and Sources", "Persuasion Techniques: Fine-Grained Propaganda", "Persuasion Techniques: Coarse-Grained Propaganda", "Persuasion Techniques: Ethos, Logos, Pathos"]
 # if 'page' not in st.session_state:
 st.session_state['page'] = pages[0]  # Set default page to Home
@@ -298,7 +299,7 @@ st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(
 if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
 
-    #####loading data ####
+    #####loading data ######
     @st.cache_data
     def load_data(path):
         return pd.read_parquet(path)
@@ -315,13 +316,11 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         country_article_counts_df = load_data('country_article_counts_df.parquet')
         # print(country_article_counts_df)
 
-
         media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
         country_to_media_subtask3 = load_data('country_media_subtask3.parquet')
         aggregated_df_subtask3 = load_data('aggregated_df_subtask3.parquet')
         article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
         country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
-
         source_article_counts = load_data('source_article_counts_df.parquet')
         # print(source_article_counts)
         source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
@@ -337,7 +336,6 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         print(article_counts_df)
         country_article_counts_df = load_data('country_article_counts_df2_new.parquet')
         print(country_article_counts_df)
-
 
         media_agg_subtask3 = load_data('media_agg_df3_new.parquet')
         country_to_media_subtask3 = load_data('country_media_df3_new.parquet')
