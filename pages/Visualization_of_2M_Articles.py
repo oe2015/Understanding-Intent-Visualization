@@ -346,6 +346,7 @@ st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(
 
 
 if st.session_state.page == "Framings and Persuasion Techniques: Countries":
+    option = 'Russo-Ukrainian War'
     option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
 
     #####loading data ######
@@ -775,7 +776,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
 
 elif st.session_state.page  == "Framings: Countries and Sources":
-    
+    option = 'Russo-Ukrainian War'
     option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
 
     #####loading data ######
@@ -1418,7 +1419,7 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
 
 elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
-    
+    option = 'Russo-Ukrainian War'
     option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
 
     #####loading data ######
@@ -1994,6 +1995,7 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     st.plotly_chart(fig)
 
 elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda":
+    option = 'Russo-Ukrainian War'
     option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
 
     #####loading data ######
@@ -2652,7 +2654,7 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
 
  #######################################   
 elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
-    
+    option = 'Russo-Ukrainian War'
     option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War'), index=1)
 
     #####loading data ######
