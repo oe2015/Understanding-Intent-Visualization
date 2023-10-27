@@ -675,7 +675,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     # Sort the data by country and frequency (in descending order)
     melted_df.sort_values(by=['country', 'Percentage'], ascending=[True, False], inplace=True)
 
-            # Combine country and total articles
+    # Combine country and total articles
     melted_df['country'] = melted_df['country'] + " (" + melted_df['total_articles'].astype(str) + ")"
 
     # Sort the data by total articles (in descending order)
