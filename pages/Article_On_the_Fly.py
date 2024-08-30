@@ -256,7 +256,7 @@ if text:
         st.pyplot(fig)
 
     # SUBTASK 2 VISUALIZATION
-    response = requests.post("https://10.127.82.221:80/task2", json={"text": text})
+    response = requests.post("http://10.127.82.221:80/task2", json={"text": text})
     # Get the prediction from the response
     output = response.json()
     data = output
@@ -285,7 +285,7 @@ if text:
     import json
     
     # Send the text to the API
-    response = requests.post("https://10.127.82.221:80/task3", json={"text": text})
+    response = requests.post("http://10.127.82.221:80/task3", json={"text": text})
     # Get the prediction from the response
     prediction = response.json()
     # Display the prediction
