@@ -236,7 +236,7 @@ elif option == "Enter Text":
 text = " ".join(doc.split())
 if text:
     # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
-    response = requests.post("https://10.127.82.221:80/task1", json={"text": text})
+    response = requests.post("http://10.127.82.221:80/task1", json={"text": text})
     # Get the prediction from the response
     predicted_probabilities = response.json()
     print(predicted_probabilities)
