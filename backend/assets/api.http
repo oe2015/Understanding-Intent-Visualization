@@ -1,0 +1,18 @@
+# The following is a list of all the possible variables that can be used in the
+# configuration file.  The values are the default values.
+@hostname = https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com
+@host = {{hostname}}
+
+# Test the health of the API
+GET {{host}}/health
+
+###
+
+# Get all the rules
+POST {{host}}/task1
+content-type: application/json
+
+{
+    "text": "This is the best day of my life"
+}
+###

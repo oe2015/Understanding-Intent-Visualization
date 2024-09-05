@@ -1,0 +1,45 @@
+.DS_Store
+.vscode
+
+tmp/
+models/
+**DEVNOTES**
+
+# Configs
+/configs/dev*.json
+*/lambda_*/config.json
+*/ecs_*/config.json
+*/cmn/config.json
+ignore.*.json
+
+# Package
+**/terraform/lambda_handlers/*
+**/terraform/ecs_handlers/*
+
+# CMD
+**/cmd/lambdalayer*/python/
+
+# Terraform
+**/.terraform/*
+ignore.*.tfvars
+**/environments/*.tfvars
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Python Env
+.venv
+
+# Unit test / coverage reports
+.pytest_cache
+.mypy_cache
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+coverage.lcov
+
+# Log Files
+*.log
