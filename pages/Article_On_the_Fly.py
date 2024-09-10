@@ -171,7 +171,8 @@ with st.expander("About FRAPPE", expanded=False):
     )
     st.markdown("")
 st.markdown("")
-st.markdown("## Demo! ")
+st.markdown("## 🚀 On-The-Fly Analysis!")
+
 url = ""
 cx, cy, cz = st.columns([5, 2, 5])
 doc = ""
