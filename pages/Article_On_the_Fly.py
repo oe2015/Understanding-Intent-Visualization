@@ -22,6 +22,7 @@ import random
 from bs4 import BeautifulSoup 
 
 
+
 ################################################################################
 # import os
 # from transformers import AutoConfig
@@ -260,10 +261,6 @@ if text:
         # Display the chart using Streamlit
         st.altair_chart(chart, use_container_width=True)
 
-    
-    import streamlit as st
-    import requests
-    import json
     
     # Send the text to the API
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task3", json={"text": text})

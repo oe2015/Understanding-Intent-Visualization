@@ -642,25 +642,85 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     # Assuming melted_df is your dataframe with the data
 
     # Create the figure using Plotly Express
+    framing_explanations = {
+    "Economic": "Costs, benefits, or other financial implications",
+    "Capacity and resources": "Availability of physical, human or financial resources, and capacity of current systems",
+    "Morality": "Religious or ethical implications",
+    "Fairness and equality": "Balance or distribution of rights, responsibilities, and resources",
+    "Legality Constitutionality and jurisprudence": "Rights, freedoms, and authority of individuals, corporations, and government",
+    "Policy prescription and evaluation": "Discussion of specific policies aimed at addressing problems",
+    "Crime and punishment": "Effectiveness and implications of laws and their enforcement",
+    "Security and defense": "Threats to welfare of the individual, community, or nation",
+    "Health and safety": "Health care, sanitation, public safety",
+    "Quality of life": "Threats and opportunities for the individual's wealth, happiness, and well-being",
+    "Cultural identity": "Traditions, customs, or values of a social group in relation to a policy issue",
+    "Public opinion": "Attitudes and opinions of the general public, including polling and demographics",
+    "Political": "Considerations related to politics and politicians, including lobbying, elections, and attempts to sway voters",
+    "External regulation and reputation": "International reputation or foreign policy"
+    }
+    # fig = px.bar(melted_df, 
+    #          x='Percentage', 
+    #          y='country', 
+    #          color='Framing', 
+    #          orientation='h',
+    #          color_discrete_map=frames_colors,
+    #          title="Distribution of Frames by Country",
+    #          custom_data=['Framing', 'Percentage', 'number_of_articles'])
+
+    # fig.update_traces(
+    # hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>")
+
+    # fig.update_layout(
+    #     height=500, 
+    #     width=900,
+    #     xaxis_range=[0, 100],
+    #     xaxis_title="Percentage",
+    #     yaxis_title="Country"
+    # )
+    # st.plotly_chart(fig, use_container_width=True)
     fig = px.bar(melted_df, 
              x='Percentage', 
              y='country', 
              color='Framing', 
              orientation='h',
              color_discrete_map=frames_colors,
-             title="Distribution of Framings by Country",
+             title="Distribution of Frames by Country",
              custom_data=['Framing', 'Percentage', 'number_of_articles'])
 
     fig.update_traces(
-    hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>")
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    )
+
+    # Update layout to enable legend hovering
+    fig.update_layout(
+        legend_title_text='Framing',
+        legend=dict(
+            itemsizing='constant',
+            itemclick='toggleothers',
+            itemdoubleclick='toggle',
+        )
+    )
+
+    # Add hover text to legend items
+    for trace in fig.data:
+        framing = trace.name
+        try:
+            explanation = framing_explanations[framing]
+            trace.hoverinfo = 'name'
+            trace.hovertemplate = f"<b>{framing}</b><br><br>{explanation}<extra></extra>"
+        except KeyError:
+            st.warning(f"No explanation found for framing: {framing}")
 
     fig.update_layout(
         height=500, 
         width=900,
         xaxis_range=[0, 100],
         xaxis_title="Percentage",
-        yaxis_title="Country"
+        yaxis_title="Country",
+        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+        yaxis=dict(showline=True, linewidth=2, linecolor='black')
     )
+
     st.plotly_chart(fig, use_container_width=True)
     ########################################################################################
 
