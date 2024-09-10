@@ -2074,7 +2074,7 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     fig.update_xaxes(showline=True, linewidth=2, linecolor='black', title='Percentage of Persuasion Technique')
     fig.update_yaxes(showline=True, linewidth=2, linecolor='black', title='Country')
 
-    fig.update_layout(height=700, width=900)
+    fig.update_layout(height=700, width=1100)
 
     st.plotly_chart(fig, use_container_width=True)
  ########################################################################################
