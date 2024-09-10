@@ -2739,20 +2739,43 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
     grouped_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
 
     # Plot the graph using Plotly Express
-    fig = px.bar(grouped_df, x='Percentage', y='country', color='Category', orientation='h', 
-                    title="Distribution of Coarse Grained Propaganda by Country",
-                    hover_data={
-                        'Frequency': True,
-                        'Percentage': ':.2f'  # Format as float with 2 decimal places
-                    },
-                    labels={
-                        'Percentage': 'Percentage of Coarse Grained Propaganda Technique',
-                        'Frequency': 'Frequency of Coarse Grained Propaganda Technique'
-                    })
+    # fig = px.bar(grouped_df, x='Percentage', y='country', color='Category', orientation='h', 
+    #                 title="Distribution of Coarse Grained Propaganda by Country",
+    #                 hover_data={
+    #                     'Frequency': True,
+    #                     'Percentage': ':.2f'  # Format as float with 2 decimal places
+    #                 },
+    #                 labels={
+    #                     'Percentage': 'Percentage of Coarse Grained Propaganda Technique',
+    #                     'Frequency': 'Frequency of Coarse Grained Propaganda Technique'
+    #                 })
+
+    # # Add axes lines
+    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
+    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+
+    # st.plotly_chart(fig, use_container_width=True)
+    fig = px.bar(grouped_df, 
+             x='Percentage', 
+             y='country', 
+             color='Category', 
+             orientation='h',
+             title="Distribution of Coarse Grained Propaganda by Country",
+             custom_data=['Category', 'Percentage', 'Frequency'])
+
+    fig.update_traces(
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    )
 
     # Add axes lines
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+    fig.update_xaxes(showline=True, 
+                    linewidth=2, 
+                    linecolor='black', 
+                    title='Percentage of Coarse Grained Propaganda Technique')
+    fig.update_yaxes(showline=True, 
+                    linewidth=2, 
+                    linecolor='black', 
+                    title='Country')
 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -3292,20 +3315,43 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
     grouped_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
 
     # Plot the graph using Plotly Express
-    fig = px.bar(grouped_df, x='Percentage', y='source', color='Category', orientation='h', 
-                    title="Distribution of Rhetorical dimension by Source",
-                    hover_data={
-                        'Frequency': True,
-                        'Percentage': ':.2f'  # Format as float with 2 decimal places
-                    },
-                    labels={
-                        'Percentage': 'Percentage of Rhetorical dimension',
-                        'Frequency': 'Frequency of Rhetorical dimension'
-                    })
+    # fig = px.bar(grouped_df, x='Percentage', y='source', color='Category', orientation='h', 
+    #                 title="Distribution of Rhetorical dimension by Source",
+    #                 hover_data={
+    #                     'Frequency': True,
+    #                     'Percentage': ':.2f'  # Format as float with 2 decimal places
+    #                 },
+    #                 labels={
+    #                     'Percentage': 'Percentage of Rhetorical dimension',
+    #                     'Frequency': 'Frequency of Rhetorical dimension'
+    #                 })
+
+    # # Add axes lines
+    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
+    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+
+    # st.plotly_chart(fig, use_container_width=True)
+    fig = px.bar(grouped_df, 
+             x='Percentage', 
+             y='source', 
+             color='Category', 
+             orientation='h',
+             title="Distribution of Rhetorical dimension by Source",
+             custom_data=['Category', 'Percentage', 'Frequency'])
+
+    fig.update_traces(
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    )
 
     # Add axes lines
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+    fig.update_xaxes(showline=True, 
+                    linewidth=2, 
+                    linecolor='black', 
+                    title='Percentage of Rhetorical dimension')
+    fig.update_yaxes(showline=True, 
+                    linewidth=2, 
+                    linecolor='black', 
+                    title='Source')
 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -3405,20 +3451,44 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
     grouped_df.sort_values(by=['total_articles', 'Percentage'], ascending=[True, False], inplace=True)
 
     # Plot the graph using Plotly Express
-    fig = px.bar(grouped_df, x='Percentage', y='country', color='Category', orientation='h', 
-                    title="Distribution of Rhetorical dimension by Country",
-                    hover_data={
-                        'Frequency': True,
-                        'Percentage': ':.2f'  # Format as float with 2 decimal places
-                    },
-                    labels={
-                        'Percentage': 'Percentage of Rhetorical dimension',
-                        'Frequency': 'Frequency of Rhetorical dimension'
-                    })
+    # fig = px.bar(grouped_df, x='Percentage', y='country', color='Category', orientation='h', 
+    #                 title="Distribution of Rhetorical dimension by Country",
+    #                 hover_data={
+    #                     'Frequency': True,
+    #                     'Percentage': ':.2f'  # Format as float with 2 decimal places
+    #                 },
+    #                 labels={
+    #                     'Percentage': 'Percentage of Rhetorical dimension',
+    #                     'Frequency': 'Frequency of Rhetorical dimension'
+    #                 })
+
+    # # Add axes lines
+    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
+    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+
+    # st.plotly_chart(fig, use_container_width=True)
+    
+    fig = px.bar(grouped_df, 
+             x='Percentage', 
+             y='country', 
+             color='Category', 
+             orientation='h',
+             title="Distribution of Rhetorical dimension by Country",
+             custom_data=['Category', 'Percentage', 'Frequency'])
+
+    fig.update_traces(
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    )
 
     # Add axes lines
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+    fig.update_xaxes(showline=True, 
+                    linewidth=2, 
+                    linecolor='black', 
+                    title='Percentage of Rhetorical dimension')
+    fig.update_yaxes(showline=True, 
+                    linewidth=2, 
+                    linecolor='black', 
+                    title='Country')
 
     st.plotly_chart(fig, use_container_width=True)
 
