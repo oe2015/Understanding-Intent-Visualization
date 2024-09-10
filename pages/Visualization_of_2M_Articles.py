@@ -1952,28 +1952,14 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
         hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
     )
 
-    # fig.update_layout(
-    #     height=700, 
-    #     width=900,
-    #     xaxis_title="Percentage of Persuasion Technique",
-    #     yaxis_title="Source",
-    #     xaxis=dict(showline=True, linewidth=2, linecolor='black'),
-    #     yaxis=dict(showline=True, linewidth=2, linecolor='black')
-    # )
-
-    # st.plotly_chart(fig, use_container_width=True)
     fig.update_layout(
-    height=1000,  # Increase height
-    width=900,
-    xaxis_type="log",  # Use logarithmic scale
-    xaxis_title="Percentage of Persuasion Technique (log scale)",
-    yaxis_title="Country",
-    xaxis=dict(showline=True, linewidth=2, linecolor='black', range=[-2, 2]),  # log10(0.01) to log10(100)
-    yaxis=dict(showline=True, linewidth=2, linecolor='black')
+        height=700, 
+        width=900,
+        xaxis_title="Percentage of Persuasion Technique",
+        yaxis_title="Source",
+        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+        yaxis=dict(showline=True, linewidth=2, linecolor='black')
     )
-
-    # Adjust margins to fit all labels
-    fig.update_layout(margin=dict(l=200, r=20, t=50, b=50))
 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -2051,23 +2037,45 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     }
 
     # Plotting the graph using Plotly Express
-    fig = px.bar(melted_df, x='Percentage', y='country', color='Persuasion Techniques', orientation='h', 
-                    color_discrete_map=color_mapping,  # use the color mapping
-                    title="Distribution of Persuasion Techniques by Country",
-                    hover_data={
-                        'Frequency': True,
-                        'Percentage': ':.2f'  # Format as float with 2 decimal places
-                    },
-                    labels={
-                        'Percentage': 'Percentage of Persuasion Technique',
-                        'Frequency': 'Frequency of Persuasion Technique'
-                    })
+    # fig = px.bar(melted_df, x='Percentage', y='country', color='Persuasion Techniques', orientation='h', 
+    #                 color_discrete_map=color_mapping,  # use the color mapping
+    #                 title="Distribution of Persuasion Techniques by Country",
+    #                 hover_data={
+    #                     'Frequency': True,
+    #                     'Percentage': ':.2f'  # Format as float with 2 decimal places
+    #                 },
+    #                 labels={
+    #                     'Percentage': 'Percentage of Persuasion Technique',
+    #                     'Frequency': 'Frequency of Persuasion Technique'
+    #                 })
+
+    # # Add axes lines
+    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
+    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+
+    # fig.update_layout(height=700, width=900) 
+    # st.plotly_chart(fig, use_container_width=True)
+    
+
+    fig = px.bar(melted_df, 
+                x='Percentage', 
+                y='country', 
+                color='Persuasion Techniques', 
+                orientation='h',
+                color_discrete_map=color_mapping,
+                title="Distribution of Persuasion Techniques by Country",
+                custom_data=['Persuasion Techniques', 'Percentage', 'Frequency'])
+
+    fig.update_traces(
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    )
 
     # Add axes lines
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+    fig.update_xaxes(showline=True, linewidth=2, linecolor='black', title='Percentage of Persuasion Technique')
+    fig.update_yaxes(showline=True, linewidth=2, linecolor='black', title='Country')
 
-    fig.update_layout(height=700, width=900) 
+    fig.update_layout(height=700, width=900)
+
     st.plotly_chart(fig, use_container_width=True)
  ########################################################################################
 
