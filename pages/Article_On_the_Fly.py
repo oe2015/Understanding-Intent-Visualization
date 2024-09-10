@@ -137,10 +137,10 @@ with c30:
 with st.expander("About this app", expanded=False):
     st.write(
         """
-        This app performs three major tasks on English news articles:
+        This platform performs three major tasks on English news articles:
         
-        **1. Article Type Classification:** 
-        The model classifies an article into one of the three types:
+        **1. Article Genre Classification:** 
+        The model classifies an article into one of the three genres:
         - Opinion
         - Reporting
         - Satire
@@ -163,7 +163,7 @@ with st.expander("About this app", expanded=False):
         - External Regulation and Reputation
         
         **3. Persuasion Technique Classification:**
-        The model identifies the usage of various persuasion techniques at the sentence level, including but not limited to:
+        The model identifies the usage of 23 persuasion techniques at the sentence level, which are:
         - Loaded Language
         - Obfuscation, Vagueness, Confusion
         - Conversation Killer

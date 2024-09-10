@@ -293,47 +293,47 @@ st.set_page_config(layout="wide")
 def load_data(path):
     return pd.read_parquet(path)
 
-RU_media_agg = load_data('media_agg.parquet')
-# print(media_agg)
-RU_country_to_media = load_data('country_media.parquet')
-# print(country_to_media)
-RU_aggregated_df = load_data('aggregated_df.parquet')
-# print(aggregated_df)
-RU_article_counts_df = load_data('article_counts_df.parquet')
-# print(article_counts_df)
-RU_country_article_counts_df = load_data('country_article_counts_df.parquet')
-# print(country_article_counts_df)
+# RU_media_agg = load_data('media_agg.parquet')
+# # print(media_agg)
+# RU_country_to_media = load_data('country_media.parquet')
+# # print(country_to_media)
+# RU_aggregated_df = load_data('aggregated_df.parquet')
+# # print(aggregated_df)
+# RU_article_counts_df = load_data('article_counts_df.parquet')
+# # print(article_counts_df)
+# RU_country_article_counts_df = load_data('country_article_counts_df.parquet')
+# # print(country_article_counts_df)
 
-RU_media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
-RU_country_to_media_subtask3 = load_data('country_media_subtask3.parquet')
-RU_aggregated_df_subtask3 = load_data('aggregated_df_subtask3.parquet')
-RU_article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
-RU_country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
-RU_source_article_counts = load_data('source_article_counts_df.parquet')
-# print(source_article_counts)
-RU_source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
+# RU_media_agg_subtask3 = load_data('media_agg_subtask3.parquet')
+# RU_country_to_media_subtask3 = load_data('country_media_subtask3.parquet')
+# RU_aggregated_df_subtask3 = load_data('aggregated_df_subtask3.parquet')
+# RU_article_counts_df_subtask3 = load_data('article_counts_df_subtask3.parquet')
+# RU_country_article_counts_df_subtask3 = load_data('country_article_counts_df_subtask3.parquet')
+# RU_source_article_counts = load_data('source_article_counts_df.parquet')
+# # print(source_article_counts)
+# RU_source_article_counts_subtask3 = load_data('source_article_counts_df_subtask3.parquet')
         
-    # elif option == 'Climate Change':
-CH_media_agg = load_data('media_agg_df2_new2.parquet')
-# print(media_agg)
-CH_country_to_media = load_data('country_media_df2_new.parquet')
-# print(country_to_media)
-CH_aggregated_df = load_data('aggregated_df2_new2.parquet')
-# print(aggregated_df)
-CH_article_counts_df = load_data('article_counts_df2_new.parquet')
-# print(article_counts_df)
-CH_country_article_counts_df = load_data('country_article_counts_df2_new.parquet')
-# print(country_article_counts_df)
+#     # elif option == 'Climate Change':
+# CH_media_agg = load_data('media_agg_df2_new2.parquet')
+# # print(media_agg)
+# CH_country_to_media = load_data('country_media_df2_new.parquet')
+# # print(country_to_media)
+# CH_aggregated_df = load_data('aggregated_df2_new2.parquet')
+# # print(aggregated_df)
+# CH_article_counts_df = load_data('article_counts_df2_new.parquet')
+# # print(article_counts_df)
+# CH_country_article_counts_df = load_data('country_article_counts_df2_new.parquet')
+# # print(country_article_counts_df)
 
-CH_media_agg_subtask3 = load_data('media_agg_df3_new2.parquet')
-CH_country_to_media_subtask3 = load_data('country_media_df3_new.parquet')
-CH_aggregated_df_subtask3 = load_data('aggregated_df3_new2.parquet')
-CH_article_counts_df_subtask3 = load_data('article_counts_df3_new.parquet')
-CH_country_article_counts_df_subtask3 = load_data('country_article_counts_df3_new.parquet')
+# CH_media_agg_subtask3 = load_data('media_agg_df3_new2.parquet')
+# CH_country_to_media_subtask3 = load_data('country_media_df3_new.parquet')
+# CH_aggregated_df_subtask3 = load_data('aggregated_df3_new2.parquet')
+# CH_article_counts_df_subtask3 = load_data('article_counts_df3_new.parquet')
+# CH_country_article_counts_df_subtask3 = load_data('country_article_counts_df3_new.parquet')
 
-CH_source_article_counts = load_data('source_article_counts_df2_new.parquet')
-# print(source_article_counts)
-CH_source_article_counts_subtask3 = load_data('source_article_counts_df3_new.parquet') 
+# CH_source_article_counts = load_data('source_article_counts_df2_new.parquet')
+# # print(source_article_counts)
+# CH_source_article_counts_subtask3 = load_data('source_article_counts_df3_new.parquet') 
 
 
 
@@ -623,11 +623,33 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     }
     
     # Plotting the graph using Plotly Express
+    # fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
+    #             color_discrete_map=frames_colors,
+    #             title="Distribution of Framings by Country",
+    #             hover_data={'number_of_articles': True},
+    #             labels={'number_of_articles': 'Number of articles in framing'})
+
+    # # Add axes lines and set x-axis range to [0, 100]
+    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black', range=[0, 100])
+    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+
+    # Increase the size of the figure
+    # fig.update_layout(height=500, width=900)  # Adjust the height and width values as per your requirement
+
+    # st.plotly_chart(fig, use_container_width=True)
+
     fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
-                color_discrete_map=frames_colors,
-                title="Distribution of Framings by Country",
-                hover_data={'number_of_articles': True},
-                labels={'number_of_articles': 'Number of articles in framing'})
+             color_discrete_map=frames_colors,
+             title="Distribution of Framings by Country",
+             labels={'number_of_articles': 'Number of articles in framing'})
+
+    # Custom hover template
+    hovertemplate = "%{customdata[0]}: %{x:.2f}%  (%{customdata[1]} times)<extra></extra>"
+
+    fig.update_traces(
+        hovertemplate=hovertemplate,
+        customdata=melted_df[['Framing', 'number_of_articles']]
+    )
 
     # Add axes lines and set x-axis range to [0, 100]
     fig.update_xaxes(showline=True, linewidth=2, linecolor='black', range=[0, 100])
@@ -637,7 +659,6 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     fig.update_layout(height=500, width=900)  # Adjust the height and width values as per your requirement
 
     st.plotly_chart(fig, use_container_width=True)
-
     ########################################################################################
 
     # Calculate total number of articles for each country
