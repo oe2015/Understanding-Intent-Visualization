@@ -367,73 +367,73 @@ st.session_state.page = st.sidebar.radio("Navigation", pages, index=pages.index(
 
 
 if st.session_state.page == "Framings and Persuasion Techniques: Countries":
-    option = 'Russo-Ukrainian War'
-    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
+    # option = 'Russo-Ukrainian War'
+    # option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
 
     #####loading data ######
-    if option == 'Russo-Ukrainian War':
-        media_agg = RU_media_agg
-        # print(media_agg)
-        country_to_media = RU_country_to_media
-        # print(country_to_media)
-        aggregated_df = RU_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = RU_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = RU_country_article_counts_df
-        # print(country_article_counts_df)
+    # if option == 'Russo-Ukrainian War':
+    #     media_agg = RU_media_agg
+    #     # print(media_agg)
+    #     country_to_media = RU_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = RU_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = RU_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = RU_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = RU_media_agg_subtask3
-        country_to_media_subtask3 = RU_country_to_media_subtask3
-        aggregated_df_subtask3 = RU_aggregated_df_subtask3
-        article_counts_df_subtask3 = RU_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
-        source_article_counts = RU_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = RU_source_article_counts_subtask3
-    elif option == 'Climate Change':
-        media_agg = CH_media_agg
-        # print(media_agg)
-        country_to_media = CH_country_to_media
-        # print(country_to_media)
-        aggregated_df = CH_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = CH_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = CH_country_article_counts_df
-        # print(country_article_counts_df)
+    #     media_agg_subtask3 = RU_media_agg_subtask3
+    #     country_to_media_subtask3 = RU_country_to_media_subtask3
+    #     aggregated_df_subtask3 = RU_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = RU_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+    #     source_article_counts = RU_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    # elif option == 'Climate Change':
+    #     media_agg = CH_media_agg
+    #     # print(media_agg)
+    #     country_to_media = CH_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = CH_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = CH_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = CH_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = CH_media_agg_subtask3
-        country_to_media_subtask3 = CH_country_to_media_subtask3
-        aggregated_df_subtask3 = CH_aggregated_df_subtask3
-        article_counts_df_subtask3 = CH_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+    #     media_agg_subtask3 = CH_media_agg_subtask3
+    #     country_to_media_subtask3 = CH_country_to_media_subtask3
+    #     aggregated_df_subtask3 = CH_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = CH_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
 
-        source_article_counts = CH_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    #     source_article_counts = CH_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = CH_source_article_counts_subtask3
         
-    elif option == 'Combined':
-        media_agg = both_media_agg
-        # print(media_agg)
-        country_to_media = both_country_to_media
-        # print(country_to_media)
-        aggregated_df = both_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = both_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = both_country_article_counts_df
-        # print(country_article_counts_df)
+    # elif option == 'Combined':
+    media_agg = both_media_agg
+    # print(media_agg)
+    country_to_media = both_country_to_media
+    # print(country_to_media)
+    aggregated_df = both_aggregated_df
+    # print(aggregated_df)
+    article_counts_df = both_article_counts_df
+    # print(article_counts_df)
+    country_article_counts_df = both_country_article_counts_df
+    # print(country_article_counts_df)
 
-        media_agg_subtask3 = both_media_agg_subtask3
-        country_to_media_subtask3 = both_country_to_media_subtask3
-        aggregated_df_subtask3 = both_aggregated_df_subtask3
-        article_counts_df_subtask3 = both_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
+    media_agg_subtask3 = both_media_agg_subtask3
+    country_to_media_subtask3 = both_country_to_media_subtask3
+    aggregated_df_subtask3 = both_aggregated_df_subtask3
+    article_counts_df_subtask3 = both_article_counts_df_subtask3
+    country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
 
-        source_article_counts = both_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = both_source_article_counts_subtask3        
+    source_article_counts = both_source_article_counts
+    # print(source_article_counts)
+    source_article_counts_subtask3 = both_source_article_counts_subtask3        
     
     ###########################
 
@@ -820,73 +820,73 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
 elif st.session_state.page  == "Framings: Countries and Sources":
     
-    option = 'Russo-Ukrainian War'
-    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
+    # option = 'Russo-Ukrainian War'
+    # option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
 
     #####loading data ######
-    if option == 'Russo-Ukrainian War':
-        media_agg = RU_media_agg
-        # print(media_agg)
-        country_to_media = RU_country_to_media
-        # print(country_to_media)
-        aggregated_df = RU_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = RU_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = RU_country_article_counts_df
-        # print(country_article_counts_df)
+    # if option == 'Russo-Ukrainian War':
+    #     media_agg = RU_media_agg
+    #     # print(media_agg)
+    #     country_to_media = RU_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = RU_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = RU_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = RU_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = RU_media_agg_subtask3
-        country_to_media_subtask3 = RU_country_to_media_subtask3
-        aggregated_df_subtask3 = RU_aggregated_df_subtask3
-        article_counts_df_subtask3 = RU_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
-        source_article_counts = RU_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = RU_source_article_counts_subtask3
-    elif option == 'Climate Change':
-        media_agg = CH_media_agg
-        # print(media_agg)
-        country_to_media = CH_country_to_media
-        # print(country_to_media)
-        aggregated_df = CH_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = CH_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = CH_country_article_counts_df
-        # print(country_article_counts_df)
+    #     media_agg_subtask3 = RU_media_agg_subtask3
+    #     country_to_media_subtask3 = RU_country_to_media_subtask3
+    #     aggregated_df_subtask3 = RU_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = RU_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+    #     source_article_counts = RU_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    # elif option == 'Climate Change':
+    #     media_agg = CH_media_agg
+    #     # print(media_agg)
+    #     country_to_media = CH_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = CH_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = CH_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = CH_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = CH_media_agg_subtask3
-        country_to_media_subtask3 = CH_country_to_media_subtask3
-        aggregated_df_subtask3 = CH_aggregated_df_subtask3
-        article_counts_df_subtask3 = CH_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+    #     media_agg_subtask3 = CH_media_agg_subtask3
+    #     country_to_media_subtask3 = CH_country_to_media_subtask3
+    #     aggregated_df_subtask3 = CH_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = CH_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
 
-        source_article_counts = CH_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    #     source_article_counts = CH_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = CH_source_article_counts_subtask3
         
-    elif option == 'Combined':
-        media_agg = both_media_agg
-        # print(media_agg)
-        country_to_media = both_country_to_media
-        # print(country_to_media)
-        aggregated_df = both_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = both_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = both_country_article_counts_df
-        # print(country_article_counts_df)
+    # elif option == 'Combined':
+    media_agg = both_media_agg
+    # print(media_agg)
+    country_to_media = both_country_to_media
+    # print(country_to_media)
+    aggregated_df = both_aggregated_df
+    # print(aggregated_df)
+    article_counts_df = both_article_counts_df
+    # print(article_counts_df)
+    country_article_counts_df = both_country_article_counts_df
+    # print(country_article_counts_df)
 
-        media_agg_subtask3 = both_media_agg_subtask3
-        country_to_media_subtask3 = both_country_to_media_subtask3
-        aggregated_df_subtask3 = both_aggregated_df_subtask3
-        article_counts_df_subtask3 = both_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
+    media_agg_subtask3 = both_media_agg_subtask3
+    country_to_media_subtask3 = both_country_to_media_subtask3
+    aggregated_df_subtask3 = both_aggregated_df_subtask3
+    article_counts_df_subtask3 = both_article_counts_df_subtask3
+    country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
 
-        source_article_counts = both_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = both_source_article_counts_subtask3        
+    source_article_counts = both_source_article_counts
+    # print(source_article_counts)
+    source_article_counts_subtask3 = both_source_article_counts_subtask3        
     
     ###########################
 
@@ -1486,73 +1486,73 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
 
 elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
-    option = 'Russo-Ukrainian War'
-    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
+    # option = 'Russo-Ukrainian War'
+    # option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
 
-    #####loading data ######
-    if option == 'Russo-Ukrainian War':
-        media_agg = RU_media_agg
-        # print(media_agg)
-        country_to_media = RU_country_to_media
-        # print(country_to_media)
-        aggregated_df = RU_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = RU_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = RU_country_article_counts_df
-        # print(country_article_counts_df)
+    # #####loading data ######
+    # if option == 'Russo-Ukrainian War':
+    #     media_agg = RU_media_agg
+    #     # print(media_agg)
+    #     country_to_media = RU_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = RU_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = RU_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = RU_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = RU_media_agg_subtask3
-        country_to_media_subtask3 = RU_country_to_media_subtask3
-        aggregated_df_subtask3 = RU_aggregated_df_subtask3
-        article_counts_df_subtask3 = RU_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
-        source_article_counts = RU_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = RU_source_article_counts_subtask3
-    elif option == 'Climate Change':
-        media_agg = CH_media_agg
-        # print(media_agg)
-        country_to_media = CH_country_to_media
-        # print(country_to_media)
-        aggregated_df = CH_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = CH_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = CH_country_article_counts_df
-        # print(country_article_counts_df)
+    #     media_agg_subtask3 = RU_media_agg_subtask3
+    #     country_to_media_subtask3 = RU_country_to_media_subtask3
+    #     aggregated_df_subtask3 = RU_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = RU_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+    #     source_article_counts = RU_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    # elif option == 'Climate Change':
+    #     media_agg = CH_media_agg
+    #     # print(media_agg)
+    #     country_to_media = CH_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = CH_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = CH_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = CH_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = CH_media_agg_subtask3
-        country_to_media_subtask3 = CH_country_to_media_subtask3
-        aggregated_df_subtask3 = CH_aggregated_df_subtask3
-        article_counts_df_subtask3 = CH_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+    #     media_agg_subtask3 = CH_media_agg_subtask3
+    #     country_to_media_subtask3 = CH_country_to_media_subtask3
+    #     aggregated_df_subtask3 = CH_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = CH_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
 
-        source_article_counts = CH_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    #     source_article_counts = CH_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = CH_source_article_counts_subtask3
         
-    elif option == 'Combined':
-        media_agg = both_media_agg
-        # print(media_agg)
-        country_to_media = both_country_to_media
-        # print(country_to_media)
-        aggregated_df = both_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = both_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = both_country_article_counts_df
-        # print(country_article_counts_df)
+    # elif option == 'Combined':
+    media_agg = both_media_agg
+    # print(media_agg)
+    country_to_media = both_country_to_media
+    # print(country_to_media)
+    aggregated_df = both_aggregated_df
+    # print(aggregated_df)
+    article_counts_df = both_article_counts_df
+    # print(article_counts_df)
+    country_article_counts_df = both_country_article_counts_df
+    # print(country_article_counts_df)
 
-        media_agg_subtask3 = both_media_agg_subtask3
-        country_to_media_subtask3 = both_country_to_media_subtask3
-        aggregated_df_subtask3 = both_aggregated_df_subtask3
-        article_counts_df_subtask3 = both_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
+    media_agg_subtask3 = both_media_agg_subtask3
+    country_to_media_subtask3 = both_country_to_media_subtask3
+    aggregated_df_subtask3 = both_aggregated_df_subtask3
+    article_counts_df_subtask3 = both_article_counts_df_subtask3
+    country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
 
-        source_article_counts = both_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = both_source_article_counts_subtask3        
+    source_article_counts = both_source_article_counts
+    # print(source_article_counts)
+    source_article_counts_subtask3 = both_source_article_counts_subtask3        
     
     ###########################
 
@@ -2085,73 +2085,73 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     st.plotly_chart(fig)
 
 elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda":
-    option = 'Russo-Ukrainian War'
-    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
+    # option = 'Russo-Ukrainian War'
+    # option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
 
-    #####loading data ######
-    if option == 'Russo-Ukrainian War':
-        media_agg = RU_media_agg
-        # print(media_agg)
-        country_to_media = RU_country_to_media
-        # print(country_to_media)
-        aggregated_df = RU_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = RU_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = RU_country_article_counts_df
-        # print(country_article_counts_df)
+    # #####loading data ######
+    # if option == 'Russo-Ukrainian War':
+    #     media_agg = RU_media_agg
+    #     # print(media_agg)
+    #     country_to_media = RU_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = RU_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = RU_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = RU_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = RU_media_agg_subtask3
-        country_to_media_subtask3 = RU_country_to_media_subtask3
-        aggregated_df_subtask3 = RU_aggregated_df_subtask3
-        article_counts_df_subtask3 = RU_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
-        source_article_counts = RU_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = RU_source_article_counts_subtask3
-    elif option == 'Climate Change':
-        media_agg = CH_media_agg
-        # print(media_agg)
-        country_to_media = CH_country_to_media
-        # print(country_to_media)
-        aggregated_df = CH_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = CH_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = CH_country_article_counts_df
-        # print(country_article_counts_df)
+    #     media_agg_subtask3 = RU_media_agg_subtask3
+    #     country_to_media_subtask3 = RU_country_to_media_subtask3
+    #     aggregated_df_subtask3 = RU_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = RU_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+    #     source_article_counts = RU_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    # elif option == 'Climate Change':
+    #     media_agg = CH_media_agg
+    #     # print(media_agg)
+    #     country_to_media = CH_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = CH_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = CH_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = CH_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = CH_media_agg_subtask3
-        country_to_media_subtask3 = CH_country_to_media_subtask3
-        aggregated_df_subtask3 = CH_aggregated_df_subtask3
-        article_counts_df_subtask3 = CH_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+    #     media_agg_subtask3 = CH_media_agg_subtask3
+    #     country_to_media_subtask3 = CH_country_to_media_subtask3
+    #     aggregated_df_subtask3 = CH_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = CH_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
 
-        source_article_counts = CH_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    #     source_article_counts = CH_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = CH_source_article_counts_subtask3
         
-    elif option == 'Combined':
-        media_agg = both_media_agg
-        # print(media_agg)
-        country_to_media = both_country_to_media
-        # print(country_to_media)
-        aggregated_df = both_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = both_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = both_country_article_counts_df
-        # print(country_article_counts_df)
+    # elif option == 'Combined':
+    media_agg = both_media_agg
+    # print(media_agg)
+    country_to_media = both_country_to_media
+    # print(country_to_media)
+    aggregated_df = both_aggregated_df
+    # print(aggregated_df)
+    article_counts_df = both_article_counts_df
+    # print(article_counts_df)
+    country_article_counts_df = both_country_article_counts_df
+    # print(country_article_counts_df)
 
-        media_agg_subtask3 = both_media_agg_subtask3
-        country_to_media_subtask3 = both_country_to_media_subtask3
-        aggregated_df_subtask3 = both_aggregated_df_subtask3
-        article_counts_df_subtask3 = both_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
+    media_agg_subtask3 = both_media_agg_subtask3
+    country_to_media_subtask3 = both_country_to_media_subtask3
+    aggregated_df_subtask3 = both_aggregated_df_subtask3
+    article_counts_df_subtask3 = both_article_counts_df_subtask3
+    country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
 
-        source_article_counts = both_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = both_source_article_counts_subtask3        
+    source_article_counts = both_source_article_counts
+    # print(source_article_counts)
+    source_article_counts_subtask3 = both_source_article_counts_subtask3        
     
     ###########################
 
@@ -2767,73 +2767,73 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
 
  #######################################   
 elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
-    option = 'Russo-Ukrainian War'
-    option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
+    # option = 'Russo-Ukrainian War'
+    # option = st.selectbox('Choose a topic', ('Climate Change', 'Russo-Ukrainian War', 'Combined'), index=1)
 
-    #####loading data ######
-    if option == 'Russo-Ukrainian War':
-        media_agg = RU_media_agg
-        # print(media_agg)
-        country_to_media = RU_country_to_media
-        # print(country_to_media)
-        aggregated_df = RU_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = RU_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = RU_country_article_counts_df
-        # print(country_article_counts_df)
+    # #####loading data ######
+    # if option == 'Russo-Ukrainian War':
+    #     media_agg = RU_media_agg
+    #     # print(media_agg)
+    #     country_to_media = RU_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = RU_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = RU_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = RU_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = RU_media_agg_subtask3
-        country_to_media_subtask3 = RU_country_to_media_subtask3
-        aggregated_df_subtask3 = RU_aggregated_df_subtask3
-        article_counts_df_subtask3 = RU_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
-        source_article_counts = RU_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = RU_source_article_counts_subtask3
-    elif option == 'Climate Change':
-        media_agg = CH_media_agg
-        # print(media_agg)
-        country_to_media = CH_country_to_media
-        # print(country_to_media)
-        aggregated_df = CH_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = CH_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = CH_country_article_counts_df
-        # print(country_article_counts_df)
+    #     media_agg_subtask3 = RU_media_agg_subtask3
+    #     country_to_media_subtask3 = RU_country_to_media_subtask3
+    #     aggregated_df_subtask3 = RU_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = RU_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = RU_country_article_counts_df_subtask3
+    #     source_article_counts = RU_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = RU_source_article_counts_subtask3
+    # elif option == 'Climate Change':
+    #     media_agg = CH_media_agg
+    #     # print(media_agg)
+    #     country_to_media = CH_country_to_media
+    #     # print(country_to_media)
+    #     aggregated_df = CH_aggregated_df
+    #     # print(aggregated_df)
+    #     article_counts_df = CH_article_counts_df
+    #     # print(article_counts_df)
+    #     country_article_counts_df = CH_country_article_counts_df
+    #     # print(country_article_counts_df)
 
-        media_agg_subtask3 = CH_media_agg_subtask3
-        country_to_media_subtask3 = CH_country_to_media_subtask3
-        aggregated_df_subtask3 = CH_aggregated_df_subtask3
-        article_counts_df_subtask3 = CH_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
+    #     media_agg_subtask3 = CH_media_agg_subtask3
+    #     country_to_media_subtask3 = CH_country_to_media_subtask3
+    #     aggregated_df_subtask3 = CH_aggregated_df_subtask3
+    #     article_counts_df_subtask3 = CH_article_counts_df_subtask3
+    #     country_article_counts_df_subtask3 = CH_country_article_counts_df_subtask3
 
-        source_article_counts = CH_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = CH_source_article_counts_subtask3
+    #     source_article_counts = CH_source_article_counts
+    #     # print(source_article_counts)
+    #     source_article_counts_subtask3 = CH_source_article_counts_subtask3
         
-    elif option == 'Combined':
-        media_agg = both_media_agg
-        # print(media_agg)
-        country_to_media = both_country_to_media
-        # print(country_to_media)
-        aggregated_df = both_aggregated_df
-        # print(aggregated_df)
-        article_counts_df = both_article_counts_df
-        # print(article_counts_df)
-        country_article_counts_df = both_country_article_counts_df
-        # print(country_article_counts_df)
+    # elif option == 'Combined':
+    media_agg = both_media_agg
+    # print(media_agg)
+    country_to_media = both_country_to_media
+    # print(country_to_media)
+    aggregated_df = both_aggregated_df
+    # print(aggregated_df)
+    article_counts_df = both_article_counts_df
+    # print(article_counts_df)
+    country_article_counts_df = both_country_article_counts_df
+    # print(country_article_counts_df)
 
-        media_agg_subtask3 = both_media_agg_subtask3
-        country_to_media_subtask3 = both_country_to_media_subtask3
-        aggregated_df_subtask3 = both_aggregated_df_subtask3
-        article_counts_df_subtask3 = both_article_counts_df_subtask3
-        country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
+    media_agg_subtask3 = both_media_agg_subtask3
+    country_to_media_subtask3 = both_country_to_media_subtask3
+    aggregated_df_subtask3 = both_aggregated_df_subtask3
+    article_counts_df_subtask3 = both_article_counts_df_subtask3
+    country_article_counts_df_subtask3 = both_country_article_counts_df_subtask3
 
-        source_article_counts = both_source_article_counts
-        # print(source_article_counts)
-        source_article_counts_subtask3 = both_source_article_counts_subtask3        
+    source_article_counts = both_source_article_counts
+    # print(source_article_counts)
+    source_article_counts_subtask3 = both_source_article_counts_subtask3        
     
     ###########################
 
