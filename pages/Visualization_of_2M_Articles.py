@@ -638,48 +638,31 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
     # st.plotly_chart(fig, use_container_width=True)
 
-    import plotly.graph_objects as go
 
     # Assuming melted_df is your dataframe with the data
 
-    # Create the base figure
-    fig = go.Figure()
+    # Create the figure using Plotly Express
+    fig = px.bar(melted_df, 
+             x='Percentage', 
+             y='country', 
+             color='Framing', 
+             orientation='h',
+             color_discrete_map=frames_colors,
+             title="Distribution of Framings by Country",
+             custom_data=['Framing', 'Percentage', 'number_of_articles'])
 
-    # Add bars for each framing
-    for framing in melted_df['Framing'].unique():
-        df_framing = melted_df[melted_df['Framing'] == framing]
-        fig.add_trace(go.Bar(
-            y=df_framing['country'],
-            x=df_framing['Percentage'],
-            name=framing,
-            orientation='h',
-            marker_color=frames_colors[framing],
-            customdata=df_framing[['Framing', 'number_of_articles']],
-            hovertemplate='%{customdata[0]}: %{x:.2f}%  (%{customdata[1]} times)<extra></extra>'
-        ))
-
-    # Update layout
-    fig.update_layout(
-        barmode='stack',
-        title="Distribution of Framings by Country",
-        height=500,
-        width=900,
-        xaxis=dict(
-            title='Percentage',
-            range=[0, 100],
-            showline=True,
-            linewidth=2,
-            linecolor='black'
-        ),
-        yaxis=dict(
-            title='Country',
-            showline=True,
-            linewidth=2,
-            linecolor='black'
-        )
+    fig.update_traces(
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]} times)<extra></extra>"
     )
 
-    # Display the figure in Streamlit
+    fig.update_layout(
+        height=500, 
+        width=900,
+        xaxis_range=[0, 100],
+        xaxis_title="Percentage",
+        yaxis_title="Country"
+    )
+
     st.plotly_chart(fig, use_container_width=True)
     ########################################################################################
 
