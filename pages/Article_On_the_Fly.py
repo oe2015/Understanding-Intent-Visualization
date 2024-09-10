@@ -134,59 +134,39 @@ c30, c31, c32 = st.columns([20, 1, 3])
 with c30:
     st.title("FRAPPE")
     st.header("")
-with st.expander("About this app", expanded=False):
-    st.write(
+# with st.expander("About this platform!", expanded=False):
+#     st.write(
+#         """
+#         The abundance of news sources and the urgent demand for reliable information have led to serious concerns about the threat of misleading information. We present FRAPPE, a FRAming, Persuasion, and Propaganda Explorer system. FRAPPE goes beyond conventional news analysis of articles and unveils the intricate linguistic techniques used to shape readers’ opinions and emotions. Our system allows users not only to analyze individual articles for their genre, framings, and use of persuasion techniques, but also to draw comparisons between the strategies of persuasion and framing adopted by a diverse pool of news outlets and countries across multiple languages for different topics, thus providing a comprehensive understanding of how information is presented and manipulated.
+#         You can find the paper here: https://aclanthology.org/2024.eacl-demo.22/ and a video of our demo here: https://aclanthology.org/2024.eacl-demo.22.mp4
+#         """
+#     )
+#     st.markdown("")
+with st.expander("About FRAPPE", expanded=False):
+    st.markdown(
         """
-        This platform performs three major tasks on English news articles:
-        
-        **1. Article Genre Classification:** 
-        The model classifies an article into one of the three genres:
-        - Opinion
-        - Reporting
-        - Satire
-        
-        **2. Frame Detection:**
-        The model is capable of detecting the existence of one or multiple frames out of 14 possible frames:
-        - Economic
-        - Capacity and Resources
-        - Morality
-        - Fairness and Equality
-        - Legality, Constitutionality, and Jurisprudence
-        - Policy Prescription and Evaluation
-        - Crime and Punishment
-        - Security and Defense
-        - Health and Safety
-        - Quality of Life
-        - Cultural Identity
-        - Public Opinion
-        - Political
-        - External Regulation and Reputation
-        
-        **3. Persuasion Technique Classification:**
-        The model identifies the usage of 23 persuasion techniques at the sentence level, which are:
-        - Loaded Language
-        - Obfuscation, Vagueness, Confusion
-        - Conversation Killer
-        - Appeal to Time
-        - Whataboutism
-        - Red Herring
-        - Straw Man
-        - Causal Oversimplification
-        - Appeal to Values
-        - Appeal to Popularity
-        - Appeal to Hypocrisy
-        - Appeal to Authority
-        - Consequential Oversimplification
-        - False Dilemma/No Choice
-        - Repetition
-        - Slogans
-        - Doubt
-        - Exaggeration/Minimisation
-        - Name Calling/Labeling
-        - Flag Waving
-        - Appeal to Fear/Prejudice
-        - Guilt by Association
-        - Questioning the Reputation
+        ## Welcome to FRAPPE: Your FRAming, Persuasion, and Propaganda Explorer
+
+        In today's information-rich world, distinguishing reliable news from misleading content is more crucial than ever. FRAPPE is here to help you navigate this complex landscape.
+
+        ### What FRAPPE Does:
+        - Analyzes news articles beyond the surface level
+        - Uncovers linguistic techniques that shape opinions and emotions
+        - Compares persuasion and framing strategies across:
+          - Various news outlets
+          - Multiple countries
+          - Different languages and topics
+
+        ### Why Use FRAPPE:
+        - Gain deeper insights into news content
+        - Understand how information is presented and potentially manipulated
+        - Develop a more critical and informed approach to media consumption
+
+        ### Learn More:
+        - Read our research paper: [FRAPPE: FRAming, Persuasion, and Propaganda Explorer](https://aclanthology.org/2024.eacl-demo.22/)
+        - Watch our demo video: [FRAPPE in Action](https://aclanthology.org/2024.eacl-demo.22.mp4)
+
+        Empower yourself with FRAPPE and become a more discerning news reader!
         """
     )
     st.markdown("")
