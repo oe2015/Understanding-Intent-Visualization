@@ -1284,7 +1284,7 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
     fig = px.bar(melted_df, 
                 x='Percentage', 
-                y='Source', 
+                y='source', 
                 color='Framing', 
                 orientation='h',
                 color_discrete_map=frames_colors,
