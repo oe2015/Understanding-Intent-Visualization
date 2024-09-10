@@ -652,8 +652,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
              custom_data=['Framing', 'Percentage', 'number_of_articles'])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]} times)<extra></extra>"
-    )
+    hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>")
 
     fig.update_layout(
         height=500, 
@@ -662,7 +661,6 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         xaxis_title="Percentage",
         yaxis_title="Country"
     )
-
     st.plotly_chart(fig, use_container_width=True)
     ########################################################################################
 
@@ -734,23 +732,46 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     }
 
     # Plotting the graph using Plotly Express
-    fig = px.bar(melted_df, x='Percentage', y='country', color='Persuasion Techniques', orientation='h', 
-                    color_discrete_map = color_mapping,
-                    title="Distribution of Persuasion Techniques by Country",
-                    hover_data={
-                        'Frequency': True,
-                        'Percentage': ':.2f'  # Format as float with 2 decimal places
-                    },
-                    labels={
-                        'Percentage': 'Percentage of Persuasion Technique',
-                        'Frequency': 'Frequency of Persuasion Technique'
-                    })
+    # fig = px.bar(melted_df, x='Percentage', y='country', color='Persuasion Techniques', orientation='h', 
+    #                 color_discrete_map = color_mapping,
+    #                 title="Distribution of Persuasion Techniques by Country",
+    #                 hover_data={
+    #                     'Frequency': True,
+    #                     'Percentage': ':.2f'  # Format as float with 2 decimal places
+    #                 },
+    #                 labels={
+    #                     'Percentage': 'Percentage of Persuasion Technique',
+    #                     'Frequency': 'Frequency of Persuasion Technique'
+    #                 })
 
-    # Add axes lines
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+    # # Add axes lines
+    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
+    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
 
-    fig.update_layout(height=700, width=900) 
+    # fig.update_layout(height=700, width=900) 
+    # st.plotly_chart(fig, use_container_width=True)
+    fig = px.bar(melted_df, 
+             x='Percentage', 
+             y='country', 
+             color='Persuasion Techniques', 
+             orientation='h',
+             color_discrete_map=color_mapping,
+             title="Distribution of Persuasion Techniques by Country",
+             custom_data=['Persuasion Techniques', 'Percentage', 'Frequency'])
+
+    fig.update_traces(
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    )
+
+    fig.update_layout(
+        height=700, 
+        width=900,
+        xaxis_title="Percentage of Persuasion Technique",
+        yaxis_title="Country",
+        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+        yaxis=dict(showline=True, linewidth=2, linecolor='black')
+    )
+
     st.plotly_chart(fig, use_container_width=True)
     ###########################################################################################
 
