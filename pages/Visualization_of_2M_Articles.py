@@ -1921,23 +1921,46 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     }
 
     # Plotting the graph using Plotly Express
-    fig = px.bar(melted_df, x='Percentage', y='source', color='Persuasion Techniques', orientation='h', 
-                    color_discrete_map=color_mapping,  # use the color mapping
-                    title="Distribution of Persuasion Techniques by Source",
-                    hover_data={
-                        'Frequency': True,
-                        'Percentage': ':.2f'  # Format as float with 2 decimal places
-                    },
-                    labels={
-                        'Percentage': 'Percentage of Persuasion Technique',
-                        'Frequency': 'Frequency of Persuasion Technique'
-                    })
+    # fig = px.bar(melted_df, x='Percentage', y='source', color='Persuasion Techniques', orientation='h', 
+    #                 color_discrete_map=color_mapping,  # use the color mapping
+    #                 title="Distribution of Persuasion Techniques by Source",
+    #                 hover_data={
+    #                     'Frequency': True,
+    #                     'Percentage': ':.2f'  # Format as float with 2 decimal places
+    #                 },
+    #                 labels={
+    #                     'Percentage': 'Percentage of Persuasion Technique',
+    #                     'Frequency': 'Frequency of Persuasion Technique'
+    #                 })
 
-    # Add axes lines
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+    # # Add axes lines
+    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black')
+    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
 
-    fig.update_layout(height=700, width=900) 
+    # fig.update_layout(height=700, width=900) 
+    # st.plotly_chart(fig, use_container_width=True)
+    fig = px.bar(melted_df, 
+             x='Percentage', 
+             y='source',  # Make sure this matches your column name exactly
+             color='Persuasion Techniques', 
+             orientation='h',
+             color_discrete_map=color_mapping,
+             title="Distribution of Persuasion Techniques by Source",
+             custom_data=['Persuasion Techniques', 'Percentage', 'Frequency'])
+
+    fig.update_traces(
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    )
+
+    fig.update_layout(
+        height=700, 
+        width=900,
+        xaxis_title="Percentage of Persuasion Technique",
+        yaxis_title="Source",
+        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+        yaxis=dict(showline=True, linewidth=2, linecolor='black')
+    )
+
     st.plotly_chart(fig, use_container_width=True)
 
 
