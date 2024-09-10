@@ -1369,47 +1369,23 @@ elif st.session_state.page  == "Framings: Countries and Sources":
     }
 
     # Plotting the graph using Plotly Express
-    # fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
-    #             color_discrete_map=frames_colors,  # use the color mapping
-    #             title="Distribution of Framings by Country",
-    #             hover_data={
-    #                 'number_of_articles': True,
-    #                 'total_articles': True
-    #             },
-    #             labels={
-    #                 'number_of_articles': 'Number of articles in framing',
-    #                 'total_articles': 'Total articles in country'
-    #             })
+    fig = px.bar(melted_df, x='Percentage', y='country', color='Framing', orientation='h', 
+                color_discrete_map=frames_colors,  # use the color mapping
+                title="Distribution of Framings by Country",
+                hover_data={
+                    'number_of_articles': True,
+                    'total_articles': True
+                },
+                labels={
+                    'number_of_articles': 'Number of articles in framing',
+                    'total_articles': 'Total articles in country'
+                })
 
-    # # Add axes lines and set x-axis range to [0, 100]
-    # fig.update_xaxes(showline=True, linewidth=2, linecolor='black', range=[0, 100])
-    # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
+    # Add axes lines and set x-axis range to [0, 100]
+    fig.update_xaxes(showline=True, linewidth=2, linecolor='black', range=[0, 100])
+    fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
 
-    # fig.update_layout(height=500, width=900) 
-    # st.plotly_chart(fig, use_container_width=True)
-    
-    
-    fig = px.bar(melted_df, 
-             x='Percentage', 
-             y='country', 
-             color='Framing', 
-             orientation='h',
-             color_discrete_map=frames_colors,
-             title="Distribution of Framings by Country",
-             custom_data=['Framing', 'Percentage', 'number_of_articles'])
-
-    fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
-    )
-
-    fig.update_layout(
-        height=500, 
-        width=900,
-        xaxis_range=[0, 100],
-        xaxis_title="Percentage",
-        yaxis_title="Country"
-    )
-
+    fig.update_layout(height=500, width=900) 
     st.plotly_chart(fig, use_container_width=True)
 
  ########################################################################################
