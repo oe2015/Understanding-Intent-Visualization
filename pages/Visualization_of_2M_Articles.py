@@ -1952,14 +1952,28 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
         hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
     )
 
+    # fig.update_layout(
+    #     height=700, 
+    #     width=900,
+    #     xaxis_title="Percentage of Persuasion Technique",
+    #     yaxis_title="Source",
+    #     xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+    #     yaxis=dict(showline=True, linewidth=2, linecolor='black')
+    # )
+
+    # st.plotly_chart(fig, use_container_width=True)
     fig.update_layout(
-        height=700, 
-        width=900,
-        xaxis_title="Percentage of Persuasion Technique",
-        yaxis_title="Source",
-        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
-        yaxis=dict(showline=True, linewidth=2, linecolor='black')
+    height=1000,  # Increase height
+    width=900,
+    xaxis_type="log",  # Use logarithmic scale
+    xaxis_title="Percentage of Persuasion Technique (log scale)",
+    yaxis_title="Country",
+    xaxis=dict(showline=True, linewidth=2, linecolor='black', range=[-2, 2]),  # log10(0.01) to log10(100)
+    yaxis=dict(showline=True, linewidth=2, linecolor='black')
     )
+
+    # Adjust margins to fit all labels
+    fig.update_layout(margin=dict(l=200, r=20, t=50, b=50))
 
     st.plotly_chart(fig, use_container_width=True)
 
