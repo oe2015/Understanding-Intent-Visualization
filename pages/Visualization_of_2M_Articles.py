@@ -688,37 +688,21 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
              custom_data=['Framing', 'Percentage', 'number_of_articles'])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br>" +
+                    "%{customdata[0]|" + 
+                    "|".join(f"{k}={v}" for k, v in framing_explanations.items()) + 
+                    "}<extra></extra>"
     )
 
-    # Update layout
     fig.update_layout(
         height=500, 
         width=900,
         xaxis_range=[0, 100],
         xaxis_title="Percentage",
-        yaxis_title="Country",
-        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
-        yaxis=dict(showline=True, linewidth=2, linecolor='black'),
-        legend_title_text='Framing',
-        legend=dict(
-            itemsizing='constant',
-            itemclick='toggleothers',
-            itemdoubleclick='toggle',
-        ),
+        yaxis_title="Country"
     )
 
-    # Add hover text to legend items
-    for trace in fig.data:
-        framing = trace.name
-        explanation = framing_explanations.get(framing, "No explanation available")
-        trace.legendgrouptitle.font.size = 14
-        trace.legendgroup = framing
-        trace.hoverinfo = 'name'
-        trace.hovertemplate = f"<b>{framing}</b><br><br>{explanation}<extra></extra>"
-
     st.plotly_chart(fig, use_container_width=True)
-    
     ########################################################################################
 
     # Calculate total number of articles for each country
