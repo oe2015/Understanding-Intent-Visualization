@@ -228,7 +228,7 @@ if text:
         sleep(15)
     
     # Get the prediction from the response
-    predicted_probabilities = response1.json()["response"]
+    predicted_probabilities = response1.json()["response"]["Probabilities"]
     print(predicted_probabilities)
     class_names = CFG.CLASSES
     max_probability_index = np.argmax(predicted_probabilities)
