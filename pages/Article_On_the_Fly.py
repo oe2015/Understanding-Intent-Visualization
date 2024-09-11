@@ -220,16 +220,15 @@ text = " ".join(doc.split())
 if text:
     # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task1", json={"text": text})
-
     # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
     status = "PENDING"
     while status != "COMPLETED":
-        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"])
+        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
         status = response1["status"]
         sleep(15)
     
     # Get the prediction from the response
-    predicted_probabilities = response1["response"].json()
+    predicted_probabilities = response1.json()["response"]
     print(predicted_probabilities)
     class_names = CFG.CLASSES
     max_probability_index = np.argmax(predicted_probabilities)
