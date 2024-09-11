@@ -224,7 +224,7 @@ if text:
     status = "PENDING"
     while status != "COMPLETED":
         response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
-        status = response1["status"]
+        status = response1.json()["status"]
         sleep(15)
     
     # Get the prediction from the response
