@@ -712,16 +712,28 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         itemsizing='constant',
         itemwidth=30
     )
-    )
+)
 
     # Add custom hover text to legend items
     for trace in fig.data:
         frame_name = trace.name
         explanation = framing_explanations.get(frame_name, "No explanation available")
         trace.legendgrouptitle = dict(
-            text=f"<b>{frame_name}</b><br><br><i>{explanation}</i>",
-            font=dict(size=10)
+            text=frame_name,
+            font=dict(size=12)
         )
+        trace.hovertext = explanation
+        trace.hoverinfo = "text"
+    fig.update_layout(
+    legend=dict(
+        itemsizing='constant',
+        itemwidth=30,
+        hoverlabel=dict(
+            font_size=12,
+            font_family="Arial"
+        )
+    )
+    )
     st.plotly_chart(fig, use_container_width=True)
     ########################################################################################
 
