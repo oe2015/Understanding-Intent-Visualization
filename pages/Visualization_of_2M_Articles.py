@@ -691,25 +691,25 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
     )
 
-    # Update layout to enable legend hovering
-    fig.update_layout(
-        legend_title_text='Framing',
-        legend=dict(
-            itemsizing='constant',
-            itemclick='toggleothers',
-            itemdoubleclick='toggle',
+    # Create a new trace for legend items with hover
+    legend_traces = []
+    for framing, color in frames_colors.items():
+        legend_traces.append(
+            go.Scatter(
+                x=[None], y=[None],
+                mode='markers',
+                marker=dict(size=10, color=color),
+                name=framing,
+                legendgroup=framing,
+                showlegend=True,
+                hoverinfo='text',
+                hovertext=f"<b>{framing}</b><br><br>{framing_explanations.get(framing, 'No explanation available')}",
+            )
         )
-    )
 
-    # Add hover text to legend items
-    for trace in fig.data:
-        framing = trace.name
-        try:
-            explanation = framing_explanations[framing]
-            trace.hoverinfo = 'name'
-            trace.hovertemplate = f"<b>{framing}</b><br><br>{explanation}<extra></extra>"
-        except KeyError:
-            st.warning(f"No explanation found for framing: {framing}")
+    # Add the legend traces to the figure
+    for trace in legend_traces:
+        fig.add_trace(trace)
 
     fig.update_layout(
         height=500, 
@@ -718,7 +718,14 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         xaxis_title="Percentage",
         yaxis_title="Country",
         xaxis=dict(showline=True, linewidth=2, linecolor='black'),
-        yaxis=dict(showline=True, linewidth=2, linecolor='black')
+        yaxis=dict(showline=True, linewidth=2, linecolor='black'),
+        legend_title_text='Framing',
+        legend=dict(
+            itemsizing='constant',
+            itemclick='toggleothers',
+            itemdoubleclick='toggle',
+        ),
+        hovermode='closest'
     )
 
     st.plotly_chart(fig, use_container_width=True)
