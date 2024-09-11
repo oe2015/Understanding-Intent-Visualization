@@ -688,10 +688,10 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
              custom_data=['Framing', 'Percentage', 'number_of_articles'])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br>" +
-                    "%{customdata[0]|" + 
-                    "|".join(f"{k}={v}" for k, v in framing_explanations.items()) + 
-                    "}<extra></extra>"
+    hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br>" +
+                  "<i>%{customdata[0]|" + 
+                  "|".join(f"{k}={v}" for k, v in framing_explanations.items()) + 
+                  "}</i><extra></extra>"
     )
 
     fig.update_layout(
