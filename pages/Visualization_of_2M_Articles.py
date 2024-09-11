@@ -401,7 +401,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     "Obfuscation Vagueness Confusion": "Obfuscation, Intentional Vagueness, Confusion",
     "Exaggeration Minimisation": "Exaggeration or Minimisation",
     "Appeal to Fear Prejudice": "Appeal to Fear, Prejudice",
-    "Name Calling Labeling":"Name Calling Labelling"
+    "Name Calling Labeling":"Name Calling or Labelling"
     }
 
     # Apply the replacements to the 'Persuasion Techniques' column
@@ -1478,7 +1478,7 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     "Obfuscation Vagueness Confusion": "Obfuscation, Intentional Vagueness, Confusion",
     "Exaggeration Minimisation": "Exaggeration or Minimisation",
     "Appeal to Fear Prejudice": "Appeal to Fear, Prejudice",
-    "Name Calling Labeling":"Name Calling Labelling"
+    "Name Calling Labeling":"Name Calling or Labelling"
     }
 
     # Apply the replacements to the 'Persuasion Techniques' column
@@ -1609,7 +1609,7 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     "Obfuscation Vagueness Confusion": "Obfuscation, Intentional Vagueness, Confusion",
     "Exaggeration Minimisation": "Exaggeration or Minimisation",
     "Appeal to Fear Prejudice": "Appeal to Fear, Prejudice",
-    "Name Calling Labeling":"Name Calling Labelling"
+    "Name Calling Labeling":"Name Calling or Labelling"
     }
 
     # Apply the replacements to the 'Persuasion Techniques' column
