@@ -28,6 +28,34 @@
       ],
       "Effect": "Allow",
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:Query",
+        "dynamodb:UpdateItem"
+      ],
+      "Resource": [
+        "${dynamodb_arn}",
+        "${dynamodb_arn}/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "lambda:Invoke*"
+      ],
+      "Resource": [
+        "${lambda_task1_arn}",
+        "${lambda_task2_arn}",
+        "${lambda_task3_arn}"
+      ]
     }
   ]
 }

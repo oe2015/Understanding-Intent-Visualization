@@ -1,0 +1,4 @@
+flask
+aws-lambda-wsgi
+aws-lambda-powertools
+boto3

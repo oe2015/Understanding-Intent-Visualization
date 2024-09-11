@@ -1,11 +1,6 @@
 #!/bin/bash
 
 # Script for executing lambda functions
-#
-# Examples
-# --------
-# $ ./run.sh lambda_artifact_icd10cm
-#
 
 source "${BASH_SOURCE%/*}/common.sh"
 

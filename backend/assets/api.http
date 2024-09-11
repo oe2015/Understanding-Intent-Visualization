@@ -1,6 +1,7 @@
 # The following is a list of all the possible variables that can be used in the
 # configuration file.  The values are the default values.
 @hostname = https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com
+#@hostname = http://127.0.0.1:5000
 @host = {{hostname}}
 
 # Test the health of the API
@@ -8,11 +9,16 @@ GET {{host}}/health
 
 ###
 
-# Get all the rules
-POST {{host}}/task1
+# Run Task 1
+POST {{host}}/run/task1
 content-type: application/json
 
 {
     "text": "This is the best day of my life"
 }
+###
+
+# Get Task ID
+GET {{host}}/run/f65d6fb23bfc411992d83c5a650185a3
+
 ###
