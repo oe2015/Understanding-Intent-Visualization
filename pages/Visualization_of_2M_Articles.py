@@ -685,13 +685,11 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
              orientation='h',
              color_discrete_map=frames_colors,
              title="Distribution of Frames by Country",
-             custom_data=['Framing', 'Percentage', 'number_of_articles'])
+             custom_data=['Framing', 'Percentage', 'number_of_articles', melted_df['Framing'].map(framing_explanations)])
 
     fig.update_traces(
     hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
-                  "<i>%{customdata[0]|" + 
-                  "|".join(framing_explanations.values()) + 
-                  "}</i><extra></extra>"
+                  "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     fig.update_layout(
