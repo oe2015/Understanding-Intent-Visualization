@@ -224,7 +224,7 @@ if text:
     # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
     status = "PENDING"
     while status != "COMPLETED":
-        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
+        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"])
         status = response1["status"]
         sleep(15)
     
