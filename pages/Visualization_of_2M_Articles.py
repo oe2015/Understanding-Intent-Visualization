@@ -2917,18 +2917,18 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
     # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
 
     # st.plotly_chart(fig, use_container_width=True)
-    
+    grouped_df['Explanation'] = grouped_df['Category'].apply(lambda x: '' if x == 'Other' else techniques.get(x, '')) 
     fig = px.bar(grouped_df, 
              x='Percentage', 
              y='source', 
              color='Category', 
              orientation='h',
              title="Distribution of Rhetorical dimension by Source",
-             custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].map(techniques)])
+             custom_data=['Category', 'Percentage', 'Frequency', 'Explanation'])
 
     fig.update_traces(
-        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
-                    "<i>%{customdata[3]}</i><extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)" +
+                    "<br><br><i>%{customdata[3]}</i><extra></extra>"
     )
 
     # Add axes lines
