@@ -63,7 +63,10 @@ techniques = {
     "Loaded Language": "Using emotionally charged words to influence.",
     "Obfuscation, Intentional Vagueness, Confusion": "Being unclear to allow varied interpretations.",
     "Exaggeration or Minimisation": "Overstating or downplaying significance.",
-    "Repetition": "Repeating phrases to persuade."
+    "Repetition": "Repeating phrases to persuade.",
+    "Ethos":"Persuasion by appealing to credibility or authority.",
+    "Pathos":"Persuasion by appealing to emotion in the audience.",
+    "Logos":"Persuasion by appealing to logic by following valid reasoning and presenting of evidence."
 }
 
 ###############################################################################
@@ -2914,16 +2917,18 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
     # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
 
     # st.plotly_chart(fig, use_container_width=True)
+    
     fig = px.bar(grouped_df, 
              x='Percentage', 
              y='source', 
              color='Category', 
              orientation='h',
              title="Distribution of Rhetorical dimension by Source",
-             custom_data=['Category', 'Percentage', 'Frequency'])
+             custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].map(techniques)])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     # Add axes lines
@@ -3057,10 +3062,11 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
              color='Category', 
              orientation='h',
              title="Distribution of Rhetorical dimension by Country",
-             custom_data=['Category', 'Percentage', 'Frequency'])
+             custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].map(techniques)])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     # Add axes lines
