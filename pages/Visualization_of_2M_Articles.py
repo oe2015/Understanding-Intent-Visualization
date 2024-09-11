@@ -814,16 +814,16 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
     # st.plotly_chart(fig, use_container_width=True)
     techniques = {
-    "Name Calling or Labelling": "Using insulting or desirable labels for individuals or groups.",
+    "Name Calling Labelling": "Using insulting or desirable labels for individuals or groups.",
     "Guilt by Association": "Attacking by linking to negatively viewed groups or concepts.",
-    "Casting Doubt": "Undermining credibility by questioning character.",
+    "Doubt": "Undermining credibility by questioning character.",
     "Appeal to Hypocrisy": "Accusing of hypocrisy to attack reputation.",
     "Questioning the Reputation": "Undermining character with negative claims.",
     "Flag Waiving": "Justifying ideas by appealing to group pride or benefits.",
     "Appeal to Authority": "Citing authority to support an argument.",
     "Appeal to Popularity": "Claiming widespread agreement to justify a stance.",
     "Appeal to Values": "Linking ideas to positive values.",
-    "Appeal to Fear, Prejudice": "Using fear or prejudice to promote or reject ideas.",
+    "Appeal to Fear, Prejudice": "Using fear or prejudice to promote or reject ideas.", 
     "Strawman": "Misrepresenting an argument to refute it easily.",
     "Red Herring": "Distracting from the main issue with irrelevant topics.",
     "Whataboutism": "Accusing of hypocrisy without disproving the argument.",
@@ -838,6 +838,18 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     "Exaggeration or Minimisation": "Overstating or downplaying significance.",
     "Repetition": "Repeating phrases to persuade."
     }
+    
+    replacements = {
+    "Flag Waving": "Flag Waiving",
+    "Straw man": "Strawman",
+    "False Dilemma No Choice": "False Dilemma or No Choice",
+    "Obfuscation Vagueness Confusion": "Obfuscation, Intentional Vagueness, Confusion",
+    "Exaggeration Minimisation": "Exaggeration or Minimisation",
+    "Appeal to Fear Prejudice": "Appeal to Fear, Prejudice"
+    }
+
+    # Apply the replacements to the 'Persuasion Techniques' column
+    melted_df['Persuasion Techniques'] = melted_df['Persuasion Techniques'].replace(replacements)
 
     fig = px.bar(melted_df, 
                 x='Percentage', 
