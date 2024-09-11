@@ -678,19 +678,19 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     #     yaxis_title="Country"
     # )
     # st.plotly_chart(fig, use_container_width=True)
-    fig = px.bar(melted_df, 
-             x='Percentage', 
-             y='country', 
-             color='Framing', 
-             orientation='h',
-             color_discrete_map=frames_colors,
-             title="Distribution of Frames by Country",
-             custom_data=['Framing', 'Percentage', 'number_of_articles', melted_df['Framing'].map(framing_explanations)])
+    # fig = px.bar(melted_df, 
+    #          x='Percentage', 
+    #          y='country', 
+    #          color='Framing', 
+    #          orientation='h',
+    #          color_discrete_map=frames_colors,
+    #          title="Distribution of Frames by Country",
+    #          custom_data=['Framing', 'Percentage', 'number_of_articles', melted_df['Framing'].map(framing_explanations)])
 
-    fig.update_traces(
-    hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
-                  "<i>%{customdata[3]}</i><extra></extra>"
-    )
+    # fig.update_traces(
+    # hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+    #               "<i>%{customdata[3]}</i><extra></extra>"
+    # )
 
     # fig.update_layout(
     #     height=500, 
@@ -701,40 +701,60 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     # )
 
     # st.plotly_chart(fig, use_container_width=True)
-    fig.update_layout(
-    height=500, 
-    width=900,
-    xaxis_range=[0, 100],
-    xaxis_title="Percentage",
-    yaxis_title="Country",
-    legend_title="Framing",
-    legend=dict(
-        itemsizing='constant',
-        itemwidth=30
-    )
+    fig = px.bar(melted_df, 
+             x='Percentage', 
+             y='country', 
+             color='Framing', 
+             orientation='h',
+             color_discrete_map=frames_colors,
+             title="Distribution of Frames by Country",
+             custom_data=['Framing', 'Percentage', 'number_of_articles'])
+
+    # Update hover template for the bars
+    fig.update_traces(
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[0]|" + 
+                    "|".join(f"{k}={framing_explanations[k]}" for k in framing_explanations) + 
+                    "}</i><extra></extra>"
     )
 
-    # Add custom hover text to legend items
-    for trace in fig.data:
-        frame_name = trace.name
-        explanation = framing_explanations.get(frame_name, "No explanation available")
-        trace.legendgrouptitle = dict(
-            text=frame_name,
-            font=dict(size=12)
+    # Create a list to hold legend items
+    legend_traces = []
+
+    # Create invisible scatter plots for each framing category to use as legend items
+    for frame, color in frames_colors.items():
+        legend_traces.append(
+            go.Scatter(
+                x=[None], y=[None],  # No data, just for legend
+                mode='markers',
+                marker=dict(size=10, color=color),
+                name=frame,
+                legendgroup=frame,
+                showlegend=True,
+                hoverinfo='name',
+                hovertemplate=f"<b>{frame}</b><br><br><i>{framing_explanations.get(frame, 'No explanation available')}</i><extra></extra>"
+            )
         )
-        trace.hovertext = explanation
-        trace.hoverinfo = "text"
-        
+
+    # Add the legend traces to the figure
+    for trace in legend_traces:
+        fig.add_trace(trace)
+
+    # Update layout
     fig.update_layout(
-    legend=dict(
-        itemsizing='constant',
-        itemwidth=30,
-        hoverlabel=dict(
-            font_size=12,
-            font_family="Arial"
+        height=500, 
+        width=900,
+        xaxis_range=[0, 100],
+        xaxis_title="Percentage",
+        yaxis_title="Country",
+        legend_title="Framing",
+        legend=dict(
+            itemsizing='constant',
+            itemwidth=30
         )
     )
-    )
+
+    # Display the figure in Streamlit
     st.plotly_chart(fig, use_container_width=True)
     ########################################################################################
 
