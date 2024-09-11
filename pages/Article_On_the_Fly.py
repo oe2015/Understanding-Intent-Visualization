@@ -225,10 +225,10 @@ if text:
     while status != "COMPLETED":
         response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
         status = response1.json()["status"]
-        sleep(15)
+        sleep(3)
     
     # Get the prediction from the response
-    predicted_probabilities = response1.json()["response"]["Probabilities"]
+    predicted_probabilities = json.loads(response1.json()["response"])["Probabilities"]
     print(predicted_probabilities)
     class_names = CFG.CLASSES
     max_probability_index = np.argmax(predicted_probabilities)
