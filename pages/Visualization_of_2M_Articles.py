@@ -30,30 +30,41 @@ framing_explanations = {
     }
 
 techniques = {
-    "Name Calling Labelling": "Using insulting or desirable labels for individuals or groups.",
+    "Attack on Reputation": "Techniques used to undermine credibility or character.",
+    "Name Calling or Labelling": "Using insulting or desirable labels for individuals or groups.",
     "Guilt by Association": "Attacking by linking to negatively viewed groups or concepts.",
-    "Doubt": "Undermining credibility by questioning character.",
+    "Casting Doubt": "Undermining credibility by questioning character.",
     "Appeal to Hypocrisy": "Accusing of hypocrisy to attack reputation.",
     "Questioning the Reputation": "Undermining character with negative claims.",
+    
+    "Justification": "Techniques that support an idea by appealing to authority, popularity, or values.",
     "Flag Waiving": "Justifying ideas by appealing to group pride or benefits.",
     "Appeal to Authority": "Citing authority to support an argument.",
     "Appeal to Popularity": "Claiming widespread agreement to justify a stance.",
     "Appeal to Values": "Linking ideas to positive values.",
-    "Appeal to Fear, Prejudice": "Using fear or prejudice to promote or reject ideas.", 
+    "Appeal to Fear, Prejudice": "Using fear or prejudice to promote or reject ideas.",
+    
+    "Distraction": "Techniques that divert attention from the main issue.",
     "Strawman": "Misrepresenting an argument to refute it easily.",
     "Red Herring": "Distracting from the main issue with irrelevant topics.",
     "Whataboutism": "Accusing of hypocrisy without disproving the argument.",
+    
+    "Simplification": "Techniques that reduce complex issues to overly simple terms.",
     "Causal Oversimplification": "Oversimplifying causes of an issue.",
     "False Dilemma or No Choice": "Presenting only two options when more exist.",
     "Consequential Oversimplification": "Claiming improbable chain reactions.",
+    
+    "Call": "Techniques that use catchy phrases or urges for immediate action.",
     "Slogans": "Using catchy phrases with emotional appeal.",
     "Conversation Killer": "Discouraging discussion with dismissive phrases.",
     "Appeal to Time": "Arguing that it's the right time for action.",
+    
+    "Manipulative Wording": "Techniques that use language to influence perceptions.",
     "Loaded Language": "Using emotionally charged words to influence.",
     "Obfuscation, Intentional Vagueness, Confusion": "Being unclear to allow varied interpretations.",
     "Exaggeration or Minimisation": "Overstating or downplaying significance.",
     "Repetition": "Repeating phrases to persuade."
-    }
+}
 
 ###############################################################################
 
@@ -385,7 +396,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     
     replacements = {
     "Flag Waving": "Flag Waiving",
-    "Straw man": "Strawman",
+    "Straw Man": "Strawman",
     "False Dilemma No Choice": "False Dilemma or No Choice",
     "Obfuscation Vagueness Confusion": "Obfuscation, Intentional Vagueness, Confusion",
     "Exaggeration Minimisation": "Exaggeration or Minimisation",
@@ -485,7 +496,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
     st.title('News Analysis Dashboard')
     st.markdown("""
-    Distribution of Framings in the Articles across Countries and Regions
+    Distribution of Frames in the Articles across Countries and Regions
     """)
 
     # Reset index of the dataframe
@@ -802,13 +813,13 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
 
     fig = px.bar(melted_df, 
-             x='Percentage', 
-             y='country', 
-             color='Framing', 
-             orientation='h',
-             color_discrete_map=frames_colors,
-             title="Distribution of Frames by Country",
-             custom_data=['Framing', 'Percentage', 'number_of_articles', melted_df['Framing'].map(framing_explanations)])
+                x='Percentage', 
+                y='source', 
+                color='Framing', 
+                orientation='h',
+                color_discrete_map=frames_colors,
+                title="Distribution of Frames by Source",
+                custom_data=['Framing', 'Percentage', 'number_of_articles', melted_df['Framing'].map(framing_explanations)])
 
     fig.update_traces(
     hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
@@ -820,7 +831,9 @@ elif st.session_state.page  == "Framings: Countries and Sources":
         width=900,
         xaxis_range=[0, 100],
         xaxis_title="Percentage",
-        yaxis_title="Country"
+        yaxis_title="Source",
+        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+        yaxis=dict(showline=True, linewidth=2, linecolor='black')
     )
 
     st.plotly_chart(fig, use_container_width=True)
@@ -907,16 +920,17 @@ elif st.session_state.page  == "Framings: Countries and Sources":
     # st.plotly_chart(fig, use_container_width=True)
     
     fig = px.bar(melted_df, 
-                x='Percentage', 
-                y='country', 
-                color='Framing', 
-                orientation='h',
-                color_discrete_map=frames_colors,
-                title="Distribution of Framings by Country",
-                custom_data=['Framing', 'Percentage', 'number_of_articles'])
+             x='Percentage', 
+             y='country', 
+             color='Framing', 
+             orientation='h',
+             color_discrete_map=frames_colors,
+             title="Distribution of Frames by Country",
+             custom_data=['Framing', 'Percentage', 'number_of_articles', melted_df['Framing'].map(framing_explanations)])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                  "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     fig.update_layout(
@@ -1035,7 +1049,7 @@ elif st.session_state.page  == "Framings: Countries and Sources":
 
     st.title('News Analysis Dashboard')
     st.markdown("""
-    Distribution of Framings in the Articles across Countries and Regions
+    Distribution of Frames in the Articles across Countries and Regions
     """)
 
     # Reset index of the dataframe
@@ -1457,6 +1471,19 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
 
     # fig.update_layout(height=700, width=900) 
     # st.plotly_chart(fig, use_container_width=True)
+    replacements = {
+    "Flag Waving": "Flag Waiving",
+    "Straw Man": "Strawman",
+    "False Dilemma No Choice": "False Dilemma or No Choice",
+    "Obfuscation Vagueness Confusion": "Obfuscation, Intentional Vagueness, Confusion",
+    "Exaggeration Minimisation": "Exaggeration or Minimisation",
+    "Appeal to Fear Prejudice": "Appeal to Fear, Prejudice",
+    "Name Calling Labeling":"Name Calling Labelling"
+    }
+
+    # Apply the replacements to the 'Persuasion Techniques' column
+    melted_df['Persuasion Techniques'] = melted_df['Persuasion Techniques'].replace(replacements)
+
     fig = px.bar(melted_df, 
              x='Percentage', 
              y='source',  # Make sure this matches your column name exactly
@@ -1464,10 +1491,11 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
              orientation='h',
              color_discrete_map=color_mapping,
              title="Distribution of Persuasion Techniques by Source",
-             custom_data=['Persuasion Techniques', 'Percentage', 'Frequency'])
+             custom_data=['Persuasion Techniques', 'Percentage', 'Frequency', melted_df['Persuasion Techniques'].map(techniques)])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     fig.update_layout(
@@ -1574,7 +1602,18 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
     # fig.update_layout(height=700, width=900) 
     # st.plotly_chart(fig, use_container_width=True)
     
+    replacements = {
+    "Flag Waving": "Flag Waiving",
+    "Straw Man": "Strawman",
+    "False Dilemma No Choice": "False Dilemma or No Choice",
+    "Obfuscation Vagueness Confusion": "Obfuscation, Intentional Vagueness, Confusion",
+    "Exaggeration Minimisation": "Exaggeration or Minimisation",
+    "Appeal to Fear Prejudice": "Appeal to Fear, Prejudice",
+    "Name Calling Labeling":"Name Calling Labelling"
+    }
 
+    # Apply the replacements to the 'Persuasion Techniques' column
+    melted_df['Persuasion Techniques'] = melted_df['Persuasion Techniques'].replace(replacements)
     fig = px.bar(melted_df, 
                 x='Percentage', 
                 y='country', 
@@ -1582,18 +1621,21 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
                 orientation='h',
                 color_discrete_map=color_mapping,
                 title="Distribution of Persuasion Techniques by Country",
-                custom_data=['Persuasion Techniques', 'Percentage', 'Frequency'])
+                custom_data=['Persuasion Techniques', 'Percentage', 'Frequency', melted_df['Persuasion Techniques'].map(techniques)])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[3]}</i><extra></extra>"
     )
 
-    # Add axes lines
-    fig.update_xaxes(showline=True, linewidth=2, linecolor='black', title='Percentage of Persuasion Technique')
-    fig.update_yaxes(showline=True, linewidth=2, linecolor='black', title='Country')
-
-    fig.update_layout(height=700, width=900)
-
+    fig.update_layout(
+        height=700, 
+        width=900,
+        xaxis_title="Percentage of Persuasion Technique",
+        yaxis_title="Country",
+        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+        yaxis=dict(showline=True, linewidth=2, linecolor='black')
+    )
     st.plotly_chart(fig, use_container_width=True)
  ########################################################################################
 
@@ -2131,6 +2173,15 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
     # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
 
     # st.plotly_chart(fig, use_container_width=True)
+    replacements = {
+    "ATTACK ON REPUTATION": "Attack on Reputation",
+    "JUSTIFICATION": "Justification",
+    "DISTRACTION": "Distraction",
+    "SIMPLIFICATION": "Simplification",
+    "CALL": "Call",
+    "MANIPULATIVE WORDING": "Manipulative Wording"
+    }
+    grouped_df['Category'] = grouped_df['Category'].replace(replacements)
     
     fig = px.bar(grouped_df, 
              x='Percentage', 
@@ -2138,10 +2189,11 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
              color='Category', 
              orientation='h',
              title="Distribution of Coarse Grained Propaganda by Source",
-             custom_data=['Category', 'Percentage', 'Frequency'])
+             custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].map(techniques)])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     # Add axes lines
@@ -2273,16 +2325,26 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
     # fig.update_yaxes(showline=True, linewidth=2, linecolor='black')
 
     # st.plotly_chart(fig, use_container_width=True)
+    replacements = {
+    "ATTACK ON REPUTATION": "Attack on Reputation",
+    "JUSTIFICATION": "Justification",
+    "DISTRACTION": "Distraction",
+    "SIMPLIFICATION": "Simplification",
+    "CALL": "Call",
+    "MANIPULATIVE WORDING": "Manipulative Wording"
+    }
+    grouped_df['Category'] = grouped_df['Category'].replace(replacements)
+    
     fig = px.bar(grouped_df, 
              x='Percentage', 
              y='country', 
              color='Category', 
              orientation='h',
              title="Distribution of Coarse Grained Propaganda by Country",
-             custom_data=['Category', 'Percentage', 'Frequency'])
-
+             custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].map(techniques)])
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     # Add axes lines
