@@ -3056,17 +3056,49 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
 
     # st.plotly_chart(fig, use_container_width=True)
     
-    fig = px.bar(grouped_df, 
-             x='Percentage', 
-             y='country', 
-             color='Category', 
-             orientation='h',
-             title="Distribution of Rhetorical dimension by Country",
-             custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].map(techniques)])
+    # fig = px.bar(grouped_df, 
+    #          x='Percentage', 
+    #          y='country', 
+    #          color='Category', 
+    #          orientation='h',
+    #          title="Distribution of Rhetorical dimension by Country",
+    #          custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].map(techniques)])
 
+    # fig.update_traces(
+    #     hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+    #                 "<i>%{customdata[3]}</i><extra></extra>"
+    # )
+
+    # # Add axes lines
+    # fig.update_xaxes(showline=True, 
+    #                 linewidth=2, 
+    #                 linecolor='black', 
+    #                 title='Percentage of Rhetorical dimension')
+    # fig.update_yaxes(showline=True, 
+    #                 linewidth=2, 
+    #                 linecolor='black', 
+    #                 title='Country')
+
+    # st.plotly_chart(fig, use_container_width=True)
+    def map_explanation(category):
+        if category == 'Other':
+            return ''
+        return techniques.get(category, '')
+
+    # Create the figure
+    fig = px.bar(grouped_df, 
+                x='Percentage', 
+                y='country', 
+                color='Category', 
+                orientation='h',
+                title="Distribution of Rhetorical dimension by Country",
+                custom_data=['Category', 'Percentage', 'Frequency', grouped_df['Category'].apply(map_explanation)])
+
+    # Update hover template
     fig.update_traces(
-        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
-                    "<i>%{customdata[3]}</i><extra></extra>"
+        hovertemplate=lambda d: "<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)" +
+                                ("<br><br><i>%{customdata[3]}</i>" if d.customdata[3] else "") +
+                                "<extra></extra>"
     )
 
     # Add axes lines
@@ -3079,6 +3111,7 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
                     linecolor='black', 
                     title='Country')
 
+    # Display the chart
     st.plotly_chart(fig, use_container_width=True)
 
 
