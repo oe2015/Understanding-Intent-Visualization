@@ -712,7 +712,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         itemsizing='constant',
         itemwidth=30
     )
-)
+    )
 
     # Add custom hover text to legend items
     for trace in fig.data:
@@ -724,6 +724,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
         )
         trace.hovertext = explanation
         trace.hoverinfo = "text"
+        
     fig.update_layout(
     legend=dict(
         itemsizing='constant',
