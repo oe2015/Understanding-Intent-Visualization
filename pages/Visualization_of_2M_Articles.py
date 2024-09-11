@@ -658,26 +658,6 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     "Political": "Considerations related to politics and politicians, including lobbying, elections, and attempts to sway voters",
     "External regulation and reputation": "International reputation or foreign policy"
     }
-    # fig = px.bar(melted_df, 
-    #          x='Percentage', 
-    #          y='country', 
-    #          color='Framing', 
-    #          orientation='h',
-    #          color_discrete_map=frames_colors,
-    #          title="Distribution of Frames by Country",
-    #          custom_data=['Framing', 'Percentage', 'number_of_articles'])
-
-    # fig.update_traces(
-    # hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>")
-
-    # fig.update_layout(
-    #     height=500, 
-    #     width=900,
-    #     xaxis_range=[0, 100],
-    #     xaxis_title="Percentage",
-    #     yaxis_title="Country"
-    # )
-    # st.plotly_chart(fig, use_container_width=True)
     fig = px.bar(melted_df, 
              x='Percentage', 
              y='country', 
@@ -688,47 +668,17 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
              custom_data=['Framing', 'Percentage', 'number_of_articles'])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
-    )
-
-    # Create a new trace for legend items with hover
-    legend_traces = []
-    for framing, color in frames_colors.items():
-        legend_traces.append(
-            go.Scatter(
-                x=[None], y=[None],
-                mode='markers',
-                marker=dict(size=10, color=color),
-                name=framing,
-                legendgroup=framing,
-                showlegend=True,
-                hoverinfo='text',
-                hovertext=f"<b>{framing}</b><br><br>{framing_explanations.get(framing, 'No explanation available')}",
-            )
-        )
-
-    # Add the legend traces to the figure
-    for trace in legend_traces:
-        fig.add_trace(trace)
+    hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>")
 
     fig.update_layout(
         height=500, 
         width=900,
         xaxis_range=[0, 100],
         xaxis_title="Percentage",
-        yaxis_title="Country",
-        xaxis=dict(showline=True, linewidth=2, linecolor='black'),
-        yaxis=dict(showline=True, linewidth=2, linecolor='black'),
-        legend_title_text='Framing',
-        legend=dict(
-            itemsizing='constant',
-            itemclick='toggleothers',
-            itemdoubleclick='toggle',
-        ),
-        hovermode='closest'
+        yaxis_title="Country"
     )
-
     st.plotly_chart(fig, use_container_width=True)
+    
     ########################################################################################
 
     # Calculate total number of articles for each country
