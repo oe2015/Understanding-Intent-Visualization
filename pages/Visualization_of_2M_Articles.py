@@ -692,15 +692,36 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
                   "<i>%{customdata[3]}</i><extra></extra>"
     )
 
+    # fig.update_layout(
+    #     height=500, 
+    #     width=900,
+    #     xaxis_range=[0, 100],
+    #     xaxis_title="Percentage",
+    #     yaxis_title="Country"
+    # )
+
+    # st.plotly_chart(fig, use_container_width=True)
     fig.update_layout(
-        height=500, 
-        width=900,
-        xaxis_range=[0, 100],
-        xaxis_title="Percentage",
-        yaxis_title="Country"
+    height=500, 
+    width=900,
+    xaxis_range=[0, 100],
+    xaxis_title="Percentage",
+    yaxis_title="Country",
+    legend_title="Framing",
+    legend=dict(
+        itemsizing='constant',
+        itemwidth=30,
+        itemclick=False,
+        itemdoubleclick=False
+    )
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    # Add custom hover text to legend items
+    for i, frame in enumerate(fig.data):
+        frame_name = frame.name
+        explanation = framing_explanations.get(frame_name, "No explanation available")
+        fig.data[i].legendgrouptitle.text = f"<b>{frame_name}</b><br><br><i>{explanation}</i>"
+        fig.data[i].legendgrouptitle.font.size = 10
     ########################################################################################
 
     # Calculate total number of articles for each country
