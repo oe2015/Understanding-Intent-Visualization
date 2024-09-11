@@ -710,18 +710,19 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     legend_title="Framing",
     legend=dict(
         itemsizing='constant',
-        itemwidth=30,
-        itemclick=False,
-        itemdoubleclick=False
+        itemwidth=30
     )
     )
 
     # Add custom hover text to legend items
-    for i, frame in enumerate(fig.data):
-        frame_name = frame.name
+    for trace in fig.data:
+        frame_name = trace.name
         explanation = framing_explanations.get(frame_name, "No explanation available")
-        fig.data[i].legendgrouptitle.text = f"<b>{frame_name}</b><br><br><i>{explanation}</i>"
-        fig.data[i].legendgrouptitle.font.size = 10
+        trace.legendgrouptitle = dict(
+            text=f"<b>{frame_name}</b><br><br><i>{explanation}</i>",
+            font=dict(size=10)
+        )
+    st.plotly_chart(fig, use_container_width=True)
     ########################################################################################
 
     # Calculate total number of articles for each country
