@@ -789,17 +789,68 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
     # fig.update_layout(height=700, width=900) 
     # st.plotly_chart(fig, use_container_width=True)
+    
+    # fig = px.bar(melted_df, 
+    #          x='Percentage', 
+    #          y='country', 
+    #          color='Persuasion Techniques', 
+    #          orientation='h',
+    #          color_discrete_map=color_mapping,
+    #          title="Distribution of Persuasion Techniques by Country",
+    #          custom_data=['Persuasion Techniques', 'Percentage', 'Frequency'])
+
+    # fig.update_traces(
+    #     hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+    # )
+
+    # fig.update_layout(
+    #     height=700, 
+    #     width=900,
+    #     xaxis_title="Percentage of Persuasion Technique",
+    #     yaxis_title="Country",
+    #     xaxis=dict(showline=True, linewidth=2, linecolor='black'),
+    #     yaxis=dict(showline=True, linewidth=2, linecolor='black')
+    # )
+
+    # st.plotly_chart(fig, use_container_width=True)
+    techniques = {
+    "Name Calling or Labelling": "Using insulting or desirable labels for individuals or groups.",
+    "Guilt by Association": "Attacking by linking to negatively viewed groups or concepts.",
+    "Casting Doubt": "Undermining credibility by questioning character.",
+    "Appeal to Hypocrisy": "Accusing of hypocrisy to attack reputation.",
+    "Questioning the Reputation": "Undermining character with negative claims.",
+    "Flag Waiving": "Justifying ideas by appealing to group pride or benefits.",
+    "Appeal to Authority": "Citing authority to support an argument.",
+    "Appeal to Popularity": "Claiming widespread agreement to justify a stance.",
+    "Appeal to Values": "Linking ideas to positive values.",
+    "Appeal to Fear, Prejudice": "Using fear or prejudice to promote or reject ideas.",
+    "Strawman": "Misrepresenting an argument to refute it easily.",
+    "Red Herring": "Distracting from the main issue with irrelevant topics.",
+    "Whataboutism": "Accusing of hypocrisy without disproving the argument.",
+    "Causal Oversimplification": "Oversimplifying causes of an issue.",
+    "False Dilemma or No Choice": "Presenting only two options when more exist.",
+    "Consequential Oversimplification": "Claiming improbable chain reactions.",
+    "Slogans": "Using catchy phrases with emotional appeal.",
+    "Conversation Killer": "Discouraging discussion with dismissive phrases.",
+    "Appeal to Time": "Arguing that it's the right time for action.",
+    "Loaded Language": "Using emotionally charged words to influence.",
+    "Obfuscation, Intentional Vagueness, Confusion": "Being unclear to allow varied interpretations.",
+    "Exaggeration or Minimisation": "Overstating or downplaying significance.",
+    "Repetition": "Repeating phrases to persuade."
+    }
+
     fig = px.bar(melted_df, 
-             x='Percentage', 
-             y='country', 
-             color='Persuasion Techniques', 
-             orientation='h',
-             color_discrete_map=color_mapping,
-             title="Distribution of Persuasion Techniques by Country",
-             custom_data=['Persuasion Techniques', 'Percentage', 'Frequency'])
+                x='Percentage', 
+                y='country', 
+                color='Persuasion Techniques', 
+                orientation='h',
+                color_discrete_map=color_mapping,
+                title="Distribution of Persuasion Techniques by Country",
+                custom_data=['Persuasion Techniques', 'Percentage', 'Frequency', melted_df['Persuasion Techniques'].map(techniques)])
 
     fig.update_traces(
-        hovertemplate="%{customdata[0]}: %{customdata[1]:.2f}%  (%{customdata[2]:,} times)<extra></extra>"
+        hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
+                    "<i>%{customdata[3]}</i><extra></extra>"
     )
 
     fig.update_layout(
