@@ -690,7 +690,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     fig.update_traces(
     hovertemplate="<b>%{customdata[0]}</b>: %{customdata[1]:.2f}% (%{customdata[2]:,} times)<br><br>" +
                   "<i>%{customdata[0]|" + 
-                  "|".join(f"{k}={framing_explanations[k]}" for k in framing_explanations) + 
+                  "|".join(framing_explanations.values()) + 
                   "}</i><extra></extra>"
     )
 
