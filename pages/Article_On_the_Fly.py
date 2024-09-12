@@ -329,7 +329,7 @@ if text:
         chart = alt.Chart(sorted_df).mark_bar().encode(
             x = 'Probabilities',
             y = 'Labels',
-            color=alt.Color('Label', scale=alt.Scale(scheme='category10')),
+            color=alt.Color('Labels', scale=alt.Scale(scheme='category10')),
             tooltip=['Probabilities', 'Labels']
         ).properties(
             width=1000,
