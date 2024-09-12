@@ -151,14 +151,54 @@ with st.expander("About FRAPPE", expanded=False):
 
         In today's information-rich world, distinguishing reliable news from misleading content is more crucial than ever. FRAPPE is here to help you navigate this complex landscape.
 
-        ### What FRAPPE Does:
+       ### What FRAPPE Does:
         - Analyzes news articles beyond the surface level
         - Uncovers linguistic techniques that shape opinions and emotions
+        - Analyzes articles for specific frames and persuasion techniques, including:
+          - Frames:
+            - Economic
+            - Capacity and resources
+            - Morality
+            - Fairness and equality
+            - Legality Constitutionality and jurisprudence
+            - Policy prescription and evaluation
+            - Crime and punishment
+            - Security and defense
+            - Health and safety
+            - Quality of life
+            - Cultural identity
+            - Public opinion
+            - Political
+            - External regulation and reputation
+          - Persuasion Techniques:
+            - Name Calling or Labelling
+            - Guilt by Association
+            - Casting Doubt
+            - Appeal to Hypocrisy
+            - Questioning the Reputation
+            - Flag Waiving
+            - Appeal to Authority
+            - Appeal to Popularity
+            - Appeal to Values
+            - Appeal to Fear, Prejudice
+            - Strawman
+            - Red Herring
+            - Whataboutism
+            - Causal Oversimplification
+            - False Dilemma or No Choice
+            - Consequential Oversimplification
+            - Slogans
+            - Conversation Killer
+            - Appeal to Time
+            - Loaded Language
+            - Obfuscation, Intentional Vagueness, Confusion
+            - Exaggeration or Minimisation
+            - Repetition
         - Compares persuasion and framing strategies across:
           - Various news outlets
           - Multiple countries
           - Different languages and topics
-
+          
         ### Why Use FRAPPE:
         - Gain deeper insights into news content
         - Understand how information is presented and potentially manipulated
