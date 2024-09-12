@@ -201,17 +201,17 @@ with st.expander("About FRAPPE", expanded=False):
     - Analyzes articles for specific frames and persuasion techniques
     """)
 
-    st.subheader("Frames Analyzed")
-    for frame, explanation in framing_explanations.items():
-        st.write(f"- {frame}")
-        if st.button(f"ℹ️ {frame}", key=f"frame_{frame}"):
-            st.info(explanation)
-    
-    st.subheader("Persuasion Techniques Detected")
-    for technique, explanation in techniques.items():
-        st.write(f"- {technique}")
-        if st.button(f"ℹ️ {technique}", key=f"technique_{technique}"):
-            st.info(explanation)
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("Frames Analyzed")
+        for frame, explanation in framing_explanations.items():
+            st.markdown(f"- {frame} <span title='{explanation}'>ℹ️</span>", unsafe_allow_html=True)
+
+    with col2:
+        st.subheader("Persuasion Techniques Detected")
+        for technique, explanation in techniques.items():
+            st.markdown(f"- {technique} <span title='{explanation}'>ℹ️</span>", unsafe_allow_html=True)
 
     st.markdown("""
     ### Key Features:
