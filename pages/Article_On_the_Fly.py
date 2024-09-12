@@ -327,10 +327,10 @@ if text:
         x = sorted_df["Probabilities"]
         y = sorted_df["Labels"]
         chart = alt.Chart(sorted_df).mark_bar().encode(
-            x = 'Probability',
-            y = 'Label',
+            x = 'Probabilities',
+            y = 'Labels',
             color=alt.Color('Label', scale=alt.Scale(scheme='category10')),
-            tooltip=['Probability', 'Label']
+            tooltip=['Probabilities', 'Labels']
         ).properties(
             width=1000,
             height=600
