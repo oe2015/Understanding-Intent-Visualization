@@ -320,7 +320,7 @@ if text:
     # data = output
     print(predicted_probabilities)
     df = pd.DataFrame(predicted_probabilities)
-    sorted_df = df.sort_values(by='Probability', ascending=False)
+    sorted_df = df.sort_values(by='Probabilities', ascending=False)
     sorted_df = sorted_df.reset_index(drop=True)
 
     with st.expander(f"### Get analysis for this Article", expanded=False):
