@@ -186,6 +186,9 @@ techniques = {
     "Exaggeration or Minimisation": "Overstating or downplaying significance.",
     "Repetition": "Repeating phrases to persuade."
 }
+
+# (Keep your framing_explanations and techniques dictionaries as they are)
+
 with st.expander("About FRAPPE", expanded=False):
     st.markdown("""
     ## Welcome to FRAPPE: Your FRAming, Persuasion, and Propaganda Explorer
@@ -195,26 +198,26 @@ with st.expander("About FRAPPE", expanded=False):
     ### What FRAPPE Does:
     - Analyzes news articles beyond the surface level
     - Uncovers linguistic techniques that shape opinions and emotions
-    - Analyzes articles for specific frames and persuasion techniques, including:
+    - Analyzes articles for specific frames and persuasion techniques
     """)
 
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("#### Frames:")
-        for frame in framing_explanations.keys():
-            st.markdown(f"- {frame}", help=framing_explanations[frame])
+        with st.expander("Frames Analyzed", expanded=False):
+            for frame in framing_explanations.keys():
+                st.markdown(f"- {frame} ℹ️", help=framing_explanations[frame])
 
     with col2:
-        st.markdown("#### Persuasion Techniques:")
-        for technique in techniques.keys():
-            st.markdown(f"- {technique}", help=techniques[technique])
+        with st.expander("Persuasion Techniques Detected", expanded=False):
+            for technique in techniques.keys():
+                st.markdown(f"- {technique} ℹ️", help=techniques[technique])
 
     st.markdown("""
-    - Compares persuasion and framing strategies across:
-    - Various news outlets
-    - Multiple countries
-    - Different languages and topics
+    ### Key Features:
+    - Compares strategies across news outlets, countries, and languages
+    - Provides in-depth analysis of framing and persuasion techniques
+    - Offers visual representations of data for easy interpretation
 
     ### Why Use FRAPPE:
     - Gain deeper insights into news content
@@ -222,13 +225,12 @@ with st.expander("About FRAPPE", expanded=False):
     - Develop a more critical and informed approach to media consumption
 
     ### Learn More:
-    - Read our research paper: [FRAPPE: FRAming, Persuasion, and Propaganda Explorer](https://aclanthology.org/2024.eacl-demo.22/)
-    - Watch our demo video: [FRAPPE in Action](https://aclanthology.org/2024.eacl-demo.22.mp4)
+    - [Read our research paper](https://aclanthology.org/2024.eacl-demo.22/)
+    - [Watch our demo video](https://aclanthology.org/2024.eacl-demo.22.mp4)
 
     Empower yourself with FRAPPE and become a more discerning news reader!
     """)
 
-st.markdown("")
 st.markdown("## 🚀 On-The-Fly Analysis!")
     # st.markdown(
     #     """
@@ -297,8 +299,8 @@ st.markdown("## 🚀 On-The-Fly Analysis!")
     #     """
     # )
     # st.markdown("")
-st.markdown("")
-st.markdown("## 🚀 On-The-Fly Analysis!")
+# st.markdown("")
+# st.markdown("## 🚀 On-The-Fly Analysis!")
 
 url = ""
 cx, cy, cz = st.columns([5, 2, 5])
