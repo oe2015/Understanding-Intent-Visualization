@@ -357,8 +357,8 @@ if text:
     
     with st.expander(f"### Get Persuasion Techniques for this Article", expanded=False):
         for sentence, entry in prediction.items():
-                labels = entry['labels']
-                outputs = entry['outputs']
+                labels = entry['Labels']
+                outputs = entry['Probabilities']
     
                 # Create the annotated text
                 annotations = [(sentence, "", "#fff", "#000")]
