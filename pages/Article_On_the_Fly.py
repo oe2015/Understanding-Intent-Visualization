@@ -198,26 +198,26 @@ with st.expander("About FRAPPE", expanded=False):
     ### What FRAPPE Does:
     - Analyzes news articles beyond the surface level
     - Uncovers linguistic techniques that shape opinions and emotions
-    - Analyzes articles for specific frames and persuasion techniques
+    - Analyzes articles for specific frames and persuasion techniques, including:
     """)
 
     col1, col2 = st.columns(2)
-
+    
     with col1:
-        st.subheader("Frames Analyzed")
-        for frame, explanation in framing_explanations.items():
-            st.markdown(f"- {frame} <span title='{explanation}'>ℹ️</span>", unsafe_allow_html=True)
+        st.markdown("#### Frames:")
+        for frame in framing_explanations.keys():
+            st.markdown(f"- {frame}", help=framing_explanations[frame])
 
     with col2:
-        st.subheader("Persuasion Techniques Detected")
-        for technique, explanation in techniques.items():
-            st.markdown(f"- {technique} <span title='{explanation}'>ℹ️</span>", unsafe_allow_html=True)
+        st.markdown("#### Persuasion Techniques:")
+        for technique in techniques.keys():
+            st.markdown(f"- {technique}", help=techniques[technique])
 
     st.markdown("""
-    ### Key Features:
-    - Compares strategies across news outlets, countries, and languages
-    - Provides in-depth analysis of framing and persuasion techniques
-    - Offers visual representations of data for easy interpretation
+    - Compares persuasion and framing strategies across:
+      - Various news outlets
+      - Multiple countries
+      - Different languages and topics
 
     ### Why Use FRAPPE:
     - Gain deeper insights into news content
@@ -225,82 +225,14 @@ with st.expander("About FRAPPE", expanded=False):
     - Develop a more critical and informed approach to media consumption
 
     ### Learn More:
-    - [Read our research paper](https://aclanthology.org/2024.eacl-demo.22/)
-    - [Watch our demo video](https://aclanthology.org/2024.eacl-demo.22.mp4)
+    - Read our research paper: [FRAPPE: FRAming, Persuasion, and Propaganda Explorer](https://aclanthology.org/2024.eacl-demo.22/)
+    - Watch our demo video: [FRAPPE in Action](https://aclanthology.org/2024.eacl-demo.22.mp4)
 
     Empower yourself with FRAPPE and become a more discerning news reader!
     """)
 
+st.markdown("")
 st.markdown("## 🚀 On-The-Fly Analysis!")
-    # st.markdown(
-    #     """
-    #     ## Welcome to FRAPPE: Your FRAming, Persuasion, and Propaganda Explorer
-
-    #     In today's information-rich world, distinguishing reliable news from misleading content is more crucial than ever. FRAPPE is here to help you navigate this complex landscape.
-
-    # ### What FRAPPE Does:
-    #     - Analyzes news articles beyond the surface level
-    #     - Uncovers linguistic techniques that shape opinions and emotions
-    #     - Analyzes articles for specific frames and persuasion techniques, including:
-    #     - Frames:
-    #         - Economic
-    #         - Capacity and resources
-    #         - Morality
-    #         - Fairness and equality
-    #         - Legality Constitutionality and jurisprudence
-    #         - Policy prescription and evaluation
-    #         - Crime and punishment
-    #         - Security and defense
-    #         - Health and safety
-    #         - Quality of life
-    #         - Cultural identity
-    #         - Public opinion
-    #         - Political
-    #         - External regulation and reputation
-    #     - Persuasion Techniques:
-    #         - Name Calling or Labelling
-    #         - Guilt by Association
-    #         - Casting Doubt
-    #         - Appeal to Hypocrisy
-    #         - Questioning the Reputation
-    #         - Flag Waiving
-    #         - Appeal to Authority
-    #         - Appeal to Popularity
-    #         - Appeal to Values
-    #         - Appeal to Fear, Prejudice
-    #         - Strawman
-    #         - Red Herring
-    #         - Whataboutism
-    #         - Causal Oversimplification
-    #         - False Dilemma or No Choice
-    #         - Consequential Oversimplification
-    #         - Slogans
-    #         - Conversation Killer
-    #         - Appeal to Time
-    #         - Loaded Language
-    #         - Obfuscation, Intentional Vagueness, Confusion
-    #         - Exaggeration or Minimisation
-    #         - Repetition
-    #     - Compares persuasion and framing strategies across:
-    #     - Various news outlets
-    #     - Multiple countries
-    #     - Different languages and topics
-        
-    #     ### Why Use FRAPPE:
-    #     - Gain deeper insights into news content
-    #     - Understand how information is presented and potentially manipulated
-    #     - Develop a more critical and informed approach to media consumption
-
-    #     ### Learn More:
-    #     - Read our research paper: [FRAPPE: FRAming, Persuasion, and Propaganda Explorer](https://aclanthology.org/2024.eacl-demo.22/)
-    #     - Watch our demo video: [FRAPPE in Action](https://aclanthology.org/2024.eacl-demo.22.mp4)
-
-    #     Empower yourself with FRAPPE and become a more discerning news reader!
-    #     """
-    # )
-    # st.markdown("")
-# st.markdown("")
-# st.markdown("## 🚀 On-The-Fly Analysis!")
 
 url = ""
 cx, cy, cz = st.columns([5, 2, 5])
