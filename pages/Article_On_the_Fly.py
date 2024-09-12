@@ -306,10 +306,20 @@ if text:
 
     # SUBTASK 2 VISUALIZATION
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task2", json={"text": text})
+    # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
+    status = "PENDING"
+    while status != "COMPLETED":
+        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
+        status = response1.json()["status"]
+        sleep(3)
+    
     # Get the prediction from the response
-    output = response.json()
-    data = output
-    df = pd.DataFrame(data)
+    predicted_probabilities = json.loads(response1.json()["response"])
+    # Get the prediction from the response
+    # output = response.json()
+    # data = output
+    print(predicted_probabilities)
+    df = pd.DataFrame(predicted_probabilities)
     sorted_df = df.sort_values(by='Probability', ascending=False)
     sorted_df = sorted_df.reset_index(drop=True)
 
