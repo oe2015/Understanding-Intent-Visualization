@@ -339,21 +339,18 @@ if text:
         st.altair_chart(chart, use_container_width=True)
 
     
-    # Send the text to the API
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task3", json={"text": text})
-    # Get the prediction from the response
-    prediction = response.json()
-    # Display the prediction
-    # st.write(prediction)
+    # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
+    status = "PENDING"
+    while status != "COMPLETED":
+        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
+        status = response1.json()["status"]
+        sleep(3)
     
-    # annotated_text(
-    #     ("Team Name:", "", "#000", "#fff"),
-    #     (
-    #         "NLP2",
-    #         "The Best Team",
-    #         "#8ef",
-    #     ),
-    # )
+    # Get the prediction from the response
+    prediction = json.loads(response1.json()["response"])
+
+    print(prediction)
     
     #SUBTASK 3 Visualization
     label_colors = {}  # Dictionary to store assigned colors for each label
