@@ -324,8 +324,8 @@ if text:
     sorted_df = sorted_df.reset_index(drop=True)
 
     with st.expander(f"### Get analysis for this Article", expanded=False):
-        x = sorted_df["Probability"]
-        y = sorted_df["Label"]
+        x = sorted_df["Probabilities"]
+        y = sorted_df["Labels"]
         chart = alt.Chart(sorted_df).mark_bar().encode(
             x = 'Probability',
             y = 'Label',
