@@ -301,7 +301,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
     
     # Create the figure using Plotly Express
     
-    
+    melted_df['number_of_articles'] = melted_df['number_of_articles'].astype(int)
     fig = px.bar(melted_df, 
              x='Percentage', 
              y='country', 
