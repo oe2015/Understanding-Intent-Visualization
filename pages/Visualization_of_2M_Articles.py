@@ -410,7 +410,7 @@ if st.session_state.page == "Framings and Persuasion Techniques: Countries":
 
     # Apply the replacements to the 'Persuasion Techniques' column
     melted_df['Persuasion Techniques'] = melted_df['Persuasion Techniques'].replace(replacements)
-
+    melted_df['Frequency'] = melted_df['Frequency'].astype(int)
     fig = px.bar(melted_df, 
                 x='Percentage', 
                 y='country', 
@@ -815,7 +815,7 @@ elif st.session_state.page  == "Framings: Countries and Sources":
         
     }
 
-
+    melted_df['number_of_articles'] = melted_df['number_of_articles'].astype(int)
     fig = px.bar(melted_df, 
                 x='Percentage', 
                 y='source', 
@@ -923,6 +923,7 @@ elif st.session_state.page  == "Framings: Countries and Sources":
     # fig.update_layout(height=500, width=900) 
     # st.plotly_chart(fig, use_container_width=True)
     
+    melted_df['number_of_articles'] = melted_df['number_of_articles'].astype(int)
     fig = px.bar(melted_df, 
              x='Percentage', 
              y='country', 
@@ -1488,7 +1489,7 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
 
     # Apply the replacements to the 'Persuasion Techniques' column
     melted_df['Persuasion Techniques'] = melted_df['Persuasion Techniques'].replace(replacements)
-
+    melted_df['Frequency'] = melted_df['Frequency'].astype(int)
     fig = px.bar(melted_df, 
              x='Percentage', 
              y='source',  # Make sure this matches your column name exactly
@@ -1620,6 +1621,7 @@ elif st.session_state.page  == "Persuasion Techniques: Fine-Grained Propaganda":
 
     # Apply the replacements to the 'Persuasion Techniques' column
     melted_df['Persuasion Techniques'] = melted_df['Persuasion Techniques'].replace(replacements)
+    melted_df['Frequency'] = melted_df['Frequency'].astype(int)
     fig = px.bar(melted_df, 
                 x='Percentage', 
                 y='country', 
@@ -2188,7 +2190,7 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
     "MANIPULATIVE WORDING": "Manipulative Wording"
     }
     grouped_df['Category'] = grouped_df['Category'].replace(replacements)
-    
+    grouped_df['Frequency'] = grouped_df['Frequency'].astype(int)
     fig = px.bar(grouped_df, 
              x='Percentage', 
              y='source', 
@@ -2340,7 +2342,7 @@ elif st.session_state.page  == "Persuasion Techniques: Coarse-Grained Propaganda
     "MANIPULATIVE WORDING": "Manipulative Wording"
     }
     grouped_df['Category'] = grouped_df['Category'].replace(replacements)
-    
+    grouped_df['Frequency'] = grouped_df['Frequency'].astype(int)
     fig = px.bar(grouped_df, 
              x='Percentage', 
              y='country', 
@@ -2918,6 +2920,7 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
 
     # st.plotly_chart(fig, use_container_width=True)
     grouped_df['Explanation'] = grouped_df['Category'].apply(lambda x: '' if x == 'Other' else techniques.get(x, '')) 
+    grouped_df['Frequency'] = grouped_df['Frequency'].astype(int)
     fig = px.bar(grouped_df, 
              x='Percentage', 
              y='source', 
@@ -3083,6 +3086,7 @@ elif st.session_state.page  == "Persuasion Techniques: Ethos, Logos, Pathos":
     grouped_df['Explanation'] = grouped_df['Category'].apply(lambda x: '' if x == 'Other' else techniques.get(x, ''))
 
 # Create the figure
+    grouped_df['Frequency'] = grouped_df['Frequency'].astype(int)
     fig = px.bar(grouped_df, 
                 x='Percentage', 
                 y='country', 
