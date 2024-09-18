@@ -276,34 +276,34 @@ elif option == "Enter Text":
                 st.write(doc)
 
 text = " ".join(doc.split())
-if text:
-    # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
-    response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task1", json={"text": text})
-    # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
-    status = "PENDING"
-    while status != "COMPLETED":
-        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
-        status = response1.json()["status"]
-        sleep(3)
+# if text:
+    # # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
+    # response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task1", json={"text": text})
+    # # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
+    # status = "PENDING"
+    # while status != "COMPLETED":
+    #     response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
+    #     status = response1.json()["status"]
+    #     sleep(3)
     
-    # Get the prediction from the response
-    predicted_probabilities = json.loads(response1.json()["response"])["Probabilities"]
-    print(predicted_probabilities)
-    class_names = CFG.CLASSES
-    max_probability_index = np.argmax(predicted_probabilities)
-    max_probability_class = class_names[max_probability_index]
-    max_probability = predicted_probabilities[max_probability_index]
-    for class_name, probability in zip(class_names, predicted_probabilities):
-        print(f"{class_name}: {probability:.4f}")
-    # SUBTASK 1 VISUALIZATION
-    with st.expander(f"### Get Genre for this Article", expanded=False):
-        # st.markdown(f"### This article is classified as: {max_probability_class}")
-        st.markdown("#### Output Probabilities Pie Chart")
-        fig, ax = plt.subplots()
-        ax.pie(predicted_probabilities, labels=class_names, autopct="%1.1f%%")
-        ax.axis("equal")
-        st.pyplot(fig)
-
+    # # Get the prediction from the response
+    # predicted_probabilities = json.loads(response1.json()["response"])["Probabilities"]
+    # print(predicted_probabilities)
+    # class_names = CFG.CLASSES
+    # max_probability_index = np.argmax(predicted_probabilities)
+    # max_probability_class = class_names[max_probability_index]
+    # max_probability = predicted_probabilities[max_probability_index]
+    # for class_name, probability in zip(class_names, predicted_probabilities):
+    #     print(f"{class_name}: {probability:.4f}")
+    # # SUBTASK 1 VISUALIZATION
+    # with st.expander(f"### Get Genre for this Article", expanded=False):
+    #     # st.markdown(f"### This article is classified as: {max_probability_class}")
+    #     st.markdown("#### Output Probabilities Pie Chart")
+    #     fig, ax = plt.subplots()
+    #     ax.pie(predicted_probabilities, labels=class_names, autopct="%1.1f%%")
+    #     ax.axis("equal")
+    #     st.pyplot(fig)
+if text:
     # SUBTASK 2 VISUALIZATION
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task2", json={"text": text})
     # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
