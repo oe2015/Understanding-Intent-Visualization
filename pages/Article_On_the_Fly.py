@@ -315,6 +315,7 @@ if text:
         response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
         print(response1)
         status = response1.json()["status"]
+        print(status)
         sleep(3)
 
     print("done")
