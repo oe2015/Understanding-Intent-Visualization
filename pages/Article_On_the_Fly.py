@@ -316,7 +316,8 @@ if text:
         print(response1)
         status = response1.json()["status"]
         print(status)
-        sleep(3)
+        sleep(15)
+        status = "COMPLETED"
 
     print("done")
     
