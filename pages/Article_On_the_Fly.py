@@ -307,7 +307,7 @@ text = " ".join(doc.split())
 if text:
     # SUBTASK 2 VISUALIZATION
     print("hello")
-    response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task2", json={"text": text})
+    response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task2", json={"title": title, "content": text})
     print(response)
     # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
     status = "PENDING"
