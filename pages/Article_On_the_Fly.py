@@ -306,12 +306,16 @@ text = " ".join(doc.split())
 if text:
     # SUBTASK 2 VISUALIZATION
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task2", json={"text": text})
+    print(response)
     # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
     status = "PENDING"
     while status != "COMPLETED":
+        print(response1)
         response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
         status = response1.json()["status"]
         sleep(3)
+
+    print("done)
     
     # Get the prediction from the response
     predicted_probabilities = json.loads(response1.json()["response"])
