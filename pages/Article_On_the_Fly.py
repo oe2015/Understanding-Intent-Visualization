@@ -316,9 +316,8 @@ if text:
         print(response1)
         status = response1.json()["status"]
         print(status)
-        sleep(15)
-        status = "COMPLETED"
-
+        sleep(2)
+        
     print("done")
     
     # Get the prediction from the response
