@@ -315,7 +315,7 @@ if text:
         status = response1.json()["status"]
         sleep(3)
 
-    print("done)
+    print("done")
     
     # Get the prediction from the response
     predicted_probabilities = json.loads(response1.json()["response"])
