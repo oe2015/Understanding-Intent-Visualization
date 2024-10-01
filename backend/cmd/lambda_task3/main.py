@@ -7,8 +7,7 @@ import nltk
 import torch
 from aws_lambda_powertools.logging import Logger
 from dynamodbinterface import DynamoDBInterface, StorableDynamoDB
-from models import PersuasionModel
-from transformers import AutoConfig, AutoTokenizer
+from transformers import AutoTokenizer
 from utils import extract_title_and_sentences
 
 
@@ -60,117 +59,150 @@ labels_list = [
     "None",
 ]
 
+# Define configuration constants
+PROB_THRESHOLD = 0.1  # Adjust as needed
+MODEL_PATH = "./models/model.pt"
+TOKENIZER_PATH = "./models/xlm-roberta-large"
+MAX_LENGTH_CONTENT = 512  # Adjust based on model's training
+
+
+# Download NLTK data outside the handler
+try:
+    nltk.download("punkt_tab", download_dir="/tmp/nltk_data/", quiet=True)
+    nltk.data.path.append("/tmp/nltk_data/")
+    logger.info("NLTK punkt tokenizer downloaded")
+except Exception as e:
+    logger.error(f"Failed to download NLTK data: {e}")
+    raise e
+
+# Load the tokenizer outside the handler
+try:
+    tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_PATH)
+    logger.info("Tokenizer loaded successfully")
+except Exception as e:
+    logger.error(f"Failed to load tokenizer: {e}")
+    raise e
+
+# Load the TorchScript model outside the handler
+try:
+    persuasion_model = torch.jit.load(MODEL_PATH, map_location="cpu")
+    persuasion_model.eval()
+    logger.info("TorchScript model loaded and set to evaluation mode")
+except Exception as e:
+    logger.error(f"Failed to load TorchScript model: {e}")
+    raise e
+
 
 def lambda_handler(event, context):
     # Log the event
     logger.info(f"Received event: {event}")
     logger.info(f"Received context: {context}")
 
-    # Get the text from the request
-    task_id = event["task_id"]
+    try:
+        # Get the task_id from the event
+        task_id = event["task_id"]
 
-    # Query the entry from the database
-    ddbi = DynamoDBInterface(
-        dynamodb_svc=boto3.client("dynamodb", region_name="us-east-1"),
-        table="frappe-db-devhasaniqbal-us-east-1",
-    )
-    response = ddbi.get(f"id#{task_id}")
-
-    # Get the payload from the response
-    payload_str = response.get("payload")
-    if payload_str is None:
-        raise Exception("Payload not found in the database")
-
-    # Parse the payload
-    payload = json.loads(payload_str)
-    text = payload.get("text")
-    if text is None:
-        raise Exception("Text not found in the payload")
-
-    # Load the models
-    nltk.download("punkt_tab", download_dir="/tmp/nltk_data/")
-    nltk.data.path.append("/tmp/nltk_data/")
-    logger.info("NLTK punkt tokenizer downloaded")
-
-    # Load the tokenizer
-    tokenizer = AutoTokenizer.from_pretrained("./models/xlm-roberta-large")
-
-    # Load the custom model
-    xlmrobertaconfig = AutoConfig.from_pretrained("xlm-roberta-large")
-    persuasion_model = PersuasionModel(xlmrobertaconfig)
-    logger.info("Model initialized")
-
-    # Load the model state dict
-    ckpt = torch.load("./models/subtask3.pth", map_location="cpu")
-    if "state_dict" in ckpt:
-        ckpt = ckpt["state_dict"]
-    for k in list(ckpt.keys()):
-        if k.startswith("head2."):
-            # rename the key to classifier
-            ckpt[k.replace("head2.", "classifier.")] = ckpt.pop(k)
-        if k.startswith("model."):
-            # rename the key to classifier
-            ckpt[k.replace("model.", "")] = ckpt.pop(k)
-    persuasion_model.load_state_dict(ckpt, strict=False)
-    logger.info("Model state dict loaded")
-
-    # Set the model to evaluation mode
-    persuasion_model.eval()
-    logger.info("Model set to evaluation mode")
-
-    # Get the labels list
-    output_map = {}
-    sentences = extract_title_and_sentences(text)
-    for sentence in sentences:
-        # Tokenize the sentence
-        inputs = tokenizer.encode_plus(
-            sentence,
-            add_special_tokens=True,
-            max_length=512,
-            padding="longest",
-            truncation=True,
-            return_attention_mask=True,
-            return_tensors="pt",
+        # Initialize DynamoDB interface
+        ddbi = DynamoDBInterface(
+            dynamodb_svc=boto3.client("dynamodb", region_name="us-east-1"),
+            table="frappe-db-devhasaniqbal-us-east-1",
         )
-        inputs_3 = {
-            "content_input_ids": inputs["input_ids"],
-            "content_attention_mask": inputs["attention_mask"],
-        }
-        # Pass the tokenized sentence to the model
-        outputs_3 = persuasion_model(**inputs_3)
-        probabilities_3 = torch.sigmoid(outputs_3)
-        # probabilities_3 = probabilities_3.tolist()  # Convert tensor to list before jsonify
-        filtered_labels = []
-        filtered_outputs = []
-        for index, output in enumerate(probabilities_3[0]):
-            if labels_list[index] == "None":
-                continue
-            if output >= 0.25:
-                filtered_labels.append(labels_list[index])
-                filtered_outputs.append(output.item())  # Convert the tensor to a Python number
 
-        # Store the filtered labels and outputs in the map with the corresponding sentence
-        output_map[sentence] = {"Labels": filtered_labels, "Probabilities": filtered_outputs}
+        # Retrieve the entry from DynamoDB
+        response = ddbi.get(f"id#{task_id}")
 
-    # Update the DynamoDB table
-    response["status"] = "COMPLETED"
-    ddbi.create_or_update(
-        Entry(
-            id=response["id"],
-            payload=response["payload"],
-            status="COMPLETED",
-            task=response["task"],
-            response=json.dumps(output_map),
-            last_updated=str(datetime.now()),
+        # Get the payload from the response
+        payload_str = response.get("payload")
+        if payload_str is None:
+            raise Exception("Payload not found in the database")
+
+        # Parse the payload
+        payload = json.loads(payload_str)
+        text = payload.get("text")
+        if text is None:
+            raise Exception("Text not found in the payload")
+
+        # Initialize output map
+        output_map = {}
+
+        # Extract sentences from text
+        sentences = extract_title_and_sentences(text)
+        logger.info(f"Extracted sentences: {sentences}")
+        for sentence in sentences:
+            # Tokenize the sentence
+            inputs = tokenizer.encode_plus(
+                sentence,
+                add_special_tokens=True,
+                max_length=MAX_LENGTH_CONTENT,
+                padding="longest",
+                truncation=True,
+                return_attention_mask=True,
+                return_tensors="pt",
+            )
+            inputs_3 = {
+                "content_input_ids": inputs["input_ids"],
+                "content_attention_mask": inputs["attention_mask"],
+            }
+
+            # Log input shapes and types
+            for name, tensor in inputs_3.items():
+                logger.info(f"Input {name} shape: {tensor.shape}, dtype: {tensor.dtype}")
+
+            # Pass the tokenized sentence to the model
+            try:
+                outputs_3 = persuasion_model(**inputs_3)
+                logger.info(f"Raw model outputs for sentence '{sentence}': {outputs_3}")
+                probabilities_3 = torch.sigmoid(outputs_3)
+                logger.info(f"Probabilities after sigmoid: {probabilities_3}")
+            except Exception as e:
+                logger.error(f"Error during model inference: {e}")
+                continue  # Skip to the next sentence
+
+            # Check output dimensions
+            if outputs_3.shape[1] != len(labels_list):
+                logger.error(
+                    f"Output dimension {outputs_3.shape[1]} does not match number of labels {len(labels_list)}"
+                )
+                continue  # Skip or handle accordingly
+
+            # Convert tensor to list
+            filtered_labels = []
+            filtered_outputs = []
+            for index, output in enumerate(probabilities_3[0]):
+                if labels_list[index] == "None":
+                    continue
+                logger.info(f"Label: {labels_list[index]}, Probability: {output.item()}")
+                if output >= PROB_THRESHOLD:
+                    filtered_labels.append(labels_list[index])
+                    filtered_outputs.append(output.item())  # Convert tensor to Python float
+
+            print(filtered_labels, filtered_outputs)
+            # Store the filtered labels and outputs in the map with the corresponding sentence
+            output_map[sentence] = {"Labels": filtered_labels, "Probabilities": filtered_outputs}
+
+        # Update the DynamoDB table
+        response["status"] = "COMPLETED"
+        ddbi.create_or_update(
+            Entry(
+                id=response["id"],
+                payload=response["payload"],
+                status="COMPLETED",
+                task=response["task"],
+                response=json.dumps(output_map),
+                last_updated=str(datetime.now()),
+            )
         )
-    )
 
-    return {"statusCode": 200, "body": json.dumps(output_map)}
+        return {"statusCode": 200, "body": json.dumps(output_map)}
+
+    except Exception as e:
+        logger.error(f"Error processing the request: {e}")
+        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
 
 
 if __name__ == "__main__":
     event = {
-        "task_id": "c059ae30b28e45cf9eb45c906dd5b578",
+        "task_id": "3bfe734c82bc49cfaeeadc23a8b65218",
     }
     context = {}
     lambda_handler(event, context)

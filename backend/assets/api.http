@@ -10,15 +10,16 @@ GET {{host}}/health
 ###
 
 # Run Task 1
-POST {{host}}/run/task1
+POST {{host}}/run/task2
 content-type: application/json
 
 {
-    "text": "This is the best day of my life"
+    "title": "News",
+    "content": "The former Australian prime minister Malcolm Turnbull has accused the UK government of hypocrisy and concealment over the way it continues to block the release of secret files about the Spycatcher affair. Before entering politics, Turnbull was a barrister for Peter Wright, a retired senior MI5 intelligence officer who revealed a series of illegal activities by the British security services in his memoir Spycatcher. British officials have repeatedly refused to disclose 32 files concerning the Spycatcher affair. “There is something that they are still trying to hide,” Turnbull said. He added: “Whats the public interest in keeping them suppressed?” Spycatcher detailed how MI5 bugged embassies, plotted against the former prime minister Harold Wilson, and was run for almost a decade by a suspected Soviet agent, Roger Hollis. Margaret Thatcher in front of a blue background Thatcher ‘utterly shattered by MI5 revelations in Spycatcher, files reveal Turnbull represented Wright in a 1986 court battle in Australia that caused Margaret Thatcher global humiliation over her governments failure to stop publication of the book. During the trial Turnbull forced Thatchers cabinet secretary Robert Armstrong to admit he had been “economical with the truth”. Previously classified prime ministerial papers released last year revealed just how brazenly Armstrong had lied to the Australian court and how Thatcher had misled parliament. The damning memos were released after a long campaign by the journalist and author Tim Tate for his book To Catch a Spy: how the Spycatcher affair brought MI5 in from the cold."
 }
 ###
 
 # Get Task ID
-GET {{host}}/run/f65d6fb23bfc411992d83c5a650185a3
+GET {{host}}/run/2a7cd497f4504ef18d85519943421202
 
 ###

@@ -3,6 +3,7 @@ FROM --platform=amd64 public.ecr.aws/lambda/python:3.11
 
 ENV HF_HOME=/tmp/cache
 ENV TRANSFORMERS_CACHE=/tmp/cache
+ENV NLTK_DATA=/tmp/nltk_data
 
 # Copy the requirements.txt file
 COPY requirements.txt ${LAMBDA_TASK_ROOT}
