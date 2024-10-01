@@ -9,9 +9,9 @@ from config import CFG
 from torch.utils.data import  DataLoader
 # from newspaper import Article
 import matplotlib.pyplot as plt
-from transformers import XLMRobertaTokenizer, AutoModel
+# from transformers import XLMRobertaTokenizer, AutoModel
 from huggingface_hub import hf_hub_download
-from transformers import AutoConfig, AutoModel
+# from transformers import AutoConfig, AutoModel
 import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
