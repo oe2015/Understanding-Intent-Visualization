@@ -60,7 +60,7 @@ labels_list = [
 ]
 
 # Define configuration constants
-PROB_THRESHOLD = 0.1  # Adjust as needed
+PROB_THRESHOLD = 0.5  # Adjust as needed
 MODEL_PATH = "./models/model.pt"
 TOKENIZER_PATH = "./models/xlm-roberta-large"
 MAX_LENGTH_CONTENT = 512  # Adjust based on model's training
