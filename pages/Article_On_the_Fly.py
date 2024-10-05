@@ -358,7 +358,7 @@ if text:
         chart = alt.Chart(sorted_df).mark_bar().encode(
             x='Probabilities',
             y=alt.Y('Labels', sort='-x', title='Labels', axis=alt.Axis(labelLimit=200)),  # Wrap long labels
-            color=alt.Color('Labels', scale=alt.Scale(scheme='category10')),
+            color=alt.Color('Labels', scale=alt.Scale(scheme='category10'), legend=alt.Legend(labelLimit=200)),
             tooltip=['Probabilities', 'Labels']
         ).properties(
             width=1000,
