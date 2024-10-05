@@ -331,20 +331,44 @@ if text:
     sorted_df = df.sort_values(by='Probabilities', ascending=False)
     sorted_df = sorted_df.reset_index(drop=True)
 
+    # with st.expander(f"### Get analysis for this Article", expanded=False):
+    #     x = sorted_df["Probabilities"]
+    #     y = sorted_df["Labels"]
+    #     chart = alt.Chart(sorted_df).mark_bar().encode(
+    #         x = 'Probabilities',
+    #         y = 'Labels',
+    #         color=alt.Color('Labels', scale=alt.Scale(scheme='category10')),
+    #         tooltip=['Probabilities', 'Labels']
+    #     ).properties(
+    #         width=1000,
+    #         height=600
+    #     )
+    #     # Display the chart using Streamlit
+    #     st.altair_chart(chart, use_container_width=True)
+
+    # Replace underscores with spaces in the 'Labels' column
+    sorted_df['Labels'] = sorted_df['Labels'].str.replace('_', ' ')
+    
+    # Plot the chart with Altair
     with st.expander(f"### Get analysis for this Article", expanded=False):
         x = sorted_df["Probabilities"]
         y = sorted_df["Labels"]
+        
         chart = alt.Chart(sorted_df).mark_bar().encode(
-            x = 'Probabilities',
-            y = 'Labels',
+            x='Probabilities',
+            y=alt.Y('Labels', sort='-x', title='Labels'),
             color=alt.Color('Labels', scale=alt.Scale(scheme='category10')),
             tooltip=['Probabilities', 'Labels']
         ).properties(
             width=1000,
             height=600
+        ).configure_axis(
+            labelFontSize=12  # Adjust font size if needed
         )
+    
         # Display the chart using Streamlit
         st.altair_chart(chart, use_container_width=True)
+    
 
     
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task3", json={"text": text})
