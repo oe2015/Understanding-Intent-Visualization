@@ -8,6 +8,6 @@ def extract_title_and_sentences(text):
     title = sentences[0]
     sentences = sentences[1:]
     # Remove the title from the list of sentences
-    if len(sentences) > 10:
-        sentences = sentences[1:10]
+    # if len(sentences) > 10:
+    #     sentences = sentences[1:10]
     return sentences
