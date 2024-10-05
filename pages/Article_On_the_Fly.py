@@ -350,13 +350,14 @@ if text:
     sorted_df['Labels'] = sorted_df['Labels'].str.replace('_', ' ')
     
     # Plot the chart with Altair
+# Plot the chart with Altair
     with st.expander(f"### Get analysis for this Article", expanded=False):
         x = sorted_df["Probabilities"]
         y = sorted_df["Labels"]
-        
+    
         chart = alt.Chart(sorted_df).mark_bar().encode(
             x='Probabilities',
-            y=alt.Y('Labels', sort='-x', title='Labels'),
+            y=alt.Y('Labels', sort='-x', title='Labels', axis=alt.Axis(labelLimit=200)),  # Wrap long labels
             color=alt.Color('Labels', scale=alt.Scale(scheme='category10')),
             tooltip=['Probabilities', 'Labels']
         ).properties(
@@ -368,7 +369,7 @@ if text:
     
         # Display the chart using Streamlit
         st.altair_chart(chart, use_container_width=True)
-    
+        
 
     
     response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task3", json={"text": text})
