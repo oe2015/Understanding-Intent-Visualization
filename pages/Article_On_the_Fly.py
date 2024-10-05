@@ -277,6 +277,7 @@ elif option == "Enter Text":
                 st.write(doc)
 
 text = " ".join(doc.split())
+title = "none"
 # if text:
     # # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
     # response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task1", json={"text": text})
