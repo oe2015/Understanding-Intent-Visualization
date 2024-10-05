@@ -93,6 +93,15 @@ except Exception as e:
     raise e
 
 
+def chunk_text(tokenizer, text, chunk_size=512, overlap=50):
+    """Utility to split the text into chunks of 512 tokens with overlap."""
+    tokens = tokenizer.encode(text, add_special_tokens=False)
+    chunks = []
+    for i in range(0, len(tokens), chunk_size - overlap):
+        chunk = tokens[i:i + chunk_size]
+        chunks.append(tokenizer.decode(chunk, clean_up_tokenization_spaces=True))
+    return chunks
+
 def lambda_handler(event, context):
     # Log the event
     logger.info(f"Received event: {event}")
@@ -128,57 +137,76 @@ def lambda_handler(event, context):
         # Extract sentences from text
         sentences = extract_title_and_sentences(text)
         logger.info(f"Extracted sentences: {sentences}")
+        
         for sentence in sentences:
-            # Tokenize the sentence
-            inputs = tokenizer.encode_plus(
-                sentence,
-                add_special_tokens=True,
-                max_length=MAX_LENGTH_CONTENT,
-                padding="longest",
-                truncation=True,
-                return_attention_mask=True,
-                return_tensors="pt",
-            )
-            inputs_3 = {
-                "content_input_ids": inputs["input_ids"],
-                "content_attention_mask": inputs["attention_mask"],
-            }
+            # Chunk the sentence using sliding window approach
+            sentence_chunks = chunk_text(tokenizer, sentence)
 
-            # Log input shapes and types
-            for name, tensor in inputs_3.items():
-                logger.info(f"Input {name} shape: {tensor.shape}, dtype: {tensor.dtype}")
+            # Initialize list to store all chunk outputs
+            all_chunk_outputs = []
+            all_chunk_labels = []
 
-            # Pass the tokenized sentence to the model
-            try:
-                outputs_3 = persuasion_model(**inputs_3)
-                logger.info(f"Raw model outputs for sentence '{sentence}': {outputs_3}")
-                probabilities_3 = torch.sigmoid(outputs_3)
-                logger.info(f"Probabilities after sigmoid: {probabilities_3}")
-            except Exception as e:
-                logger.error(f"Error during model inference: {e}")
-                continue  # Skip to the next sentence
-
-            # Check output dimensions
-            if outputs_3.shape[1] != len(labels_list):
-                logger.error(
-                    f"Output dimension {outputs_3.shape[1]} does not match number of labels {len(labels_list)}"
+            for chunk in sentence_chunks:
+                # Tokenize the chunk
+                inputs = tokenizer.encode_plus(
+                    chunk,
+                    add_special_tokens=True,
+                    max_length=MAX_LENGTH_CONTENT,
+                    padding="longest",
+                    truncation=True,
+                    return_attention_mask=True,
+                    return_tensors="pt",
                 )
-                continue  # Skip or handle accordingly
+                inputs_3 = {
+                    "content_input_ids": inputs["input_ids"],
+                    "content_attention_mask": inputs["attention_mask"],
+                }
 
-            # Convert tensor to list
-            filtered_labels = []
-            filtered_outputs = []
-            for index, output in enumerate(probabilities_3[0]):
-                if labels_list[index] == "None":
-                    continue
-                logger.info(f"Label: {labels_list[index]}, Probability: {output.item()}")
-                if output >= PROB_THRESHOLD:
-                    filtered_labels.append(labels_list[index])
-                    filtered_outputs.append(output.item())  # Convert tensor to Python float
+                # Log input shapes and types
+                for name, tensor in inputs_3.items():
+                    logger.info(f"Input {name} shape: {tensor.shape}, dtype: {tensor.dtype}")
 
-            print(filtered_labels, filtered_outputs)
-            # Store the filtered labels and outputs in the map with the corresponding sentence
-            output_map[sentence] = {"Labels": filtered_labels, "Probabilities": filtered_outputs}
+                # Pass the tokenized chunk to the model
+                try:
+                    outputs_3 = persuasion_model(**inputs_3)
+                    logger.info(f"Raw model outputs for chunk: {outputs_3}")
+                    probabilities_3 = torch.sigmoid(outputs_3)
+                    logger.info(f"Probabilities after sigmoid: {probabilities_3}")
+                except Exception as e:
+                    logger.error(f"Error during model inference: {e}")
+                    continue  # Skip to the next chunk
+
+                # Check output dimensions
+                if outputs_3.shape[1] != len(labels_list):
+                    logger.error(
+                        f"Output dimension {outputs_3.shape[1]} does not match number of labels {len(labels_list)}"
+                    )
+                    continue  # Skip or handle accordingly
+
+                # Process the output and append to the lists for chunk outputs
+                filtered_labels = []
+                filtered_outputs = []
+                for index, output in enumerate(probabilities_3[0]):
+                    if labels_list[index] == "None":
+                        continue
+                    logger.info(f"Label: {labels_list[index]}, Probability: {output.item()}")
+                    if output >= PROB_THRESHOLD:
+                        filtered_labels.append(labels_list[index])
+                        filtered_outputs.append(output.item())  # Convert tensor to Python float
+
+                # Append chunk results
+                all_chunk_labels.append(filtered_labels)
+                all_chunk_outputs.append(filtered_outputs)
+
+            # Concatenate chunk results into a single entry for the sentence
+            concatenated_labels = [label for chunk_labels in all_chunk_labels for label in chunk_labels]
+            concatenated_outputs = [output for chunk_outputs in all_chunk_outputs for output in chunk_outputs]
+
+            # Store the concatenated labels and outputs in the map with the corresponding sentence
+            output_map[sentence] = {
+                "Labels": concatenated_labels, 
+                "Probabilities": concatenated_outputs
+            }
 
         # Update the DynamoDB table
         response["status"] = "COMPLETED"
@@ -198,6 +226,7 @@ def lambda_handler(event, context):
     except Exception as e:
         logger.error(f"Error processing the request: {e}")
         return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+
 
 
 if __name__ == "__main__":
