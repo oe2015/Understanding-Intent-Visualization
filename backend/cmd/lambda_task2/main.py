@@ -68,6 +68,14 @@ except Exception as e:
     logger.error(f"Failed to load ONNX model: {e}")
     raise e
 
+def chunk_text(tokenizer, text, chunk_size=512, overlap=50):
+    """Utility to split the content into chunks of 512 tokens with overlap."""
+    tokens = tokenizer.encode(text, add_special_tokens=False)
+    chunks = []
+    for i in range(0, len(tokens), chunk_size - overlap):
+        chunk = tokens[i:i + chunk_size]
+        chunks.append(tokenizer.decode(chunk, clean_up_tokenization_spaces=True))
+    return chunks
 
 def lambda_handler(event, context):
     # Log the event
@@ -108,42 +116,54 @@ def lambda_handler(event, context):
             max_length=TITLE_MAX_LENGTH,  # Ensure this matches the model's expectation
         )
 
-        # Tokenize the content
-        inputs_content = tokenizer(
-            content,
-            return_tensors="np",
-            padding="max_length",
-            truncation=True,
-            max_length=CONTENT_MAX_LENGTH,  # Ensure this matches the model's expectation
-        )
+        # Chunk the content
+        content_chunks = chunk_text(tokenizer, content)
 
-        # Prepare the input dictionary for ONNX Runtime
-        ort_inputs = {
-            "title_input_ids": inputs_title["input_ids"].astype(np.int64),
-            "title_attention_mask": inputs_title["attention_mask"].astype(np.int64),
-            "content_input_ids": inputs_content["input_ids"].astype(np.int64),
-            "content_attention_mask": inputs_content["attention_mask"].astype(np.int64),
-        }
+        # Prepare lists to store the concatenated results
+        all_chunk_logits = []
+        all_chunk_probabilities = []
 
-        # Log input shapes and types
-        for name, tensor in ort_inputs.items():
-            logger.info(f"Input {name} shape: {tensor.shape}, dtype: {tensor.dtype}")
+        # Process each chunk of content and pass it through the model
+        for chunk in content_chunks:
+            # Tokenize each chunk
+            inputs_chunk = tokenizer(
+                chunk,
+                return_tensors="np",
+                padding="max_length",
+                truncation=True,
+                max_length=CONTENT_MAX_LENGTH,  # Ensure this matches the model's expectation
+            )
 
-        # Perform inference
-        logger.info("Running inference with ONNX model")
-        ort_outputs = session.run(None, ort_inputs)
+            # Prepare the input dictionary for ONNX Runtime
+            ort_inputs = {
+                "title_input_ids": inputs_title["input_ids"].astype(np.int64),
+                "title_attention_mask": inputs_title["attention_mask"].astype(np.int64),
+                "content_input_ids": inputs_chunk["input_ids"].astype(np.int64),
+                "content_attention_mask": inputs_chunk["attention_mask"].astype(np.int64),
+            }
 
-        # Assuming the model outputs logits; apply sigmoid to get probabilities
-        logits = ort_outputs[0]
-        probabilities = 1 / (1 + np.exp(-logits))  # Sigmoid function
-        probabilities = probabilities.flatten().tolist()
-        logger.info(f"Probabilities: {probabilities}")
+            # Log input shapes and types
+            for name, tensor in ort_inputs.items():
+                logger.info(f"Input {name} shape: {tensor.shape}, dtype: {tensor.dtype}")
+
+            # Perform inference for the chunk
+            logger.info("Running inference with ONNX model")
+            ort_outputs = session.run(None, ort_inputs)
+
+            # Assuming the model outputs logits; apply sigmoid to get probabilities
+            logits = ort_outputs[0]
+            probabilities = 1 / (1 + np.exp(-logits))  # Sigmoid function
+            probabilities = probabilities.flatten().tolist()
+
+            # Store logits and probabilities for later concatenation
+            all_chunk_logits.append(logits)
+            all_chunk_probabilities.extend(probabilities)  # Concatenate probabilities for all chunks
 
         # Filter the labels and outputs based on the threshold
         output_map = {}
         filtered_labels = []
         filtered_outputs = []
-        for index, output in enumerate(probabilities):
+        for index, output in enumerate(all_chunk_probabilities):
             if index >= len(labels_list):
                 logger.warning(f"Output index {index} exceeds labels list length")
                 continue
