@@ -173,9 +173,10 @@ st.title("Welcome to FRAPPE: Your FRAming, Persuasion, and Propaganda Explorer")
 
 st.write("In today's information-rich world, distinguishing reliable news from misleading content is more crucial than ever. FRAPPE is here to help you navigate this complex landscape.")
 
-tab1, tab2, tab3 = st.tabs(["What FRAPPE Does", "Why Use FRAPPE", "Learn More"])
+# Create radio buttons for tab-like navigation
+tab = st.radio("", ["What FRAPPE Does", "Why Use FRAPPE", "Learn More"], horizontal=True)
 
-with tab1:
+if tab == "What FRAPPE Does":
     st.header("What FRAPPE Does")
     st.markdown("""
     <div class="section">
@@ -210,7 +211,7 @@ with tab1:
     </div>
     """, unsafe_allow_html=True)
 
-with tab2:
+elif tab == "Why Use FRAPPE":
     st.header("Why Use FRAPPE")
     st.markdown("""
     <div class="section">
@@ -222,7 +223,7 @@ with tab2:
     </div>
     """, unsafe_allow_html=True)
 
-with tab3:
+elif tab == "Learn More":
     st.header("Learn More")
     st.markdown("""
     <div class="section">
