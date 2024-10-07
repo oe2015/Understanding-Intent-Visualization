@@ -233,40 +233,42 @@ techniques = {
 #     """)
 
 # st.markdown("")
+
 st.markdown("## 🚀 On-The-Fly Analysis!")
 
-url = ""
+default_url = "https://edition.cnn.com/2017/02/28/politics/donald-trump-speech-transcript-full-text/index.html"
 cx, cy, cz = st.columns([5, 2, 5])
 doc = ""
 option = st.radio("Choose an option to analyze an article", ("Pass URL", "Enter Text"))
+
 if option == "Pass URL":
-        with st.form(key="url_form"):
-            url = st.text_input("Enter the article URL to get analysis")
-            print(url)
-            submit_button = st.form_submit_button(label="Get article analysis!")
-            if submit_button:
-                if len(url) > 0:
-                    try:
-                        response = requests.get(url)
-                        response.raise_for_status()  # Raise an exception for any HTTP error status
-                        soup = BeautifulSoup(response.text, 'html.parser')
-                        title = soup.title.text
-                        paragraphs = soup.find_all('p')
-                        par = ''
-                        for p in paragraphs:
-                            par += "\n" + p.text
-                        doc = title + "\n" + par
-                        st.warning("Article successfully processed.")
-                        flag = 1
-                        with st.expander("Read the article", expanded=False):
-                            st.write(doc)
-                    except requests.exceptions.RequestException as e:
-                        st.warning("Access denied.")
-                        exit()
-                    except Exception as e:
-                        print("An error occurred during text extraction:", e)
-                else:
-                    print("URL is empty.")
+    with st.form(key="url_form"):
+        url = st.text_input("Enter the article URL to get analysis", value=default_url)
+        print(url)
+        submit_button = st.form_submit_button(label="Get article analysis!")
+        if submit_button:
+            if len(url) > 0:
+                try:
+                    response = requests.get(url)
+                    response.raise_for_status()  # Raise an exception for any HTTP error status
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    title = soup.title.text
+                    paragraphs = soup.find_all('p')
+                    par = ''
+                    for p in paragraphs:
+                        par += "\n" + p.text
+                    doc = title + "\n" + par
+                    st.warning("Article successfully processed.")
+                    flag = 1
+                    with st.expander("Read the article", expanded=False):
+                        st.write(doc)
+                except requests.exceptions.RequestException as e:
+                    st.warning("Access denied.")
+                    exit()
+                except Exception as e:
+                    print("An error occurred during text extraction:", e)
+            else:
+                print("URL is empty.")
 elif option == "Enter Text":
     with st.form(key="text_form"):
         text = st.text_area("Enter the text to get article analysis")
@@ -278,6 +280,53 @@ elif option == "Enter Text":
 
 text = " ".join(doc.split())
 title = "none"
+
+# st.markdown("## 🚀 On-The-Fly Analysis!")
+
+# url = ""
+# cx, cy, cz = st.columns([5, 2, 5])
+# doc = ""
+# option = st.radio("Choose an option to analyze an article", ("Pass URL", "Enter Text"))
+# if option == "Pass URL":
+#         with st.form(key="url_form"):
+#             url = st.text_input("Enter the article URL to get analysis")
+#             print(url)
+#             submit_button = st.form_submit_button(label="Get article analysis!")
+#             if submit_button:
+#                 if len(url) > 0:
+#                     try:
+#                         response = requests.get(url)
+#                         response.raise_for_status()  # Raise an exception for any HTTP error status
+#                         soup = BeautifulSoup(response.text, 'html.parser')
+#                         title = soup.title.text
+#                         paragraphs = soup.find_all('p')
+#                         par = ''
+#                         for p in paragraphs:
+#                             par += "\n" + p.text
+#                         doc = title + "\n" + par
+#                         st.warning("Article successfully processed.")
+#                         flag = 1
+#                         with st.expander("Read the article", expanded=False):
+#                             st.write(doc)
+#                     except requests.exceptions.RequestException as e:
+#                         st.warning("Access denied.")
+#                         exit()
+#                     except Exception as e:
+#                         print("An error occurred during text extraction:", e)
+#                 else:
+#                     print("URL is empty.")
+# elif option == "Enter Text":
+#     with st.form(key="text_form"):
+#         text = st.text_area("Enter the text to get article analysis")
+#         submit_button = st.form_submit_button(label="Get article analysis!")
+#         if submit_button:
+#             doc = text
+#             with st.expander("Read the article", expanded=False):
+#                 st.write(doc)
+
+# text = " ".join(doc.split())
+# title = "none"
+
 # if text:
     # # predicted_probabilities = torch.softmax(outputs, dim=1).squeeze().tolist()
     # response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task1", json={"text": text})
