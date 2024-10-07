@@ -104,12 +104,14 @@ col1, col2 = st.columns(2)
 if col1.button("About Frappe"):
     nav_page("About Frappe")
 
-if col2.button("Visualization of 2M Articles"):
-    nav_page("Visualization of 2M Articles")
+if col2.button("Analyze an article on the fly"):
+    nav_page("Article On the Fly")
+    
+
 
 # Second row with one centered button
 st.write("")  # Add some vertical space
 _, col3, _ = st.columns([1, 2, 1])
 
-if col3.button("Analyze an article on the fly"):
-    nav_page("Article On the Fly")
+if col3.button("Visualization of 2M Articles"):
+    nav_page("Visualization of 2M Articles")
