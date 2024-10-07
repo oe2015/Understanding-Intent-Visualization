@@ -48,6 +48,8 @@ def nav_page(page_name, timeout_secs=3):
 local_css("styles.css")
 c4, c1, c3, c2 = st.columns([2,4, 1, 4])
 
+if c1.button("About Frappe"):
+    nav_page("About Frappe")
 if c1.button("Analyze an article on the fly"):
     nav_page("Article On the Fly")
 if c2.button("Visualization of 2M Articles"):

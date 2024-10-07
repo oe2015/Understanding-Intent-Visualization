@@ -190,49 +190,49 @@ techniques = {
 
 # (Keep your framing_explanations and techniques dictionaries as they are)
 
-with st.expander("About FRAPPE", expanded=False):
-    st.markdown("""
-    ## Welcome to FRAPPE: Your FRAming, Persuasion, and Propaganda Explorer
+# with st.expander("About FRAPPE", expanded=False):
+#     st.markdown("""
+#     ## Welcome to FRAPPE: Your FRAming, Persuasion, and Propaganda Explorer
 
-    In today's information-rich world, distinguishing reliable news from misleading content is more crucial than ever. FRAPPE is here to help you navigate this complex landscape.
+#     In today's information-rich world, distinguishing reliable news from misleading content is more crucial than ever. FRAPPE is here to help you navigate this complex landscape.
 
-    ### What FRAPPE Does:
-    - Analyzes news articles beyond the surface level
-    - Uncovers linguistic techniques that shape opinions and emotions
-    - Analyzes articles for specific frames and persuasion techniques, including:
-    """)
+#     ### What FRAPPE Does:
+#     - Analyzes news articles beyond the surface level
+#     - Uncovers linguistic techniques that shape opinions and emotions
+#     - Analyzes articles for specific frames and persuasion techniques, including:
+#     """)
 
-    col1, col2 = st.columns(2)
+#     col1, col2 = st.columns(2)
     
-    with col1:
-        st.markdown("#### Frames:")
-        for frame in framing_explanations.keys():
-            st.markdown(f"- {frame}", help=framing_explanations[frame])
+#     with col1:
+#         st.markdown("#### Frames:")
+#         for frame in framing_explanations.keys():
+#             st.markdown(f"- {frame}", help=framing_explanations[frame])
 
-    with col2:
-        st.markdown("#### Persuasion Techniques:")
-        for technique in techniques.keys():
-            st.markdown(f"- {technique}", help=techniques[technique])
+#     with col2:
+#         st.markdown("#### Persuasion Techniques:")
+#         for technique in techniques.keys():
+#             st.markdown(f"- {technique}", help=techniques[technique])
 
-    st.markdown("""
-    - Compares persuasion and framing strategies across:
-      - Various news outlets
-      - Multiple countries
-      - Different languages and topics
+#     st.markdown("""
+#     - Compares persuasion and framing strategies across:
+#       - Various news outlets
+#       - Multiple countries
+#       - Different languages and topics
 
-    ### Why Use FRAPPE:
-    - Gain deeper insights into news content
-    - Understand how information is presented and potentially manipulated
-    - Develop a more critical and informed approach to media consumption
+#     ### Why Use FRAPPE:
+#     - Gain deeper insights into news content
+#     - Understand how information is presented and potentially manipulated
+#     - Develop a more critical and informed approach to media consumption
 
-    ### Learn More:
-    - Read our research paper: [FRAPPE: FRAming, Persuasion, and Propaganda Explorer](https://aclanthology.org/2024.eacl-demo.22/)
-    - Watch our demo video: [FRAPPE in Action](https://aclanthology.org/2024.eacl-demo.22.mp4)
+#     ### Learn More:
+#     - Read our research paper: [FRAPPE: FRAming, Persuasion, and Propaganda Explorer](https://aclanthology.org/2024.eacl-demo.22/)
+#     - Watch our demo video: [FRAPPE in Action](https://aclanthology.org/2024.eacl-demo.22.mp4)
 
-    Empower yourself with FRAPPE and become a more discerning news reader!
-    """)
+#     Empower yourself with FRAPPE and become a more discerning news reader!
+#     """)
 
-st.markdown("")
+# st.markdown("")
 st.markdown("## 🚀 On-The-Fly Analysis!")
 
 url = ""
