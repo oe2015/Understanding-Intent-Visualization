@@ -114,4 +114,4 @@ st.write("")  # Add some vertical space
 _, col3, _ = st.columns([1, 2, 1])
 
 if col3.button("Visualization of 2.5M Articles"):
-    nav_page("Visualization of 2M Articles")
+    nav_page("Visualization of 2.5M Articles")
