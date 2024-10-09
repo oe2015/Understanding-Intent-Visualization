@@ -236,7 +236,7 @@ techniques = {
 
 st.markdown("## 🚀 On-The-Fly Analysis!")
 
-default_url = "https://edition.cnn.com/2017/02/28/politics/donald-trump-speech-transcript-full-text/index.html"
+default_url = "https://thetruthersjournal.home.blog/2020/03/25/quaternary-weapon-system-global-pandemic-fabricated-via-covid-19-5g-chemtrails-vaccines/"
 cx, cy, cz = st.columns([5, 2, 5])
 doc = ""
 option = st.radio("Choose an option to analyze an article", ("Pass URL", "Enter Text"))
