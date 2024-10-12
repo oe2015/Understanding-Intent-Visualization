@@ -44,6 +44,47 @@ print("hello")
 
 ################################################################################
 
+
+# Function to cache the API response for task 2
+@st.cache_data(ttl = 3600 * 24, show_spinner=False)
+def get_framing_analysis(title, text):
+    """
+    Perform task 2 analysis (e.g., framing) on the given title and text.
+    Caches the API response to avoid repeated requests for the same input.
+    """
+    response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task2", json={"title": title, "content": text})
+    task_id = response.json()["task_id"]
+    
+    # Poll the task status until completed
+    status = "PENDING"
+    while status != "COMPLETED":
+        response_status = requests.get(f"https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/{task_id}")
+        status = response_status.json()["status"]
+        sleep(2)
+    
+    predicted_probabilities = json.loads(response_status.json()["response"])
+    return predicted_probabilities
+
+@st.cache_data(ttl = 3600 * 24, show_spinner=False)
+def get_persuasion_techniques(text):
+    """
+    Perform task 3 analysis (e.g., persuasion techniques) on the given text.
+    Caches the API response to avoid repeated requests for the same input.
+    """
+    response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task3", json={"text": text})
+    task_id = response.json()["task_id"]
+    
+    # Poll the task status until completed
+    status = "PENDING"
+    while status != "COMPLETED":
+        response_status = requests.get(f"https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/{task_id}")
+        status = response_status.json()["status"]
+        sleep(3)
+    
+    prediction = json.loads(response_status.json()["response"])
+    return prediction
+
+
 def get_random_color():
     letters = "ABCDEF"
     color = "#"
@@ -53,6 +94,9 @@ def get_random_color():
         color += letters[component]
 
     return color
+
+
+
 
 
 
@@ -356,22 +400,12 @@ title = "none"
     #     st.pyplot(fig)
 if text:
     # SUBTASK 2 VISUALIZATION
-    print("hello")
-    response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task2", json={"title": title, "content": text})
-    print(response)
-    # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
-    status = "PENDING"
-    while status != "COMPLETED":
-        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
-        print(response1)
-        status = response1.json()["status"]
-        print(status)
-        sleep(2)
+
         
     print("done")
     
     # Get the prediction from the response
-    predicted_probabilities = json.loads(response1.json()["response"])
+    predicted_probabilities = get_framing_analysis(title, text)
     # Get the prediction from the response
     # output = response.json()
     # data = output
@@ -421,17 +455,9 @@ if text:
         
 
     
-    response = requests.post("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/task3", json={"text": text})
-    # response = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response["task_id"]
-    status = "PENDING"
-    while status != "COMPLETED":
-        response1 = requests.get("https://rpmsgs3cj0.execute-api.us-east-1.amazonaws.com/run/" + response.json()["task_id"])
-        status = response1.json()["status"]
-        sleep(3)
     
     # Get the prediction from the response
-    prediction = json.loads(response1.json()["response"])
-
+    prediction = get_persuasion_techniques(text)
     print(prediction)
     
     #SUBTASK 3 Visualization
