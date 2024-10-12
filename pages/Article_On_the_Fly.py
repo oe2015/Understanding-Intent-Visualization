@@ -280,6 +280,19 @@ techniques = {
 
 st.markdown("## 🚀 On-The-Fly Analysis!")
 
+# Display a text box with the default URLs
+suggested_urls = [
+    "https://thetruthersjournal.home.blog/2020/03/25/quaternary-weapon-system-global-pandemic-fabricated-via-covid-19-5g-chemtrails-vaccines/",
+    "https://www.albawabhnews.com/4960520",
+    # "https://example.com/article2",
+    # "https://example.com/article3"
+]
+
+# Create bullet points for the URLs using markdown
+suggested_urls_bullets = "\n".join([f"* {url}" for url in suggested_urls])
+st.markdown("#### 📝 Suggested Article URLs for Analysis")
+st.markdown(suggested_urls_bullets)
+
 default_url = "https://thetruthersjournal.home.blog/2020/03/25/quaternary-weapon-system-global-pandemic-fabricated-via-covid-19-5g-chemtrails-vaccines/"
 cx, cy, cz = st.columns([5, 2, 5])
 doc = ""
