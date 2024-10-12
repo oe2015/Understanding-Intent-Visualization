@@ -46,7 +46,7 @@ print("hello")
 
 
 # Function to cache the API response for task 2
-@st.cache_data(ttl = 3600 * 24, max_entries = 1024, show_spinner=False)
+@st.cache_data(ttl = 3600 * 24, max_entries = 2048, show_spinner=False)
 def get_framing_analysis(title, text):
     """
     Perform task 2 analysis (e.g., framing) on the given title and text.
@@ -65,7 +65,7 @@ def get_framing_analysis(title, text):
     predicted_probabilities = json.loads(response_status.json()["response"])
     return predicted_probabilities
 
-@st.cache_data(ttl = 3600 * 24, max_entries = 1024, show_spinner=False)
+@st.cache_data(ttl = 3600 * 24, max_entries = 2048, show_spinner=False)
 def get_persuasion_techniques(text):
     """
     Perform task 3 analysis (e.g., persuasion techniques) on the given text.
